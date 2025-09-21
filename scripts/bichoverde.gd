@@ -5,6 +5,13 @@ const velocidade = 15.0
 @export var health : int = 3
 @onready var hitbox: Area2D = $hitbox
 
+const KNOCKBACK_DIRECTIONS = {
+	"up": Vector2(0, -1),
+	"down": Vector2(0, 1),
+	"left": Vector2(-1, 0),
+	"right": Vector2(1, 0)
+}
+
 var is_following_player = false
 var player : CharacterBody2D = null
 var tempo_troca : float
@@ -12,6 +19,7 @@ var direction: Vector2 = Vector2.ZERO
 var dashCounter = 0
 var dashLimit = 1
 var knockback_vector: Vector2 = Vector2.ZERO
+var knockback_strength = 180
 
 func _physics_process(delta: float) -> void:
 	if is_following_player:
@@ -74,12 +82,5 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 		print("bosta")
 		
 func knockback(comando: StringName):
-	match comando :
-		"down":
-			knockback_vector = Vector2(0, 150)
-		"up":
-			knockback_vector = Vector2(0, -150)
-		"left":
-			knockback_vector = Vector2(-150, 0)
-		"right":
-			knockback_vector = Vector2(150, 0)
+	if comando in KNOCKBACK_DIRECTIONS:
+		knockback_vector = KNOCKBACK_DIRECTIONS[comando] * knockback_strength

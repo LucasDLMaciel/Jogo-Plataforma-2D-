@@ -19,7 +19,8 @@ var dashDirection : int
 var dashCounter = 0
 var dashLimit = 1
 var cooldown = false
-var knockback = 100.0
+var knockback_attack = 15.0
+var pogo_modifier = 3
 
 func _ready() -> void:
 	area_2d.monitoring = false
@@ -27,7 +28,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	velocity += get_gravity() * delta
-	
+
 	if Input.is_action_just_pressed("attack") && (anim.is_playing() && anim.animation != "get up"):
 		if (Input.is_action_pressed("up") or Input.is_action_pressed("down")):
 			area_2d_2.monitoring = true
@@ -126,7 +127,7 @@ func jump_logic():
 func dash(direction):
 	area_2d.monitoring = false
 	area_2d_2.monitoring = false
-	print("dash usado")
+	print("habilidade usada")
 	dashCounter = 1
 	dashDirection = direction
 	if dashDirection > 0:
@@ -160,6 +161,7 @@ func andar(direction):
 				anim.play("idle")
 			velocity.x = direction * SPEED
 		else:
+			var last_direction = 1 if anim.is_flipped_h() else 1
 			if (not anim.is_playing() and anim.animation == "attack") or anim.animation != "attack":
 				area_2d.monitoring = false
 				area_2d_2.monitoring = false
@@ -168,31 +170,30 @@ func andar(direction):
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	area_2d_2.monitoring = false
+	var last_direction = -1 if anim.is_flipped_h() else 1
 	if body.is_in_group("inimigos"):
 		body == inimigo
 		body.health -= 1
 		if !anim.is_flipped_h():
-			velocity.x -= lerp(SPEED, knockback, 0.1)
 			body.knockback("right")
+			velocity.x += (-last_direction) * knockback_attack
 		else:
-			velocity.x += lerp(SPEED, knockback, 0.1)
 			body.knockback("left")
+			velocity.x += (-last_direction) * knockback_attack
 		if body.health == 0:
 			body.queue_free()
 
 
 func _on_area_2d_2_body_entered(body: Node2D) -> void:
 	area_2d.monitoring = false
+	var up_dir = -1
 	if body.is_in_group("inimigos"):
 		body == inimigo
 		body.health -= 1
 		if not is_on_floor() && Input.is_action_pressed("down"):
 			body.knockback("down")
-			velocity.y -= lerp(jump_speed, acceleration, 0.3)
+			velocity.y -= up_dir * knockback_attack * pogo_modifier
 		elif Input.is_action_pressed("up"):
 			body.knockback("up")
-			if not is_on_floor():
-				velocity.y = lerp(velocity.y, get_gravity().y, 0.3)
-				velocity.y *= 0.3
 		if body.health == 0:
 			body.queue_free()

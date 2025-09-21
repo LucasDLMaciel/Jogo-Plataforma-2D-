@@ -1,0 +1,70 @@
+[gd_scene load_steps=10 format=4 uid="uid://b4g22xricdrtm"]
+
+[ext_resource type="PackedScene" uid="uid://c6kn1yl7uhx5q" path="res://entitys/player.tscn" id="1_ed4ba"]
+[ext_resource type="PackedScene" uid="uid://hk5diqc5w24s" path="res://entitys/camera.tscn" id="1_f2b4i"]
+[ext_resource type="TileSet" uid="uid://c42iww6kla1bj" path="res://tiles/game.tres" id="2_ed4ba"]
+[ext_resource type="TileSet" uid="uid://sv27n4fx4kqy" path="res://tiles/decoration.tres" id="3_afqef"]
+[ext_resource type="Texture2D" uid="uid://4hfm4wvonvup" path="res://sprites/Grasslands Tileset/PNG/bg4.png" id="4_f2b4i"]
+[ext_resource type="Texture2D" uid="uid://cjks7horjn171" path="res://sprites/Grasslands Tileset/PNG/bg3.png" id="5_ncjmf"]
+[ext_resource type="Texture2D" uid="uid://bxd4dw6sotfjy" path="res://sprites/Grasslands Tileset/PNG/bg2.png" id="6_54a32"]
+[ext_resource type="Texture2D" uid="uid://8k5thdhpd6cc" path="res://sprites/Grasslands Tileset/PNG/bg1.png" id="7_evhkj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_afqef"]
+size = Vector2(20, 104)
+
+[node name="Grass" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_ed4ba")]
+position = Vector2(9, 230)
+
+[node name="Camera" parent="." instance=ExtResource("1_f2b4i")]
+position = Vector2(-4, 129)
+
+[node name="terrain" type="TileMapLayer" parent="."]
+z_index = 2
+position = Vector2(-16, -80)
+tile_map_data = PackedByteArray("AAABABQACAACAAIAAAACABQACAADAAIAAAADABQACAADAAIAAAAEABQACAADAAIAAAAFABQACAADAAIAAAAGABQACAADAAIAAAAHABQACAADAAIAAAAIABQACAADAAIAAAAJABQACAADAAIAAAAKABQACAADAAIAAAALABQACAADAAIAAAAMABQACAADAAIAAAANABQACAADAAIAAAAOABQACAADAAIAAAAPABQACAADAAIAAAAQABQACAADAAIAAAARABQACAADAAIAAAASABQACAADAAIAAAATABQACAADAAIAAAAUABQACAADAAIAAAAVABQACAADAAIAAAAWABQACAADAAIAAAAXABQACAADAAIAAAAYABQACAADAAIAAAAZABQACAADAAIAAAAaABQACAADAAIAAAAbABQACAADAAIAAAAcABQACAADAAIAAAAdABQACAADAAIAAAAeABQACAADAAIAAAAfABQACAADAAIAAAAgABQACAADAAIAAAAhABQACAADAAIAAAAiABQACAADAAIAAAAjABQACAADAAIAAAAkABQACAADAAIAAAAlABQACAADAAIAAAAmABQACAADAAIAAAAnABQACAADAAIAAAAoABQACAADAAIAAAApABQACAADAAIAAAAqABQACAADAAIAAAArABQACAADAAIAAAAsABQACAADAAIAAAAtABQACAADAAIAAAAuABQACAADAAIAAAAvABQACAADAAIAAAAwABQACAADAAIAAAAxABQACAADAAIAAAAyABQACAADAAIAAAAzABQACAADAAIAAAA0ABQACAADAAIAAAA1ABQACAADAAIAAAA2ABQACAADAAIAAAA3ABQACAADAAIAAAA4ABQACAADAAIAAAA5ABQACAADAAIAAAA6ABQACAADAAIAAAA7ABQACAADAAIAAAA8ABQACAADAAIAAAA9ABQACAADAAIAAAA+ABQACAADAAIAAAA/ABQACAADAAIAAABAABQACAADAAIAAABBABQACAADAAIAAABCABQACAADAAIAAABDABQACAADAAIAAABEABQACAADAAIAAABFABQACAADAAIAAABGABQACAADAAIAAABHABQACAADAAIAAABIABQACAADAAIAAABJABQACAADAAIAAABKABQACAADAAIAAABLABQACAADAAIAAABMABQACAADAAIAAABNABQACAADAAIAAABOABQACAADAAIAAABPABQACAADAAIAAABQABQACAADAAIAAABRABQACAADAAIAAABSABQACAADAAIAAABTABQACAADAAIAAABUABQACAADAAIAAABVABQACAADAAIAAABWABQACAADAAIAAABXABQACAAIAAIAAAAFABAACAAEAAIAAAAGABAACAAEAAIAAAAHABAACAAEAAIAAAADABIACAAEAAIAAAAEABIACAAEAAIAAAAJAA4ACAAEAAIAAAAKAA4ACAAEAAIAAAALAA4ACAAEAAIAAAAMAAwACAAEAAIAAAANAAwACAAEAAIAAAAOAAwACAAEAAIAAAAPAAoACAAEAAIAAAAQAAoACAAEAAIAAAARAAoACAAEAAIAAAASAAgACAAEAAIAAAATAAgACAAEAAIAAAAUAAgACAAEAAIAAAAPAAYACAAEAAIAAAAQAAYACAAEAAIAAAARAAYACAAEAAIAAAALAAUACAAEAAIAAAAMAAUACAAEAAIAAAANAAUACAAEAAIAAAAPAAwACAAEAAIAAAAOAAUACAAEAAIAAAAIAAMACAAEAAIAAAAJAAMACAAEAAIAAAAHAAMACAAEAAIAAAALAAEACAAEAAIAAAAMAAEACAAEAAIAAAANAAEACAAEAAIAAAAOAP//CAAEAAIAAAAPAP//CAAEAAIAAAAQAP//CAAEAAIAAAARAP//CAAEAAIAAAASAP//CAAEAAIAAAAKAP3/CAAEAAIAAAALAP3/CAAEAAIAAAAMAP3/CAAEAAIAAAANAP3/CAAEAAIAAAAKAAEACAAEAAIAAAAFAPv/CAAEAAIAAAAGAPv/CAAEAAIAAAAHAPv/CAAEAAIAAAAIAPv/CAAEAAIAAAAMAPn/CAAEAAIAAAANAPn/CAAEAAIAAAAOAPn/CAAEAAIAAAAPAPn/CAAEAAIAAAA=")
+tile_set = ExtResource("2_ed4ba")
+
+[node name="decoration" type="TileMapLayer" parent="."]
+tile_set = ExtResource("3_afqef")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="4" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.1, 0)
+motion_mirroring = Vector2(512, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/4"]
+texture = ExtResource("4_f2b4i")
+centered = false
+
+[node name="3" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.2, 0.1)
+motion_mirroring = Vector2(512, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/3"]
+texture = ExtResource("5_ncjmf")
+centered = false
+
+[node name="2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.3, 0.15)
+motion_mirroring = Vector2(512, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/2"]
+texture = ExtResource("6_54a32")
+centered = false
+
+[node name="1" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.8, 0.4)
+motion_mirroring = Vector2(512, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/1"]
+texture = ExtResource("7_evhkj")
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-10, 192)
+shape = SubResource("RectangleShape2D_afqef")

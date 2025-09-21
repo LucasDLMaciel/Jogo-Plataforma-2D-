@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://dancesuggy2hu"]
+
+[ext_resource type="Texture2D" uid="uid://cijgc1rgqmhun" path="res://sprites/Fantasy Swamp Forest/Free/BG_3/BG_3.png" id="1_wcbfo"]
+[ext_resource type="Texture2D" uid="uid://ox4t1i7qpd0f" path="res://sprites/Fantasy Swamp Forest/Free/BG_2/BG_2.png" id="2_qnjn4"]
+
+[node name="swamp" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="3" type="ParallaxLayer" parent="ParallaxBackground"]
+texture_repeat = 2
+motion_scale = Vector2(0.1, 0.1)
+motion_mirroring = Vector2(2048, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/3"]
+texture = ExtResource("1_wcbfo")
+region_enabled = true
+region_rect = Rect2(4096, 400, 0, 0)
+
+[node name="2" type="ParallaxLayer" parent="ParallaxBackground"]
+texture_repeat = 2
+motion_scale = Vector2(0.1, 0.1)
+motion_mirroring = Vector2(2048, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/2"]
+texture = ExtResource("2_qnjn4")
+region_enabled = true
+region_rect = Rect2(4096, 400, 0, 0)

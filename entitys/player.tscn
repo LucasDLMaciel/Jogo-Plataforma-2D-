@@ -1,0 +1,222 @@
+[gd_scene load_steps=36 format=3 uid="uid://c6kn1yl7uhx5q"]
+
+[ext_resource type="Script" uid="uid://ih88233oc7tv" path="res://scripts/player.gd" id="1_rpcr7"]
+[ext_resource type="Texture2D" uid="uid://dmh4uxapgrxby" path="res://sprites/sword_1/attack1_1.png" id="2_5r6av"]
+[ext_resource type="Texture2D" uid="uid://5lq70a4y1h0b" path="res://sprites/sword_1/attack1_2.png" id="3_ntkg1"]
+[ext_resource type="Texture2D" uid="uid://de0owqunwotkb" path="res://sprites/sword_1/attack1_3.png" id="4_1cr2s"]
+[ext_resource type="Texture2D" uid="uid://6eoxdopd1bhx" path="res://sprites/sword_1/attack1_4.png" id="5_g16xh"]
+[ext_resource type="Texture2D" uid="uid://du75vq6u3r4bj" path="res://sprites/sword_1/walk_1.png" id="5_smy33"]
+[ext_resource type="Texture2D" uid="uid://d2xq3immj86s5" path="res://sprites/sword_1/jump_1.png" id="5_u5odt"]
+[ext_resource type="Texture2D" uid="uid://dja4dqyap2lq2" path="res://sprites/sword_1/jump_2.png" id="6_is6ba"]
+[ext_resource type="Texture2D" uid="uid://bd5gxej3jgtgh" path="res://sprites/sword_1/walk_2.png" id="6_qjhr6"]
+[ext_resource type="Texture2D" uid="uid://chcrlfwllynho" path="res://sprites/sword_1/attack1_5.png" id="6_vxuew"]
+[ext_resource type="Texture2D" uid="uid://b1x6rdlpnodhf" path="res://sprites/sword_1/jump_3.png" id="7_1umve"]
+[ext_resource type="Texture2D" uid="uid://bbs43pn1leewo" path="res://sprites/sword_1/walk_3.png" id="7_id8ad"]
+[ext_resource type="Texture2D" uid="uid://18psaw8pdepw" path="res://sprites/sword_1/attack1_6.png" id="7_w5a2o"]
+[ext_resource type="Texture2D" uid="uid://bqhqqcwbal6gq" path="res://sprites/sword_1/stand_up_1.png" id="8_7yq5o"]
+[ext_resource type="Texture2D" uid="uid://d07sr1bgjhqjw" path="res://sprites/sword_1/jump_4.png" id="8_ocwg1"]
+[ext_resource type="Texture2D" uid="uid://dpxn6a44h7l3e" path="res://sprites/sword_1/walk_4.png" id="8_syogb"]
+[ext_resource type="Texture2D" uid="uid://cplt0otn2b81g" path="res://sprites/sword_1/walk_5.png" id="9_ivpw1"]
+[ext_resource type="Texture2D" uid="uid://xgrtriptj6nh" path="res://sprites/sword_1/stand_up_2.png" id="9_pd51b"]
+[ext_resource type="Texture2D" uid="uid://bahrj0fs6hh8l" path="res://sprites/sword_1/jump_5.png" id="9_rbm55"]
+[ext_resource type="Texture2D" uid="uid://dognoue37ouvc" path="res://sprites/sword_1/stand_up_3.png" id="10_ocmux"]
+[ext_resource type="Texture2D" uid="uid://cervfpqveqen6" path="res://sprites/sword_1/walk_6.png" id="10_u5odt"]
+[ext_resource type="Texture2D" uid="uid://d08r66airxap8" path="res://sprites/sword_1/stand_up_4.png" id="11_8660m"]
+[ext_resource type="Texture2D" uid="uid://bkiwg248nwy33" path="res://sprites/sword_1/stand_up_5.png" id="12_bgrka"]
+[ext_resource type="Texture2D" uid="uid://cuj1mekkyy3l0" path="res://sprites/sword_1/hit_1.png" id="13_lpe53"]
+[ext_resource type="Texture2D" uid="uid://bw7g2aqgs0hhx" path="res://sprites/sword_1/hit_2.png" id="14_2clc4"]
+[ext_resource type="Texture2D" uid="uid://dmadouvipq0yx" path="res://sprites/sword_1/hit_3.png" id="15_4j7k1"]
+[ext_resource type="Texture2D" uid="uid://cq5ea7aml2v1v" path="res://sprites/cuckold knight/CAVALEIRO MT FODA IDLE.png" id="16_vfpog"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wk6ua"]
+radius = 7.0
+height = 22.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vfpog"]
+atlas = ExtResource("16_vfpog")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ap6pa"]
+atlas = ExtResource("16_vfpog")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5r6av"]
+atlas = ExtResource("16_vfpog")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ntkg1"]
+atlas = ExtResource("16_vfpog")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cm21i"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_5r6av")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ntkg1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_1cr2s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_g16xh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_vxuew")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_w5a2o")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_7yq5o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_pd51b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_ocmux")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_8660m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_bgrka")
+}],
+"loop": true,
+"name": &"get up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_lpe53")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_2clc4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_4j7k1")
+}],
+"loop": true,
+"name": &"hit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vfpog")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ap6pa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5r6av")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ntkg1")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_u5odt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_is6ba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_1umve")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ocwg1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_rbm55")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_smy33")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_qjhr6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_id8ad")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_syogb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ivpw1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_u5odt")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vfpog"]
+size = Vector2(8, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ap6pa"]
+size = Vector2(14, 8.5)
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
+script = ExtResource("1_rpcr7")
+jump_speed = 350.0
+acceleration = 390.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_wk6ua")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+scale = Vector2(0.457576, 0.455383)
+sprite_frames = SubResource("SpriteFrames_cm21i")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.979593
+
+[node name="dash_duration" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="dash_Effect" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="dash_cooldown" type="Timer" parent="."]
+wait_time = 0.7
+one_shot = true
+autostart = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_vfpog")
+
+[node name="Area2D2" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+scale = Vector2(1.5, 1)
+shape = SubResource("RectangleShape2D_ap6pa")
+
+[connection signal="timeout" from="dash_duration" to="." method="_on_dash_timeout_timeout"]
+[connection signal="timeout" from="dash_Effect" to="." method="_on_dash_effect_timeout"]
+[connection signal="timeout" from="dash_cooldown" to="." method="_on_dash_cooldown_timeout"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="Area2D2" to="." method="_on_area_2d_2_body_entered"]

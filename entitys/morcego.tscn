@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://cofoqv43lpfmf"]
+
+[ext_resource type="Texture2D" uid="uid://b4a7r750swqty" path="res://sprites/inimigos/morcego-foda.png" id="1_rbujx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_37vnn"]
+size = Vector2(24, 23)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0o8gh"]
+size = Vector2(20, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5h8d8"]
+atlas = ExtResource("1_rbujx")
+region = Rect2(0, 0, 60, 60)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xep2e"]
+atlas = ExtResource("1_rbujx")
+region = Rect2(60, 0, 60, 60)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cawuj"]
+atlas = ExtResource("1_rbujx")
+region = Rect2(120, 0, 60, 60)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sn7b8"]
+atlas = ExtResource("1_rbujx")
+region = Rect2(180, 0, 60, 60)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ciwwq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5h8d8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xep2e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cawuj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sn7b8")
+}],
+"loop": true,
+"name": &"voando",
+"speed": 5.0
+}]
+
+[node name="morcego" type="CharacterBody2D"]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_37vnn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_0o8gh")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_ciwwq")
+animation = &"voando"
+frame_progress = 0.750791

@@ -1,0 +1,96 @@
+[gd_scene load_steps=12 format=3 uid="uid://byvkn0mhvm6tr"]
+
+[ext_resource type="Script" uid="uid://hfqhhh7nr6nf" path="res://scripts/bichoverde.gd" id="1_wigbd"]
+[ext_resource type="Texture2D" uid="uid://d03p0ev88ugad" path="res://sprites/inimigos/bicho verde.png" id="3_v8eoc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wigbd"]
+size = Vector2(22.8399, 33.9025)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_edjfd"]
+atlas = ExtResource("3_v8eoc")
+region = Rect2(140, 0, 70, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_el71q"]
+atlas = ExtResource("3_v8eoc")
+region = Rect2(210, 0, 70, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x6fbq"]
+atlas = ExtResource("3_v8eoc")
+region = Rect2(280, 0, 70, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vdhbg"]
+atlas = ExtResource("3_v8eoc")
+region = Rect2(0, 0, 70, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6wcrj"]
+atlas = ExtResource("3_v8eoc")
+region = Rect2(70, 0, 70, 44)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6wcrj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_edjfd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_el71q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x6fbq")
+}],
+"loop": true,
+"name": &"ataque2",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vdhbg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6wcrj")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wigbd"]
+radius = 88.5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v8eoc"]
+size = Vector2(20.4046, 31.8478)
+
+[node name="bichoverde" type="CharacterBody2D" groups=["inimigos"]]
+script = ExtResource("1_wigbd")
+
+[node name="hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0.500002, -0.5)
+rotation = 1.5708
+scale = Vector2(0.744311, 0.973381)
+shape = SubResource("RectangleShape2D_wigbd")
+one_way_collision_margin = 0.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.465, 0.4)
+sprite_frames = SubResource("SpriteFrames_6wcrj")
+animation = &"ataque2"
+autoplay = "idle"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-0.5, 0)
+shape = SubResource("CircleShape2D_wigbd")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0.500002, 1.81e-06)
+rotation = 1.5708
+scale = Vector2(0.744311, 0.973381)
+shape = SubResource("RectangleShape2D_v8eoc")
+
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_shape_exited" from="Area2D" to="." method="_on_area_2d_body_shape_exited"]

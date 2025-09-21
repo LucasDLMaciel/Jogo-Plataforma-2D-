@@ -126,7 +126,7 @@ func jump_logic():
 func dash(direction):
 	area_2d.monitoring = false
 	area_2d_2.monitoring = false
-	print("habilidade usada")
+	print("dash usado")
 	dashCounter = 1
 	dashDirection = direction
 	if dashDirection > 0:
@@ -171,10 +171,11 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("inimigos"):
 		body == inimigo
 		body.health -= 1
-		velocity.x -= lerp(SPEED, knockback, 0.3)
 		if !anim.is_flipped_h():
+			velocity.x -= lerp(SPEED, knockback, 0.1)
 			body.knockback("right")
 		else:
+			velocity.x += lerp(SPEED, knockback, 0.1)
 			body.knockback("left")
 		if body.health == 0:
 			body.queue_free()

@@ -67,18 +67,18 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		body = player
 		if direction[0] < 0:
-			body.position.x += lerp(velocity.x, -20.0, 0.3)
+			body.velocity.x += lerp(velocity.x, -20.0, 0.3)
 		elif direction[0] > 0:
-			body.position.x -= lerp(velocity.x, +20.0, 0.3)
+			body.velocity.x -= lerp(velocity.x, +20.0, 0.3)
 		print("bosta")
 		
 func knockback(comando: StringName):
 	match comando :
 		"down":
-			position.y -= lerp(velocity.y, -20.0, 0.4)
+			velocity.y -= lerp(velocity.y, -20.0, 0.4)
 		"up":
-			position.y -= lerp(velocity.y, +20.0, 0.4)
+			velocity.y -= lerp(velocity.y, +20.0, 0.4)
 		"left":
-			position.x += lerp(velocity.x, -20.0, 0.4)
+			velocity.x += lerp(velocity.x, -20.0, 0.4)
 		"right":
-			position.x -= lerp(velocity.x, +20.0, 0.4)
+			velocity.x -= lerp(velocity.x, +20.0, 0.4)

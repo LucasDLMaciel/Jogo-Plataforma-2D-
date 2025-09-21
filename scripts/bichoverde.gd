@@ -32,6 +32,7 @@ func _physics_process(delta: float) -> void:
 			mover_aleatorio()
 		velocity = direction * velocidade + knockback_vector
 		move_and_slide()
+	knockback_vector = knockback_vector.move_toward(Vector2.ZERO, 500 * delta)
 	
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
@@ -75,10 +76,10 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 func knockback(comando: StringName):
 	match comando :
 		"down":
-			knockback_vector = Vector2(0, 200)
+			knockback_vector = Vector2(0, 150)
 		"up":
-			knockback_vector = Vector2(0, -200)
+			knockback_vector = Vector2(0, -150)
 		"left":
-			knockback_vector = Vector2(-200, 0)
+			knockback_vector = Vector2(-150, 0)
 		"right":
-			knockback_vector = Vector2(200, 0)
+			knockback_vector = Vector2(150, 0)

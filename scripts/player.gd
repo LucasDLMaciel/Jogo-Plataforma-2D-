@@ -186,13 +186,12 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 
 func _on_area_2d_2_body_entered(body: Node2D) -> void:
 	area_2d.monitoring = false
-	var up_dir = -1
 	if body.is_in_group("inimigos"):
 		body == inimigo
 		body.health -= 1
 		if not is_on_floor() && Input.is_action_pressed("down"):
 			body.knockback("down")
-			velocity.y -= up_dir * knockback_attack * pogo_modifier
+			velocity.y -= lerp(jump_speed, acceleration*pogo_modifier, 0.3)
 		elif Input.is_action_pressed("up"):
 			body.knockback("up")
 		if body.health == 0:

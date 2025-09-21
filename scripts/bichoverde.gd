@@ -11,7 +11,7 @@ var tempo_troca : float
 var direction: Vector2 = Vector2.ZERO
 var dashCounter = 0
 var dashLimit = 1
-
+var knockback_vector: Vector2 = Vector2.ZERO
 
 func _physics_process(delta: float) -> void:
 	if is_following_player:
@@ -22,15 +22,15 @@ func _physics_process(delta: float) -> void:
 			animacao.set_flip_h(true)
 		else:
 			animacao.set_flip_h(false)
-		velocity = direction * velocidade * 3
-		velocity.y = direction[1] * velocidade *2
+		velocity = direction * velocidade * 3 + knockback_vector
+		velocity.y = direction[1] * velocidade * 2 + knockback_vector[1]
 		move_and_slide()
 	else: 
 		tempo_troca -= delta
 		if tempo_troca <= 0.0:
 			animacao.play("idle")
 			mover_aleatorio()
-		velocity = direction * velocidade
+		velocity = direction * velocidade + knockback_vector
 		move_and_slide()
 	
 
@@ -75,10 +75,10 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 func knockback(comando: StringName):
 	match comando :
 		"down":
-			velocity.y -= lerp(velocity.y, -20.0, 0.4)
+			knockback_vector = Vector2(0, 200)
 		"up":
-			velocity.y -= lerp(velocity.y, +20.0, 0.4)
+			knockback_vector = Vector2(0, -200)
 		"left":
-			velocity.x += lerp(velocity.x, -20.0, 0.4)
+			knockback_vector = Vector2(-200, 0)
 		"right":
-			velocity.x -= lerp(velocity.x, +20.0, 0.4)
+			knockback_vector = Vector2(200, 0)

@@ -65,8 +65,7 @@ func _mover_aleatorio() -> void:
 	tempo_troca = randf_range(2.0, 4.0) # troca direção entre 2 e 4 segundos
 
 
-func _on_areaattack_2d_body_exited(body: Node2D) -> void:
-		body = null
+func _on_areaattack_2d_body_exited(_body: Node2D) -> void:
 		if animacao.animation != "andando":
 			animacao.play("andando")
 

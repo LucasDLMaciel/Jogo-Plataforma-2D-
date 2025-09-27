@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://bsyutp7rg5wkb"]
+[gd_scene load_steps=12 format=4 uid="uid://bsyutp7rg5wkb"]
 
 [ext_resource type="PackedScene" uid="uid://c6kn1yl7uhx5q" path="res://entitys/player.tscn" id="1_4nyli"]
 [ext_resource type="TileSet" uid="uid://c42iww6kla1bj" path="res://tiles/game.tres" id="2_dcxbe"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://d4b4oxsuark4w" path="res://sprites/Platformer - desert/Background/BG-mountains.png" id="7_lenlm"]
 [ext_resource type="Texture2D" uid="uid://b0y2qjngj535g" path="res://sprites/Platformer - desert/Background/BG-ruins.png" id="8_ttaxa"]
 [ext_resource type="PackedScene" uid="uid://hk5diqc5w24s" path="res://entitys/camera.tscn" id="10_fe6ow"]
+[ext_resource type="PackedScene" uid="uid://cxklmmoaxt2n3" path="res://entitys/levelend.tscn" id="11_pfrfv"]
 
 [node name="desert" type="Node2D"]
 
@@ -96,3 +97,12 @@ texture = ExtResource("8_ttaxa")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 512, 256)
+
+[node name="Levelend" parent="." instance=ExtResource("11_pfrfv")]
+position = Vector2(-8, 181)
+next_level = "caves"
+
+[node name="CollisionShape2D" parent="Levelend" index="0"]
+position = Vector2(0, -43.5)
+
+[editable path="Levelend"]

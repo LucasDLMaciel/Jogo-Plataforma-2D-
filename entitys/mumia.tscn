@@ -84,6 +84,8 @@ size = Vector2(75, 26)
 size = Vector2(25, 26)
 
 [node name="mumia" type="CharacterBody2D" groups=["inimigos"]]
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("1_xfwo1")
 health = 4
 

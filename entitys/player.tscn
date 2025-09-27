@@ -1,5 +1,6 @@
-[gd_scene load_steps=36 format=3 uid="uid://c6kn1yl7uhx5q"]
+[gd_scene load_steps=38 format=3 uid="uid://c6kn1yl7uhx5q"]
 
+[ext_resource type="Shader" uid="uid://d4j6srnjxtcbp" path="res://shaders/player.gdshader" id="1_ap6pa"]
 [ext_resource type="Script" uid="uid://ih88233oc7tv" path="res://scripts/player.gd" id="1_rpcr7"]
 [ext_resource type="Texture2D" uid="uid://dmh4uxapgrxby" path="res://sprites/sword_1/attack1_1.png" id="2_5r6av"]
 [ext_resource type="Texture2D" uid="uid://5lq70a4y1h0b" path="res://sprites/sword_1/attack1_2.png" id="3_ntkg1"]
@@ -28,8 +29,13 @@
 [ext_resource type="Texture2D" uid="uid://dmadouvipq0yx" path="res://sprites/sword_1/hit_3.png" id="15_4j7k1"]
 [ext_resource type="Texture2D" uid="uid://cq5ea7aml2v1v" path="res://sprites/cuckold knight/CAVALEIRO MT FODA IDLE.png" id="16_vfpog"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5r6av"]
+shader = ExtResource("1_ap6pa")
+shader_parameter/flash_color = Color(0, 0, 0, 1)
+shader_parameter/flash_value = 0.0
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wk6ua"]
-radius = 7.0
+radius = 6.0
 height = 22.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vfpog"]
@@ -72,7 +78,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack",
-"speed": 6.0
+"speed": 18.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -176,9 +182,12 @@ size = Vector2(8, 20)
 size = Vector2(14, 8.5)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
+material = SubResource("ShaderMaterial_5r6av")
+collision_layer = 2
+collision_mask = 9
 script = ExtResource("1_rpcr7")
-jump_speed = 350.0
-acceleration = 390.0
+jump_velocity = 350.0
+acceleration = 350.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_wk6ua")
@@ -188,9 +197,10 @@ z_index = 1
 texture_filter = 1
 scale = Vector2(0.457576, 0.455383)
 sprite_frames = SubResource("SpriteFrames_cm21i")
-animation = &"idle"
+animation = &"attack"
 autoplay = "idle"
-frame_progress = 0.979593
+frame = 5
+frame_progress = 1.0
 
 [node name="dash_duration" type="Timer" parent="."]
 wait_time = 0.2
@@ -200,9 +210,16 @@ one_shot = true
 wait_time = 0.05
 
 [node name="dash_cooldown" type="Timer" parent="."]
-wait_time = 0.7
+wait_time = 0.25
 one_shot = true
 autostart = true
+
+[node name="invecible_time" type="Timer" parent="."]
+one_shot = true
+
+[node name="coyote_timer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
 
 [node name="Area2D" type="Area2D" parent="."]
 
@@ -218,5 +235,7 @@ shape = SubResource("RectangleShape2D_ap6pa")
 [connection signal="timeout" from="dash_duration" to="." method="_on_dash_timeout_timeout"]
 [connection signal="timeout" from="dash_Effect" to="." method="_on_dash_effect_timeout"]
 [connection signal="timeout" from="dash_cooldown" to="." method="_on_dash_cooldown_timeout"]
+[connection signal="timeout" from="invecible_time" to="." method="_on_invecible_time_timeout"]
+[connection signal="timeout" from="coyote_timer" to="." method="_on_coyote_timer_timeout"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="Area2D2" to="." method="_on_area_2d_2_body_entered"]

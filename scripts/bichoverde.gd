@@ -57,7 +57,6 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 			animacao.play("idle")
 	
 func mover_aleatorio() -> void :
-	var aleatorio = randi_range(0,1)
 	var opcoes = [
 		Vector2(1,0),
 		Vector2(-1,0),
@@ -69,16 +68,11 @@ func mover_aleatorio() -> void :
 	elif direction[0] > 0:
 			animacao.set_flip_h(false)
 	tempo_troca = randf_range(2.0, 5.0)
-	
-
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		body = player
-		if direction[0] < 0:
-			body.velocity.x += lerp(velocity.x, -20.0, 0.3)
-		elif direction[0] > 0:
-			body.velocity.x -= lerp(velocity.x, +20.0, 0.3)
+		body.levar_knockback(global_position)
 		print("bosta")
 		
 func knockback(comando: StringName):

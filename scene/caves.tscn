@@ -1,23 +1,27 @@
-[gd_scene load_steps=12 format=4 uid="uid://c3mq50737gltj"]
+[gd_scene load_steps=14 format=4 uid="uid://c3mq50737gltj"]
 
-[ext_resource type="PackedScene" uid="uid://c6kn1yl7uhx5q" path="res://entitys/player.tscn" id="1_dbls1"]
-[ext_resource type="TileSet" uid="uid://c42iww6kla1bj" path="res://tiles/game.tres" id="2_33cqm"]
-[ext_resource type="PackedScene" uid="uid://hk5diqc5w24s" path="res://entitys/camera.tscn" id="2_p1ry8"]
-[ext_resource type="TileSet" uid="uid://sv27n4fx4kqy" path="res://tiles/decoration.tres" id="3_xwcet"]
-[ext_resource type="PackedScene" uid="uid://byvkn0mhvm6tr" path="res://entitys/bichoverde.tscn" id="4_xwcet"]
-[ext_resource type="Texture2D" uid="uid://enk8n56uw82s" path="res://sprites/UndergroundMine/Parralax Caves/7.png" id="6_ym5sv"]
-[ext_resource type="Texture2D" uid="uid://c464lr7jwpgo2" path="res://sprites/UndergroundMine/Parralax Caves/6.png" id="7_sng2h"]
-[ext_resource type="Texture2D" uid="uid://cpioncpoeysld" path="res://sprites/UndergroundMine/Parralax Caves/5.png" id="8_5g16k"]
-[ext_resource type="Texture2D" uid="uid://bn2ul8vssnkfv" path="res://sprites/UndergroundMine/Parralax Caves/4.png" id="9_81276"]
-[ext_resource type="Texture2D" uid="uid://7s3l0g00o41c" path="res://sprites/UndergroundMine/Parralax Caves/3.png" id="10_ve786"]
-[ext_resource type="Texture2D" uid="uid://kc0kirl7uxra" path="res://sprites/UndergroundMine/Parralax Caves/2.png" id="11_0lu6w"]
+[ext_resource type="PackedScene" uid="uid://c6kn1yl7uhx5q" path="res://entitys/player.tscn" id="1_afm7y"]
+[ext_resource type="PackedScene" uid="uid://hk5diqc5w24s" path="res://entitys/camera.tscn" id="2_jpli5"]
+[ext_resource type="TileSet" uid="uid://c42iww6kla1bj" path="res://tiles/game.tres" id="3_03uoo"]
+[ext_resource type="TileSet" uid="uid://sv27n4fx4kqy" path="res://tiles/decoration.tres" id="4_vtj8l"]
+[ext_resource type="PackedScene" uid="uid://byvkn0mhvm6tr" path="res://entitys/bichoverde.tscn" id="5_ly7lb"]
+[ext_resource type="PackedScene" uid="uid://cxklmmoaxt2n3" path="res://entitys/levelend.tscn" id="6_m7fgj"]
+[ext_resource type="Texture2D" uid="uid://enk8n56uw82s" path="res://sprites/UndergroundMine/Parralax Caves/7.png" id="7_ayyqq"]
+[ext_resource type="Texture2D" uid="uid://c464lr7jwpgo2" path="res://sprites/UndergroundMine/Parralax Caves/6.png" id="8_vryfq"]
+[ext_resource type="Texture2D" uid="uid://cpioncpoeysld" path="res://sprites/UndergroundMine/Parralax Caves/5.png" id="9_g6cej"]
+[ext_resource type="Texture2D" uid="uid://bn2ul8vssnkfv" path="res://sprites/UndergroundMine/Parralax Caves/4.png" id="10_x8b3a"]
+[ext_resource type="Texture2D" uid="uid://7s3l0g00o41c" path="res://sprites/UndergroundMine/Parralax Caves/3.png" id="11_d1l2b"]
+[ext_resource type="Texture2D" uid="uid://kc0kirl7uxra" path="res://sprites/UndergroundMine/Parralax Caves/2.png" id="12_xvovu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5g16k"]
+size = Vector2(20, 183)
 
 [node name="Caves" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_dbls1")]
-position = Vector2(24, 162)
+[node name="Player" parent="." instance=ExtResource("1_afm7y")]
+position = Vector2(694, 215)
 
-[node name="Camera" parent="." instance=ExtResource("2_p1ry8")]
+[node name="Camera" parent="." instance=ExtResource("2_jpli5")]
 position = Vector2(8, 128)
 zoom = Vector2(1.4, 1.4)
 limit_top = 0
@@ -28,22 +32,30 @@ position = Vector2(15, 1)
 [node name="Terrain" type="TileMapLayer" parent="Tiles"]
 position = Vector2(0, -1)
 tile_map_data = PackedByteArray("AAD//wEABgADAAIAAAD//wIABgADAAIAAAD//wMABgADAAIAAAD//wQABgADAAIAAAD//wUABgADAAIAAAD//wYABgADAAIAAAD//wcABgADAAIAAAD//wgABgADAAIAAAD//wkABgADAAIAAAD//woABgADAAIAAAD//wsABgADAAIAAAD//w8ABgAHAAIAAAAAAA8ABgABAAIAAFABAA8ABgABAAIAAFACAA8ABgABAAIAAFADAA8ABgABAAIAAFAEAA8ABgABAAIAAFAFAA8ABgABAAIAAFAGAA8ABgABAAIAAFAHAA8ABgABAAIAAFAIAA8ABgABAAIAAFAJAA8ABgABAAIAAFAKAA8ABgABAAIAAFALAA8ABgABAAIAAFAMAA8ABgABAAIAAFANAA8ABgABAAIAAFAOAA8ABgABAAIAAFAPAA8ABgABAAIAAFAQAA8ABgABAAIAAFARAA8ABgABAAIAAFASAA8ABgABAAIAAFATAA8ABgABAAIAAFAUAA8ABgABAAIAAFAVAA8ABgABAAIAAFAWAA8ABgABAAIAAFAXAA8ABgABAAIAAFAYAA8ABgABAAIAAFAZAA8ABgABAAIAAFAaAA8ABgABAAIAAFAbAA8ABgABAAIAAFAcAA8ABgABAAIAAFAdAA8ABgABAAIAAFAeAA8ABgABAAIAAFAfAA8ABgABAAIAAFAgAA8ABgABAAIAAFAhAA8ABgABAAIAAFAiAA8ABgABAAIAAFAjAA8ABgABAAIAAFAkAA8ABgABAAIAAFAlAA8ABgABAAIAAFAmAA8ABgABAAIAAFAnAA8ABgABAAIAAFAoAA8ABgABAAIAAFApAA8ABgABAAIAAFAqAA8ABgABAAIAAFArAA8ABgABAAIAAFAsAA8ABgABAAIAAFAtAA8ABgABAAIAAFD//wwABgADAAIAAAD//w0ABgADAAIAAAD//w4ABgADAAIAAAAAAAsABgAHAAUAAAAAAAwABgACAAEAAAABAAsABgAJAAUAAAABAAwABgACAAEAAAACAAwABgAJAAUAAAAAAA0ABgABAAIAAFAAAA4ABgABAAIAAFABAA0ABgABAAIAAFABAA4ABgABAAIAAFACAA0ABgABAAIAAFACAA4ABgABAAIAAFADAA0ABgAJAAUAAAADAA4ABgABAAIAAFAGAAwABgAHAAUAAAAHAAwABgAIAAUAAAAIAAwABgAIAAUAAAAJAAwABgAIAAUAAAAKAAgABwAKAAEAAAAKAAkABwAKAAIAAAAKAAoABwAKAAIAAAAKAAsABwAKAAMAAAAKAAwABgAIAAUAAAALAAwABgAJAAUAAAAGAA0ABgABAAIAAFAGAA4ABgABAAIAAFAHAA0ABgABAAIAAFAHAA4ABgABAAIAAFAIAA0ABgABAAIAAFAIAA4ABgABAAIAAFAJAA0ABgABAAIAAFAJAA4ABgABAAIAAFAKAA0ABgABAAIAAFAKAA4ABgABAAIAAFALAA0ABgABAAIAAFALAA4ABgABAAIAAFANAAoABwAKAAEAAAANAAsABwAKAAIAAAANAAwABwAKAAIAAAAOAAoABwAKAAEAAAAOAAsABwAKAAIAAAAOAAwABwAKAAIAAAANAA0ABwAKAAIAAAANAA4ABgAKAAMAAAAOAA0ABwAKAAIAAAAOAA4ABgAKAAMAAAAQAAwABgAHAAUAAAARAAsABgAHAAUAAAARAAwABgABAAIAAFASAAoABgAHAAUAAAASAAsABgABAAIAAFASAAwABgABAAIAAFATAAoABgAIAAUAAAATAAsABgABAAIAAFATAAwABgABAAIAAFAUAAoABgAIAAUAAAAUAAsABgABAAIAAFAUAAwABgABAAIAAFAVAAoABgAIAAUAAAAVAAsABgABAAIAAFAVAAwABgABAAIAAFAWAAoABgAIAAUAAAAWAAsABgABAAIAAFAWAAwABgABAAIAAFAXAAoABgAIAAUAAAAXAAsABgABAAIAAFAXAAwABgABAAIAAFAYAAoABgAJAAUAAAAYAAsABgABAAIAAFAYAAwABgABAAIAAFAZAAsABgAJAAUAAAAZAAwABgABAAIAAFAaAAwABgAJAAUAAAAQAA0ABgABAAIAAFAQAA4ABgABAAIAAFARAA0ABgABAAIAAFARAA4ABgABAAIAAFASAA0ABgABAAIAAFASAA4ABgABAAIAAFATAA0ABgABAAIAAFATAA4ABgABAAIAAFAUAA0ABgABAAIAAFAUAA4ABgABAAIAAFAVAA0ABgABAAIAAFAVAA4ABgABAAIAAFAWAA0ABgABAAIAAFAWAA4ABgABAAIAAFAXAA0ABgABAAIAAFAXAA4ABgABAAIAAFAYAA0ABgABAAIAAFAYAA4ABgABAAIAAFAZAA0ABgABAAIAAFAZAA4ABgABAAIAAFAaAA0ABgABAAIAAFAaAA4ABgABAAIAAFAbAA0ABgAJAAUAAAAbAA4ABgABAAIAAFAcAA4ABgAJAAUAAAAfAAwABwAKAAEAAAAgAAwABwAKAAEAAAAjAAsABwAKAAEAAAAjAAwABwAKAAIAAAAkAAsABwAKAAEAAAAkAAwABwAKAAIAAAAmAAkABwAKAAEAAAAmAAoABwAKAAIAAAAmAAsABwAKAAIAAAAmAAwABwAKAAIAAAAnAAkABwAKAAEAAAAnAAoABwAKAAIAAAAnAAsABwAKAAIAAAAnAAwABwAKAAIAAAAfAA0ABwAKAAIAAAAfAA4ABwAKAAMAAAAgAA0ABwAKAAIAAAAgAA4ABwAKAAMAAAAjAA0ABwAKAAIAAAAjAA4ABwAKAAMAAAAkAA0ABwAKAAIAAAAkAA4ABwAKAAMAAAAmAA0ABwAKAAIAAAAmAA4ABwAKAAMAAAAnAA0ABwAKAAIAAAAnAA4ABwAKAAMAAAA=")
-tile_set = ExtResource("2_33cqm")
+tile_set = ExtResource("3_03uoo")
 
 [node name="Decoration" type="TileMapLayer" parent="Tiles"]
-tile_set = ExtResource("3_xwcet")
+tile_set = ExtResource("4_vtj8l")
 
-[node name="bichoverde5" parent="." instance=ExtResource("4_xwcet")]
+[node name="bichoverde5" parent="." instance=ExtResource("5_ly7lb")]
 position = Vector2(591, 140)
 
-[node name="bichoverde6" parent="." instance=ExtResource("4_xwcet")]
+[node name="bichoverde6" parent="." instance=ExtResource("5_ly7lb")]
 position = Vector2(225, 105)
 
-[node name="bichoverde7" parent="." instance=ExtResource("4_xwcet")]
+[node name="bichoverde7" parent="." instance=ExtResource("5_ly7lb")]
 position = Vector2(338, 147)
 
-[node name="bichoverde8" parent="." instance=ExtResource("4_xwcet")]
+[node name="bichoverde8" parent="." instance=ExtResource("5_ly7lb")]
 position = Vector2(437, 81)
+
+[node name="Levelend" parent="." instance=ExtResource("6_m7fgj")]
+position = Vector2(741, 230)
+next_level = "desert"
+
+[node name="CollisionShape2D" parent="Levelend" index="0"]
+position = Vector2(0, -82)
+shape = SubResource("RectangleShape2D_5g16k")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -53,7 +65,7 @@ motion_scale = Vector2(0, 0)
 motion_mirroring = Vector2(384, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/7"]
-texture = ExtResource("6_ym5sv")
+texture = ExtResource("7_ayyqq")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 768, 256)
@@ -64,7 +76,7 @@ motion_scale = Vector2(0.1, 0.1)
 motion_mirroring = Vector2(384, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/6"]
-texture = ExtResource("7_sng2h")
+texture = ExtResource("8_vryfq")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 768, 256)
@@ -75,7 +87,7 @@ motion_scale = Vector2(0.2, 0.2)
 motion_mirroring = Vector2(384, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/5"]
-texture = ExtResource("8_5g16k")
+texture = ExtResource("9_g6cej")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 768, 256)
@@ -86,7 +98,7 @@ motion_scale = Vector2(0.3, 0.3)
 motion_mirroring = Vector2(384, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/4"]
-texture = ExtResource("9_81276")
+texture = ExtResource("10_x8b3a")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 768, 256)
@@ -97,7 +109,7 @@ motion_scale = Vector2(0.4, 0.4)
 motion_mirroring = Vector2(384, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/3"]
-texture = ExtResource("10_ve786")
+texture = ExtResource("11_d1l2b")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 768, 256)
@@ -108,7 +120,7 @@ motion_scale = Vector2(0.5, 0.5)
 motion_mirroring = Vector2(384, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/2"]
-texture = ExtResource("11_0lu6w")
+texture = ExtResource("12_xvovu")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 768, 256)
@@ -119,7 +131,9 @@ motion_scale = Vector2(0.5, 0.5)
 motion_mirroring = Vector2(384, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/1"]
-texture = ExtResource("11_0lu6w")
+texture = ExtResource("12_xvovu")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 768, 256)
+
+[editable path="Levelend"]

@@ -18,9 +18,10 @@ enum PlayerState{
 }
 
 @export_category("Jump variable")
-@export var jump_velocity = 400.0
-@export var acceleration = 590.0
+@export var jump_velocity = 300.0
+@export var acceleration = 390.0
 @export var jump_amount = 1
+var jump_count = 0
 
 var SPEED = 80.0
 var doDash = false
@@ -48,7 +49,6 @@ func _physics_process(delta: float) -> void:
 			coyote_timer.start()
 			coyote_time_activated = true
 	elif is_on_floor():
-		jump_amount = 1
 		if coyote_time_activated:
 			coyote_timer.stop()
 			coyote_time_activated = false
@@ -146,6 +146,7 @@ func jump_state():
 	if Input.is_action_just_pressed("dash"):
 		go_to_dash_state()
 		return
+
 func dash_state():
 	dash()
 	jump_logic()
@@ -159,6 +160,7 @@ func dash_state():
 	else:
 		go_to_walk_state()
 		return
+
 func attack_state():
 	attack()
 	andar()
@@ -176,8 +178,7 @@ func attack_state():
 		if Input.is_action_just_pressed("dash"):
 			go_to_dash_state()
 			return
-		
-	
+			
 func efeito_dash(): 
 	var playerCopyNode = $AnimatedSprite2D.duplicate()
 	get_parent().add_child(playerCopyNode)
@@ -200,10 +201,8 @@ func _on_dash_timeout_timeout() -> void:
 	cooldown = true
 	dash_effect.stop()
 
-
 func _on_dash_effect_timeout() -> void:
 	efeito_dash()
-
 
 func _on_dash_cooldown_timeout() -> void:
 	cooldown = false
@@ -224,29 +223,31 @@ func attack():
 				area_2d.global_position = Vector2(global_position.x - 12.0, global_position.y)
 			else:
 				area_2d.global_position = Vector2(global_position.x + 12.0, global_position.y)
-		
-	if !anim.is_playing() && anim.animation == "attack":
-		anim.stop()
 
 func jump_logic():
-		if Input.is_action_just_pressed("jump"):
-			if is_on_floor():
-				do_jump()
-			if !coyote_timer.is_stopped():
-				if jump_amount > 0:
-					velocity.y = 0
-					jump_amount -= 1
-					velocity.y -= lerp(jump_velocity, acceleration, 0.3)
-		else:
-			if Input.is_action_just_released("jump"):
-				velocity.y = lerp(velocity.y, get_gravity().y, 0.3)
-				velocity.y *= 0.1
-			return
-
+	if is_on_floor():
+		jump_count = 0
+	if Input.is_action_just_pressed("jump") && (is_on_floor() || !coyote_timer.is_stopped()) && jump_count < jump_amount:
+		velocity.y = 0
+		print(jump_count)
+		do_jump()
+		print(jump_count)
+		print("primeiro pulo ou coyote")
+	elif Input.is_action_just_pressed("jump") && !is_on_floor() && jump_count < jump_amount:
+		velocity.y = 0
+		print(jump_count)
+		do_jump()
+		print(jump_count)
+		print("doublejump")
+	elif Input.is_action_just_released("jump") && jump_count <= jump_amount:
+		velocity.y = lerp(velocity.y, get_gravity().y, 0.4)
+		velocity.y *= 0.2
+	else:
+		return
 func do_jump():
-	jump_amount -= 1
-	velocity.y -= lerp(jump_velocity, acceleration, 0.2)
-	
+	jump_count += 1
+	velocity.y -= lerp(jump_velocity, acceleration, 0.3)
+
 func dash():
 	if Input.is_action_just_pressed("dash") && dashCounter < dashLimit && !cooldown:
 		var direction := Input.get_axis("left", "right")

@@ -20,6 +20,7 @@ size = Vector2(20, 183)
 
 [node name="Player" parent="." instance=ExtResource("1_afm7y")]
 position = Vector2(694, 215)
+jump_amount = 2
 
 [node name="Camera" parent="." instance=ExtResource("2_jpli5")]
 position = Vector2(8, 128)

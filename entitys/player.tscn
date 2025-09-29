@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://c6kn1yl7uhx5q"]
+[gd_scene load_steps=45 format=3 uid="uid://c6kn1yl7uhx5q"]
 
 [ext_resource type="Shader" uid="uid://d4j6srnjxtcbp" path="res://shaders/player.gdshader" id="1_ap6pa"]
 [ext_resource type="Script" uid="uid://ih88233oc7tv" path="res://scripts/player.gd" id="1_rpcr7"]
@@ -20,11 +20,16 @@
 [ext_resource type="Texture2D" uid="uid://cplt0otn2b81g" path="res://sprites/sword_1/walk_5.png" id="9_ivpw1"]
 [ext_resource type="Texture2D" uid="uid://xgrtriptj6nh" path="res://sprites/sword_1/stand_up_2.png" id="9_pd51b"]
 [ext_resource type="Texture2D" uid="uid://bahrj0fs6hh8l" path="res://sprites/sword_1/jump_5.png" id="9_rbm55"]
+[ext_resource type="Texture2D" uid="uid://16x4sj2nvmt1" path="res://sprites/sword_1/fall_back_1.png" id="9_vxuew"]
 [ext_resource type="Texture2D" uid="uid://dognoue37ouvc" path="res://sprites/sword_1/stand_up_3.png" id="10_ocmux"]
 [ext_resource type="Texture2D" uid="uid://cervfpqveqen6" path="res://sprites/sword_1/walk_6.png" id="10_u5odt"]
+[ext_resource type="Texture2D" uid="uid://bwf84y5w4yymm" path="res://sprites/sword_1/fall_back_2.png" id="10_w5a2o"]
+[ext_resource type="Texture2D" uid="uid://15j5i3f3j5i6" path="res://sprites/sword_1/fall_back_3.png" id="11_7yq5o"]
 [ext_resource type="Texture2D" uid="uid://d08r66airxap8" path="res://sprites/sword_1/stand_up_4.png" id="11_8660m"]
 [ext_resource type="Texture2D" uid="uid://bkiwg248nwy33" path="res://sprites/sword_1/stand_up_5.png" id="12_bgrka"]
+[ext_resource type="Texture2D" uid="uid://cj15b3eh4kb5o" path="res://sprites/sword_1/fall_back_4.png" id="12_pd51b"]
 [ext_resource type="Texture2D" uid="uid://cuj1mekkyy3l0" path="res://sprites/sword_1/hit_1.png" id="13_lpe53"]
+[ext_resource type="Texture2D" uid="uid://m3kn12f32pok" path="res://sprites/sword_1/fall_back_5.png" id="13_ocmux"]
 [ext_resource type="Texture2D" uid="uid://bw7g2aqgs0hhx" path="res://sprites/sword_1/hit_2.png" id="14_2clc4"]
 [ext_resource type="Texture2D" uid="uid://dmadouvipq0yx" path="res://sprites/sword_1/hit_3.png" id="15_4j7k1"]
 [ext_resource type="Texture2D" uid="uid://cq5ea7aml2v1v" path="res://sprites/cuckold knight/CAVALEIRO MT FODA IDLE.png" id="16_vfpog"]
@@ -37,6 +42,10 @@ shader_parameter/flash_value = 0.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wk6ua"]
 radius = 6.0
 height = 22.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cr2s"]
+atlas = ExtResource("8_ocwg1")
+region = Rect2(0, 0, 50, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vfpog"]
 atlas = ExtResource("16_vfpog")
@@ -79,6 +88,37 @@ animations = [{
 "loop": false,
 "name": &"attack",
 "speed": 18.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_vxuew")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_w5a2o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_7yq5o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_pd51b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_ocmux")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1cr2s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_rbm55")
+}],
+"loop": false,
+"name": &"fall",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -140,12 +180,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("7_1umve")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_ocwg1")
-}, {
-"duration": 1.0,
-"texture": ExtResource("9_rbm55")
 }],
 "loop": false,
 "name": &"jump",
@@ -181,11 +215,15 @@ size = Vector2(8, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ap6pa"]
 size = Vector2(14, 8.5)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5r6av"]
+size = Vector2(11, 20)
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 material = SubResource("ShaderMaterial_5r6av")
 collision_layer = 2
 collision_mask = 9
 script = ExtResource("1_rpcr7")
+acceleration_player = 400
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_wk6ua")
@@ -195,7 +233,7 @@ z_index = 1
 texture_filter = 1
 scale = Vector2(0.457576, 0.455383)
 sprite_frames = SubResource("SpriteFrames_cm21i")
-animation = &"hit"
+animation = &"dead"
 autoplay = "idle"
 
 [node name="dash_duration" type="Timer" parent="."]
@@ -228,10 +266,17 @@ shape = SubResource("RectangleShape2D_vfpog")
 scale = Vector2(1.5, 1)
 shape = SubResource("RectangleShape2D_ap6pa")
 
+[node name="hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_5r6av")
+
 [connection signal="timeout" from="dash_duration" to="." method="_on_dash_timeout_timeout"]
 [connection signal="timeout" from="dash_Effect" to="." method="_on_dash_effect_timeout"]
 [connection signal="timeout" from="dash_cooldown" to="." method="_on_dash_cooldown_timeout"]
 [connection signal="timeout" from="invecible_time" to="." method="_on_invecible_time_timeout"]
 [connection signal="timeout" from="coyote_timer" to="." method="_on_coyote_timer_timeout"]
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_entered" from="Area2D2" to="." method="_on_area_2d_2_body_entered"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="Area2D2" to="." method="_on_area_2d_2_area_entered"]
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]

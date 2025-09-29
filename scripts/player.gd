@@ -12,10 +12,13 @@ extends CharacterBody2D
 enum PlayerState{
 	idle,
 	jump,
+	fall,
 	walk,
 	dash,
-	attack
+	attack,
+	dead
 }
+
 
 @export_category("Jump variable")
 @export var jump_velocity = 300.0
@@ -23,7 +26,11 @@ enum PlayerState{
 @export var jump_amount = 1
 var jump_count = 0
 
-var SPEED = 80.0
+@export_category("Speed variable")
+@export var MAX_SPEED = 80.0
+@export var acceleration_player = 40
+@export var deceleration_player = 400
+
 var doDash = false
 var dashDirection : int
 var dashCounter = 0
@@ -62,15 +69,24 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	match status:
 		PlayerState.idle:
-			idle_state()
+			idle_state(delta)
 		PlayerState.walk:
-			walk_state()
+			walk_state(delta)
+		PlayerState.fall:
+			fall_state(delta)
 		PlayerState.jump:
-			jump_state()
+			jump_state(delta)
 		PlayerState.dash:
-			dash_state()
+			dash_state(delta)
 		PlayerState.attack:
-			attack_state()
+			attack_state(delta)
+		PlayerState.dead:
+			dead_state(delta)
+
+func go_to_dead_state():
+	PlayerState.dead
+	anim.play("dead")
+	velocity = Vector2.ZERO
 
 func go_to_idle_state():
 	status = PlayerState.idle
@@ -84,6 +100,10 @@ func go_to_jump_state():
 	status = PlayerState.jump
 	anim.play("jump")
 	
+func go_to_fall_state():
+	status = PlayerState.fall
+	anim.play("fall")
+	
 func go_to_dash_state():
 	status = PlayerState.dash
 	anim.play("idle")
@@ -92,33 +112,18 @@ func go_to_attack_state():
 	status = PlayerState.attack
 	anim.play("attack")
 
-func idle_state():
-	andar()
+func dead_state(_delta):
+	pass
+	
+func idle_state(delta):
+	andar(delta)
 	jump_logic()
 	dash()
 	attack()
 	if velocity.x != 0:
 		go_to_walk_state()
 		return
-	if velocity.y != 0:
-		go_to_jump_state()
-		return
-	if Input.is_action_pressed("attack"):
-		go_to_attack_state()
-		return
-	if Input.is_action_just_pressed("dash"):
-		go_to_dash_state()
-		return
-	
-func walk_state():
-	andar()
-	jump_logic()
-	dash()
-	attack()
-	if velocity.x == 0:
-		go_to_idle_state()
-		return
-	if velocity.y != 0:
+	if velocity.y < 0:
 		go_to_jump_state()
 		return
 	if Input.is_action_pressed("attack"):
@@ -128,13 +133,48 @@ func walk_state():
 		go_to_dash_state()
 		return
 
-func jump_state():
-	andar()
+func walk_state(delta):
+	andar(delta)
+	jump_logic()
+	dash()
+	attack()
+	if !is_on_floor():
+		go_to_fall_state()
+		return
+	if velocity.x == 0:
+		go_to_idle_state()
+		return
+	if velocity.y < 0:
+		go_to_jump_state()
+		return
+	if Input.is_action_pressed("attack"):
+		go_to_attack_state()
+		return
+	if Input.is_action_just_pressed("dash"):
+		go_to_dash_state()
+		return
+
+func jump_state(delta):
+	andar(delta)
 	jump_logic()
 	dash()
 	attack()
 	if Input.is_action_just_pressed("attack"):
 		go_to_attack_state()
+		return
+	if Input.is_action_just_pressed("dash"):
+		go_to_dash_state()
+		return
+	if velocity.y > 0:
+		go_to_fall_state()
+		return
+
+func fall_state(delta):
+	andar(delta)
+	dash()
+	jump_logic()
+	if velocity.y < 0:
+		go_to_jump_state()
 		return
 	if is_on_floor():
 		if velocity.x == 0:
@@ -143,15 +183,16 @@ func jump_state():
 		else:
 			go_to_walk_state()
 			return
-	if Input.is_action_just_pressed("dash"):
-		go_to_dash_state()
-		return
 
-func dash_state():
+func dash_state(delta):
 	dash()
 	jump_logic()
-	andar()
-	if velocity.y != 0:
+	andar(delta)
+	if !is_on_floor():
+			jump_count += 1
+			go_to_fall_state()
+			return
+	if velocity.y < 0:
 		go_to_jump_state()
 		return
 	if velocity.x == 0:
@@ -161,15 +202,18 @@ func dash_state():
 		go_to_walk_state()
 		return
 
-func attack_state():
+func attack_state(delta):
 	attack()
-	andar()
+	andar(delta)
 	jump_logic()
 	if !anim.is_playing():
+		if !is_on_floor():
+			go_to_fall_state()
+			return
 		if velocity.x == 0:
 			go_to_idle_state()
 			return
-		if velocity.y != 0:
+		if velocity.y < 0:
 			go_to_jump_state()
 			return
 		if velocity.x != 0:
@@ -194,7 +238,6 @@ func efeito_dash():
 	await get_tree().create_timer(AnimationTime).timeout
 	playerCopyNode.modulate.a = 0.1
 	playerCopyNode.queue_free()
-
 
 func _on_dash_timeout_timeout() -> void:
 	doDash = false
@@ -227,20 +270,20 @@ func attack():
 func jump_logic():
 	if is_on_floor():
 		jump_count = 0
-	if Input.is_action_just_pressed("jump") && (is_on_floor() || !coyote_timer.is_stopped()) && jump_count < jump_amount:
+	if Input.is_action_just_pressed("jump") && (is_on_floor() || !coyote_timer.is_stopped()) && can_jump():
 		velocity.y = 0
 		print(jump_count)
 		do_jump()
 		print(jump_count)
 		print("primeiro pulo ou coyote")
-	elif Input.is_action_just_pressed("jump") && !is_on_floor() && jump_count < jump_amount:
+	elif Input.is_action_just_pressed("jump") && !is_on_floor() && can_jump():
 		velocity.y = 0
 		print(jump_count)
 		do_jump()
 		print(jump_count)
 		print("doublejump")
 	elif Input.is_action_just_released("jump") && jump_count <= jump_amount:
-		velocity.y = lerp(velocity.y, get_gravity().y, 0.4)
+		velocity.y = lerp(velocity.y, get_gravity().y/1.4, 0.4)
 		velocity.y *= 0.2
 	else:
 		return
@@ -275,8 +318,10 @@ func levar_knockback(from_position: Vector2):
 	invecible_time.start()
 	print("colisao - knockback jogador")
 
+func can_jump() -> bool:
+	return jump_count < jump_amount
 		
-func andar():
+func andar(delta):
 	var direction := Input.get_axis("left", "right")
 	if doDash:
 		if dashDirection == 0:
@@ -284,94 +329,61 @@ func andar():
 				dashDirection = -1
 			else:
 				dashDirection = 1
-		velocity.x = dashDirection * SPEED * 3
+		velocity.x = dashDirection * MAX_SPEED * 3 
 		velocity.y = 0
 	else:	
 		if direction:
-			velocity.x = direction * SPEED
+			if cooldown:
+				velocity.x = move_toward(velocity.x, 0, MAX_SPEED)
+			else:
+				velocity.x = move_toward(velocity.x, direction*MAX_SPEED, acceleration * delta)
 		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
+			if cooldown:
+				velocity.x = move_toward(velocity.x, 0, MAX_SPEED)
+			else:
+				velocity.x = move_toward(velocity.x, 0, deceleration_player * delta)
 	if direction < 0:
 		anim.flip_h = true
 	elif direction > 0:
 		anim.flip_h = false
 			
-#			função para freezar o tempo (tomar dano e etc)
+#função para freezar o tempo (tomar dano e etc)
 func frame_frezee(timeScale, duration): 
 	Engine.time_scale = timeScale
 	await(get_tree().create_timer(duration * timeScale).timeout)
 	Engine.time_scale = 1.0
-	
-
-func _on_area_2d_body_entered(body: Node2D) -> void:
-	area_2d_2.monitoring = false
-	var last_direction = -1 if anim.is_flipped_h() else 1
-	if body.is_in_group("inimigos"):
-		body.health -= 1
-		if !anim.is_flipped_h():
-			body.knockback("right")
-			velocity.x += (-last_direction) * knockback_attack
-		else:
-			body.knockback("left")
-			velocity.x += (-last_direction) * knockback_attack
-		if body.health == 0:
-			body.queue_free()
-
-
-func _on_area_2d_2_body_entered(body: Node2D) -> void:
-	area_2d.monitoring = false
-	if body.is_in_group("inimigos"):
-		body.health -= 1
-		if not is_on_floor() && Input.is_action_pressed("down"):
-			body.knockback("down")
-			velocity.y -= lerp(jump_velocity, acceleration*pogo_modifier, 0.1)
-		elif Input.is_action_pressed("up"):
-			body.knockback("up")
-		if body.health == 0:
-			body.queue_free()
 
 func _on_invecible_time_timeout() -> void:
 	is_invincible = false
 	modulate = Color(1, 1, 1, 1)
 	
-	#ex physics_process
-	#func temp(delta: float) -> void:
-	#jump_logic()
-	#jump_amount = 1
-	#if	Input.is_action_just_pressed("dash") && dashCounter < dashLimit && !cooldown && anim.animation != "attack" && anim.animation == "idle":
-		#anim.play("get up", 2, false)
-		#area_2d.monitoring = false
-		#area_2d_2.monitoring = false
-		#dash(direction)
-	#else: 
-		#andar(direction)
-	#attack()
-	#if is_on_floor():
-		#if coyote_time_activated:
-			#coyote_timer.stop()
-			#coyote_time_activated = false
-		#if dashCounter == 1 && !cooldown:
-			#dashCounter = 0
-			#cooldown = false
-		#if direction > 0:
-			##anim.play("walk")
-			#anim.set_flip_h(false)
-		#else: 
-			#if direction < 0: 
-				##anim.play("walk")
-				#anim.set_flip_h(true)
-	#if not is_on_floor():
-		#if !coyote_time_activated:
-			#coyote_timer.start()
-			#coyote_time_activated = true
-		#if direction > 0:
-				##anim.play("walk")
-			#anim.set_flip_h(false)
-		#else: 
-			#if direction < 0: 
-					##anim.play("walk")
-				#anim.set_flip_h(true)
-
-
 func _on_coyote_timer_timeout() -> void:
 	pass # Replace with function body.
+
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	go_to_dead_state()
+	return
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	area_2d_2.monitoring = false
+	var last_direction = -1 if anim.is_flipped_h() else 1
+	area.get_parent().health -= 1
+	if !anim.is_flipped_h():
+		area.get_parent().knockback("right")
+		velocity.x += (-last_direction) * knockback_attack
+	else:
+		area.get_parent().knockback("left")
+		velocity.x += (-last_direction) * knockback_attack
+	if area.get_parent().health == 0:
+		area.get_parent().queue_free()
+
+
+func _on_area_2d_2_area_entered(area: Area2D) -> void:
+	area_2d.monitoring = false
+	area.get_parent().health -= 1
+	if not is_on_floor() && Input.is_action_pressed("down"):
+		area.get_parent().knockback("down")
+		velocity.y -= lerp(jump_velocity, acceleration*pogo_modifier, 0.1)
+	elif Input.is_action_pressed("up"):
+		area.get_parent().knockback("up")
+	if area.get_parent().health == 0:
+		area.get_parent().queue_free()

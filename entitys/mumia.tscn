@@ -102,12 +102,13 @@ animation = &"andando"
 autoplay = "andando"
 
 [node name="Area patrolling" type="Area2D" parent="."]
+visible = false
 position = Vector2(0, 24)
 collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area patrolling"]
-position = Vector2(-0.5, -16.5)
+position = Vector2(0, -13)
 scale = Vector2(2.5, 1)
 shape = SubResource("RectangleShape2D_xfwo1")
 debug_color = Color(0.923447, 5.10186e-05, 0.683751, 0.42)

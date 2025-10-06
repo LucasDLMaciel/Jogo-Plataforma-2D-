@@ -62,6 +62,8 @@ func go_to_dead_state():
 	status = InimigoState.dead
 	animacao.play("dead")
 	velocity = Vector2.ZERO
+	await(get_tree().create_timer(1).timeout)
+	queue_free()
 
 
 func walk_state(delta):

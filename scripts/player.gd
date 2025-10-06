@@ -8,6 +8,8 @@ extends CharacterBody2D
 @onready var inimigo: CharacterBody2D = null
 @onready var invecible_time: Timer = $invecible_time
 @onready var coyote_timer: Timer = $coyote_timer
+@onready var camera : Camera2D = null
+
 
 enum PlayerState{
 	idle,
@@ -27,19 +29,20 @@ enum PlayerState{
 var jump_count = 0
 
 @export_category("Speed variable")
-@export var MAX_SPEED = 80.0
+@export var MAX_SPEED = 100.0
 @export var acceleration_player = 40
 @export var deceleration_player = 400
+
+@export_category("Status player")
+@export var Health = 0
 
 var doDash = false
 var dashDirection : int
 var dashCounter = 0
 var dashLimit = 1
 var cooldown = false
-var knockback_attack = 15.0
+var knockback_attack = 80.0
 var pogo_modifier = 3
-var knockback_vector: Vector2 = Vector2.ZERO
-var knockback_strength = 80.0
 var is_invincible = false
 var coyote_time_activated = false
 var status: PlayerState
@@ -62,10 +65,6 @@ func _physics_process(delta: float) -> void:
 		if dashCounter == 1 && !cooldown:
 			dashCounter = 0
 			cooldown = false
-		
-	if knockback_vector != Vector2.ZERO:
-		velocity += knockback_vector
-		knockback_vector = knockback_vector.move_toward(Vector2.ZERO, 400 * delta) # suaviza o knockback
 	move_and_slide()
 	match status:
 		PlayerState.idle:
@@ -173,6 +172,10 @@ func fall_state(delta):
 	andar(delta)
 	dash()
 	jump_logic()
+	attack()
+	if Input.is_action_just_pressed("attack"):
+		go_to_attack_state()
+		return
 	if velocity.y < 0:
 		go_to_jump_state()
 		return
@@ -206,7 +209,9 @@ func attack_state(delta):
 	attack()
 	andar(delta)
 	jump_logic()
-	if !anim.is_playing():
+	if !anim.is_playing() && anim.animation == "attack":
+		area_2d.monitoring = false
+		area_2d_2.monitoring = false
 		if !is_on_floor():
 			go_to_fall_state()
 			return
@@ -306,22 +311,26 @@ func dash():
 		dash_effect.start()
 		dash_cooldown.start()
 	
-func levar_knockback(from_position: Vector2):
+func levar_dano():
+	var nodes = get_tree().get_nodes_in_group("Camera")
+	if nodes.size() == 0:
+		return
+	camera = nodes[0]
 	if is_invincible:
 		return
-	
-	var knockback_dir = (position - from_position).normalized()
-	knockback_vector = knockback_dir * knockback_strength
-	
 	is_invincible = true
+	Health -= 1
 	modulate = Color(1, 1, 1, 0.5)
 	invecible_time.start()
-	print("colisao - knockback jogador")
+	camera.screen_shake(2, 0.3)
+	frame_frezee(0.2, 0.2)
+	print("tomou dano")
+	print(Health)
 
 func can_jump() -> bool:
 	return jump_count < jump_amount
 		
-func andar(delta):
+func andar(_delta):
 	var direction := Input.get_axis("left", "right")
 	if doDash:
 		if dashDirection == 0:
@@ -333,15 +342,9 @@ func andar(delta):
 		velocity.y = 0
 	else:	
 		if direction:
-			if cooldown:
-				velocity.x = move_toward(velocity.x, 0, MAX_SPEED)
-			else:
-				velocity.x = move_toward(velocity.x, direction*MAX_SPEED, acceleration * delta)
+				velocity.x = direction*MAX_SPEED
 		else:
-			if cooldown:
 				velocity.x = move_toward(velocity.x, 0, MAX_SPEED)
-			else:
-				velocity.x = move_toward(velocity.x, 0, deceleration_player * delta)
 	if direction < 0:
 		anim.flip_h = true
 	elif direction > 0:
@@ -361,29 +364,30 @@ func _on_coyote_timer_timeout() -> void:
 	pass # Replace with function body.
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	go_to_dead_state()
-	return
+	if area.get_parent().is_in_group("inimigos"):
+		go_to_dead_state()
+		return
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	area_2d_2.monitoring = false
-	var last_direction = -1 if anim.is_flipped_h() else 1
-	area.get_parent().health -= 1
-	if !anim.is_flipped_h():
-		area.get_parent().knockback("right")
-		velocity.x += (-last_direction) * knockback_attack
-	else:
-		area.get_parent().knockback("left")
-		velocity.x += (-last_direction) * knockback_attack
-	if area.get_parent().health == 0:
-		area.get_parent().queue_free()
+	if area.get_parent().is_in_group("inimigos"):
+		area_2d_2.monitoring = false
+		var last_direction = -1 if anim.is_flipped_h() else 1
+		inimigo = area.get_parent()
+		inimigo.levar_dano(1)
+		if !anim.is_flipped_h():
+			inimigo.knockback("right")
+			velocity.x -= knockback_attack 
+		else:
+			inimigo.knockback("left")
+			velocity.x += knockback_attack
 
 
 func _on_area_2d_2_area_entered(area: Area2D) -> void:
-	area_2d.monitoring = false
-	area.get_parent().health -= 1
-	if not is_on_floor() && Input.is_action_pressed("down"):
-		area.get_parent().knockback("down")
-		velocity.y -= lerp(jump_velocity, acceleration*pogo_modifier, 0.1)
-	elif Input.is_action_pressed("up"):
-		area.get_parent().knockback("up")
-	if area.get_parent().health == 0:
-		area.get_parent().queue_free()
+	if area.get_parent().is_in_group("inimigos"):
+		area_2d.monitoring = false
+		inimigo = area.get_parent()
+		inimigo.levar_dano(1)
+		if not is_on_floor() && Input.is_action_pressed("down"):
+			inimigo.knockback("down")
+			velocity.y -= lerp(jump_velocity, acceleration*pogo_modifier, 0.1)
+		elif Input.is_action_pressed("up"):
+			inimigo.knockback("up")

@@ -224,7 +224,6 @@ collision_layer = 2
 collision_mask = 9
 script = ExtResource("1_rpcr7")
 acceleration_player = 400
-Health = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_wk6ua")

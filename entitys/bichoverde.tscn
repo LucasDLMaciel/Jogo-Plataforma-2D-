@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://byvkn0mhvm6tr"]
+[gd_scene load_steps=13 format=3 uid="uid://byvkn0mhvm6tr"]
 
 [ext_resource type="Script" uid="uid://hfqhhh7nr6nf" path="res://scripts/bichoverde.gd" id="1_wigbd"]
 [ext_resource type="Texture2D" uid="uid://d03p0ev88ugad" path="res://sprites/inimigos/bicho verde.png" id="3_v8eoc"]
@@ -17,6 +17,10 @@ region = Rect2(210, 0, 70, 44)
 [sub_resource type="AtlasTexture" id="AtlasTexture_x6fbq"]
 atlas = ExtResource("3_v8eoc")
 region = Rect2(280, 0, 70, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wigbd"]
+atlas = ExtResource("3_v8eoc")
+region = Rect2(0, 0, 70, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vdhbg"]
 atlas = ExtResource("3_v8eoc")
@@ -44,6 +48,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_wigbd")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_vdhbg")
 }, {
 "duration": 1.0,
@@ -66,6 +78,8 @@ collision_layer = 4
 script = ExtResource("1_wigbd")
 
 [node name="hitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
 position = Vector2(0.499998, 1.80999e-06)
@@ -78,20 +92,31 @@ debug_color = Color(0.930218, 3.08999e-05, 0.657648, 0.42)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.465, 0.4)
 sprite_frames = SubResource("SpriteFrames_6wcrj")
-animation = &"ataque2"
+animation = &"dead"
 autoplay = "idle"
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-0.5, 0)
 shape = SubResource("CircleShape2D_wigbd")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-visible = false
 rotation = 1.5708
 scale = Vector2(0.744311, 0.973381)
 shape = SubResource("CapsuleShape2D_v8eoc")
+
+[node name="esquerda" type="RayCast2D" parent="."]
+position = Vector2(-15, 0)
+rotation = 1.5708
+target_position = Vector2(6.55671e-07, 15)
+collide_with_areas = true
+
+[node name="direita" type="RayCast2D" parent="."]
+position = Vector2(15, 0)
+target_position = Vector2(15, 0)
 
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

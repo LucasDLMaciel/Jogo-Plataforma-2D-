@@ -17,6 +17,7 @@
 [node name="Player" parent="." instance=ExtResource("1_4nyli")]
 z_index = 1
 position = Vector2(16, 174)
+Health = 0
 
 [node name="Camera" parent="." instance=ExtResource("10_fe6ow")]
 position = Vector2(59, 128)
@@ -47,7 +48,7 @@ tile_set = ExtResource("4_pfrfv")
 position = Vector2(1065, 101)
 
 [node name="mumia2" parent="." instance=ExtResource("5_dcxbe")]
-position = Vector2(489, 193)
+position = Vector2(634, 182)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 

@@ -78,17 +78,19 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xfwo1"]
-size = Vector2(75, 26)
+size = Vector2(75, 71)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kktqf"]
-size = Vector2(25, 26)
+size = Vector2(16, 26)
 
 [node name="mumia" type="CharacterBody2D" groups=["inimigos"]]
 collision_layer = 4
+collision_mask = 3
 script = ExtResource("1_xfwo1")
 health = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 11)
 shape = SubResource("CapsuleShape2D_j74kh")
 
@@ -98,23 +100,38 @@ scale = Vector2(0.54, 0.56)
 sprite_frames = SubResource("SpriteFrames_jj28y")
 animation = &"andando"
 autoplay = "andando"
-frame_progress = 0.334595
 
 [node name="Area patrolling" type="Area2D" parent="."]
 position = Vector2(0, 24)
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area patrolling"]
-position = Vector2(-0.5, -13)
+position = Vector2(-0.5, -16.5)
 scale = Vector2(2.5, 1)
 shape = SubResource("RectangleShape2D_xfwo1")
+debug_color = Color(0.923447, 5.10186e-05, 0.683751, 0.42)
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="hitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-0.5, 11)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0, 11)
 shape = SubResource("RectangleShape2D_kktqf")
+debug_color = Color(0.704224, 0.489671, 5.77569e-07, 0.42)
+
+[node name="Esquerda" type="RayCast2D" parent="."]
+position = Vector2(-11, -2)
+target_position = Vector2(0, 29)
+hit_from_inside = true
+
+[node name="Direita" type="RayCast2D" parent="."]
+position = Vector2(11, -2)
+target_position = Vector2(0, 29)
+hit_from_inside = true
 
 [connection signal="body_entered" from="Area patrolling" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area patrolling" to="." method="_on_area_2d_body_exited"]
-[connection signal="body_entered" from="Area2D" to="." method="_on_areaattack_2d_body_entered"]
-[connection signal="body_exited" from="Area2D" to="." method="_on_areaattack_2d_body_exited"]
+[connection signal="body_entered" from="hitbox" to="." method="_on_areaattack_2d_body_entered"]
+[connection signal="body_exited" from="hitbox" to="." method="_on_areaattack_2d_body_exited"]

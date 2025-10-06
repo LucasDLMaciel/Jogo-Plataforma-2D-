@@ -116,10 +116,8 @@ texture = ExtResource("1_dghlq")
 14:3/0 = 0
 14:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 15:3/0 = 0
-15:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 4.13675, 8, 4.13675, 8, 8, -8, 8)
 16:3/0 = 0
 17:3/0 = 0
-17:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 4.67633, 8, 4.67633, 8, 8, -8, 8)
 18:3/0 = 0
 19:3/0 = 0
 0:4/0 = 0
@@ -127,11 +125,8 @@ texture = ExtResource("1_dghlq")
 2:4/0 = 0
 3:4/0 = 0
 4:4/0 = 0
-4:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 4.67633, 8, 4.85619, 8, 8, -8, 8)
 5:4/0 = 0
-5:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 4.67633, 8, 4.49647, 8, 8, -8, 8)
 6:4/0 = 0
-6:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 5.57562, 8, 5.03605, 8, 8, -8, 8)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ym5sv"]
 resource_name = "Mina"

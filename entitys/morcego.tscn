@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://cofoqv43lpfmf"]
+[gd_scene load_steps=10 format=3 uid="uid://cofoqv43lpfmf"]
 
+[ext_resource type="Script" uid="uid://c8bf0ry7senhq" path="res://entitys/morcego.gd" id="1_37vnn"]
 [ext_resource type="Texture2D" uid="uid://b4a7r750swqty" path="res://sprites/inimigos/morcego-foda.png" id="1_rbujx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_37vnn"]
@@ -45,6 +46,7 @@ animations = [{
 }]
 
 [node name="morcego" type="CharacterBody2D"]
+script = ExtResource("1_37vnn")
 
 [node name="Area2D" type="Area2D" parent="."]
 

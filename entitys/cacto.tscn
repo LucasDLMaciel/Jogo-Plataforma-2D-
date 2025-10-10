@@ -1,0 +1,62 @@
+[gd_scene load_steps=6 format=3 uid="uid://d3kjlksdmloy1"]
+
+[ext_resource type="Script" uid="uid://sd0bff3jf518" path="res://entitys/cacto.gd" id="1_d0xkh"]
+[ext_resource type="PackedScene" uid="uid://hxdsqvnq6qya" path="res://entitys/Animações/animação_cacto.tscn" id="2_l7aoo"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5nw1q"]
+height = 38.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d0xkh"]
+size = Vector2(20, 27)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2pdke"]
+size = Vector2(20, 49.6875)
+
+[node name="Cacto" type="CharacterBody2D" groups=["inimigos"]]
+collision_layer = 4
+script = ExtResource("1_d0xkh")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+scale = Vector2(0.7, 0.7)
+shape = SubResource("CapsuleShape2D_5nw1q")
+
+[node name="PlayerDetector" type="RayCast2D" parent="."]
+position = Vector2(0, -4)
+rotation = 3.14159
+target_position = Vector2(-32, 0)
+collision_mask = 2
+
+[node name="hitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_d0xkh")
+debug_color = Color(0.292111, 0.629552, 0, 0.42)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+scale = Vector2(16, 3.2)
+shape = SubResource("RectangleShape2D_2pdke")
+
+[node name="animacao_cacto" parent="." instance=ExtResource("2_l7aoo")]
+position = Vector2(-0.799999, 2)
+scale = Vector2(0.6, 0.65)
+offset = Vector2(2, 2)
+region_rect = Rect2(83, 41, 35, 41)
+
+[node name="duracao_anim" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
+[connection signal="animation_finished" from="animacao_cacto/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+
+[editable path="animacao_cacto"]

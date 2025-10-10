@@ -22,7 +22,7 @@ var knockback_vector: Vector2 = Vector2.ZERO
 var knockback_strength = 180
 var knockback_recuperacao = 600.0
 
-enum Estado { PATRULHANDO, PERSEGUINDO, ATACANDO }
+enum Estado { PATRULHANDO, PERSEGUINDO, ATACANDO, MORTO }
 var estado_atual: Estado = Estado.PATRULHANDO
 
 func _physics_process(delta: float) -> void:
@@ -38,9 +38,14 @@ func _physics_process(delta: float) -> void:
 			estado_perseguindo(delta)
 		Estado.ATACANDO:
 			estado_atacando(delta)
+		Estado.MORTO:
+			estado_morto()
 
 	velocity += knockback_vector
 	move_and_slide()
+
+func estado_morto() -> void:
+	pass
 
 func estado_patrulhando(delta: float) -> void:
 	if is_on_floor():
@@ -112,3 +117,8 @@ func levar_dano(dano: int):
 	health -= dano
 	if health <= 0:
 		queue_free()
+
+func _on_hitbox_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Player"):
+		body.levar_dano()
+		print("Inimigo atingiu o jogador")

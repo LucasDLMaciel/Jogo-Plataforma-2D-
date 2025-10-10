@@ -5,7 +5,7 @@ extends CharacterBody2D
 @export var health: int = 3
 @export var velocidade: float = 15.0
 
-enum InimigoState {
+enum BichoVerdeState {
 	idle,
 	walk,
 	follow,
@@ -20,7 +20,7 @@ const KNOCKBACK_DIRECTIONS = {
 	"right": Vector2(1, 0)
 }
 
-var status: InimigoState
+var status: BichoVerdeState
 var is_following_player = false
 var player: CharacterBody2D = null
 var tempo_troca: float
@@ -37,34 +37,33 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	knockback_vector = knockback_vector.move_toward(Vector2.ZERO, 500 * delta)
 	match status:
-		InimigoState.walk:
+		BichoVerdeState.walk:
 			walk_state(delta)
-		InimigoState.follow:
+		BichoVerdeState.follow:
 			follow_state(delta)
-		InimigoState.attack:
+		BichoVerdeState.attack:
 			attack_state(delta)
-		InimigoState.dead:
+		BichoVerdeState.dead:
 			dead_state(delta)
 
 func go_to_walk_state():
-	status = InimigoState.walk
+	status = BichoVerdeState.walk
 	animacao.play("idle")
 
 func go_to_follow_state():
-	status = InimigoState.follow
+	status = BichoVerdeState.follow
 	animacao.play("ataque2")
 
 func go_to_attack_state():
-	status = InimigoState.attack
+	status = BichoVerdeState.attack
 	animacao.play("ataque2")
 
 func go_to_dead_state():
-	status = InimigoState.dead
+	status = BichoVerdeState.dead
 	animacao.play("dead")
 	velocity = Vector2.ZERO
 	await(get_tree().create_timer(1).timeout)
-	queue_free()
-
+	hitbox.process_mode = Node.PROCESS_MODE_DISABLED
 
 func walk_state(delta):
 	velocity = direction * velocidade + knockback_vector
@@ -135,6 +134,8 @@ func mover_aleatorio() -> void:
 	tempo_troca = randf_range(2.0, 5.0)
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
+	if hitbox.process_mode == PROCESS_MODE_DISABLED:
+		return
 	if body.is_in_group("Player"):
 		is_following_player = true
 		player = body
@@ -144,7 +145,9 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body == player:
 		is_following_player = false
 		player = null
-		go_to_walk_state()
+		if hitbox.process_mode == PROCESS_MODE_DISABLED:
+			return
+		go_to_walk_state()	
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
@@ -159,5 +162,7 @@ func knockback(comando: StringName):
 
 func levar_dano(dano: int):
 	health -= dano
+	print("Cacto levou dano")
 	if health <= 0:
+		print("cacto morreu")
 		go_to_dead_state()

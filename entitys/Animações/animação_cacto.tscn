@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://hxdsqvnq6qya"]
+
+[ext_resource type="PackedScene" uid="uid://7jhbrf8fi0uf" path="res://sprites/inimigos/Aseprite/cacto_fudido sprite_sheet.aseprite" id="1_ervrw"]
+
+[node name="cacto_fudido sprite_sheet" instance=ExtResource("1_ervrw")]

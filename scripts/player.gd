@@ -1,21 +1,23 @@
 extends CharacterBody2D
-@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
-@onready var dash_duration: Timer = $dash_duration
-@onready var dash_effect: Timer = $dash_Effect
-@onready var dash_cooldown: Timer = $dash_cooldown
+@onready var anim:AnimationPlayer = $cuckold_knight/AnimationPlayer
+@onready var cuckold_knight: Sprite2D = $cuckold_knight
+@onready var dash_duration: Timer = $timers/dash_duration
+@onready var dash_effect: Timer = $timers/dash_Effect
+@onready var dash_cooldown: Timer = $timers/dash_cooldown
 @onready var area_2d: Area2D = $Area2D
 @onready var area_2d_2: Area2D = $Area2D2
 @onready var inimigo: CharacterBody2D = null
-@onready var invecible_time: Timer = $invecible_time
-@onready var coyote_timer: Timer = $coyote_timer
+@onready var invecible_time: Timer = $timers/invecible_time
+@onready var coyote_timer: Timer = $timers/coyote_timer
 @onready var camera : Camera2D = null
+@onready var hitbox: Area2D = $hitbox
 
 
 enum PlayerState{
 	idle,
 	jump,
-	fall,
-	walk,
+	falling,
+	walking,
 	dash,
 	attack,
 	dead
@@ -30,11 +32,11 @@ var jump_count = 0
 
 @export_category("Speed variable")
 @export var MAX_SPEED = 100.0
-@export var acceleration_player = 40
+@export var acceleration_player = 400
 @export var deceleration_player = 400
 
 @export_category("Status player")
-@export var Health = 0
+@export var Health = 3
 
 var doDash = false
 var dashDirection : int
@@ -46,11 +48,16 @@ var pogo_modifier = 3
 var is_invincible = false
 var coyote_time_activated = false
 var status: PlayerState
+var knockback_strenght = -180.0
 
 func _ready() -> void:
 	go_to_idle_state()
 	area_2d.monitoring = false
 	area_2d_2.monitoring = false
+	area_2d.monitorable = false
+	area_2d_2.monitorable = false
+	area_2d.modulate = Color.html("#FF0000")
+	area_2d_2.modulate = Color.html("#FF0000")
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -69,10 +76,10 @@ func _physics_process(delta: float) -> void:
 	match status:
 		PlayerState.idle:
 			idle_state(delta)
-		PlayerState.walk:
-			walk_state(delta)
-		PlayerState.fall:
-			fall_state(delta)
+		PlayerState.walking:
+			walking_state(delta)
+		PlayerState.falling:
+			falling_state(delta)
 		PlayerState.jump:
 			jump_state(delta)
 		PlayerState.dash:
@@ -84,32 +91,34 @@ func _physics_process(delta: float) -> void:
 
 func go_to_dead_state():
 	PlayerState.dead
-	anim.play("dead")
+	#anim.play("dead", 1.0, false)
 	velocity = Vector2.ZERO
+	await get_tree().create_timer(2).timeout
+	get_tree().reload_current_scene()
 
 func go_to_idle_state():
 	status = PlayerState.idle
-	anim.play("idle")
+	anim.play("Idle")
 
-func go_to_walk_state():
-	status = PlayerState.walk
-	anim.play("walk")
+func go_to_walking_state():
+	status = PlayerState.walking
+	anim.play("Walking")
 	
 func go_to_jump_state():
 	status = PlayerState.jump
-	anim.play("jump")
+	anim.play("Idle")
 	
-func go_to_fall_state():
-	status = PlayerState.fall
-	anim.play("fall")
+func go_to_falling_state():
+	status = PlayerState.falling
+	anim.play("Falling")
 	
 func go_to_dash_state():
 	status = PlayerState.dash
-	anim.play("idle")
+	anim.play("Idle")
 	
 func go_to_attack_state():
 	status = PlayerState.attack
-	anim.play("attack")
+	#anim.play("attack")
 
 func dead_state(_delta):
 	pass
@@ -120,7 +129,7 @@ func idle_state(delta):
 	dash()
 	attack()
 	if velocity.x != 0:
-		go_to_walk_state()
+		go_to_walking_state()
 		return
 	if velocity.y < 0:
 		go_to_jump_state()
@@ -132,13 +141,13 @@ func idle_state(delta):
 		go_to_dash_state()
 		return
 
-func walk_state(delta):
+func walking_state(delta):
 	andar(delta)
 	jump_logic()
 	dash()
 	attack()
 	if !is_on_floor():
-		go_to_fall_state()
+		go_to_falling_state()
 		return
 	if velocity.x == 0:
 		go_to_idle_state()
@@ -165,10 +174,10 @@ func jump_state(delta):
 		go_to_dash_state()
 		return
 	if velocity.y > 0:
-		go_to_fall_state()
+		go_to_falling_state()
 		return
 
-func fall_state(delta):
+func falling_state(delta):
 	andar(delta)
 	dash()
 	jump_logic()
@@ -184,7 +193,7 @@ func fall_state(delta):
 			go_to_idle_state()
 			return
 		else:
-			go_to_walk_state()
+			go_to_walking_state()
 			return
 
 func dash_state(delta):
@@ -193,7 +202,7 @@ func dash_state(delta):
 	andar(delta)
 	if !is_on_floor():
 			jump_count += 1
-			go_to_fall_state()
+			go_to_falling_state()
 			return
 	if velocity.y < 0:
 		go_to_jump_state()
@@ -202,18 +211,22 @@ func dash_state(delta):
 		go_to_idle_state()
 		return
 	else:
-		go_to_walk_state()
+		go_to_walking_state()
 		return
 
 func attack_state(delta):
 	attack()
 	andar(delta)
 	jump_logic()
-	if !anim.is_playing() && anim.animation == "attack":
+	if anim.animation_finished: #&& anim.current_animation == "attack": #&& adicionar se a animação for attack
 		area_2d.monitoring = false
 		area_2d_2.monitoring = false
+		area_2d_2.monitorable = false
+		area_2d.monitorable = false
+		area_2d.modulate = Color.html("#FF0000")
+		area_2d_2.modulate = Color.html("#FF0000")
 		if !is_on_floor():
-			go_to_fall_state()
+			go_to_falling_state()
 			return
 		if velocity.x == 0:
 			go_to_idle_state()
@@ -222,14 +235,14 @@ func attack_state(delta):
 			go_to_jump_state()
 			return
 		if velocity.x != 0:
-			go_to_walk_state()
+			go_to_walking_state()
 			return	
 		if Input.is_action_just_pressed("dash"):
 			go_to_dash_state()
 			return
 			
 func efeito_dash(): 
-	var playerCopyNode = $AnimatedSprite2D.duplicate()
+	var playerCopyNode = cuckold_knight.duplicate()
 	get_parent().add_child(playerCopyNode)
 	playerCopyNode.global_position = global_position
 	
@@ -259,15 +272,19 @@ func attack():
 	if Input.is_action_just_pressed("attack"):
 		if (Input.is_action_pressed("up") or Input.is_action_pressed("down")):
 			area_2d_2.monitoring = true
-			anim.play("attack")
+			area_2d_2.monitorable = true
+			area_2d_2.modulate = Color.html("#FF0000")
+			#anim.play("attack")
 			if Input.is_action_pressed("up"):
 				area_2d_2.global_position = Vector2(global_position.x, global_position.y - 15.0)
 			else:
 				area_2d_2.global_position = Vector2(global_position.x, global_position.y + 15.0)
 		else: 
 			area_2d.monitoring = true
-			anim.play("attack")
-			if anim.is_flipped_h():
+			area_2d.monitorable = true
+			area_2d.modulate = Color.html("#FF0000")
+			#anim.play("attack")
+			if cuckold_knight.is_flipped_h():
 				area_2d.global_position = Vector2(global_position.x - 12.0, global_position.y)
 			else:
 				area_2d.global_position = Vector2(global_position.x + 12.0, global_position.y)
@@ -299,8 +316,6 @@ func do_jump():
 func dash():
 	if Input.is_action_just_pressed("dash") && dashCounter < dashLimit && !cooldown:
 		var direction := Input.get_axis("left", "right")
-		area_2d.monitoring = false
-		area_2d_2.monitoring = false
 		print("habilidade usada")
 		dashCounter = 1
 		@warning_ignore("narrowing_conversion")
@@ -319,13 +334,16 @@ func levar_dano():
 	if is_invincible:
 		return
 	is_invincible = true
-	Health -= 1
+	#Health -= 1
 	modulate = Color(1, 1, 1, 0.5)
 	invecible_time.start()
+	velocity.y += knockback_strenght
 	camera.screen_shake(2, 0.3)
 	frame_frezee(0.2, 0.2)
-	print("tomou dano")
 	print(Health)
+	if Health == 0:
+		if status != PlayerState.dead:
+			go_to_dead_state()
 
 func can_jump() -> bool:
 	return jump_count < jump_amount
@@ -334,7 +352,7 @@ func andar(_delta):
 	var direction := Input.get_axis("left", "right")
 	if doDash:
 		if dashDirection == 0:
-			if anim.is_flipped_h():
+			if cuckold_knight.is_flipped_h():
 				dashDirection = -1
 			else:
 				dashDirection = 1
@@ -346,9 +364,9 @@ func andar(_delta):
 		else:
 				velocity.x = move_toward(velocity.x, 0, MAX_SPEED)
 	if direction < 0:
-		anim.flip_h = true
+		cuckold_knight.flip_h = true
 	elif direction > 0:
-		anim.flip_h = false
+		cuckold_knight.flip_h = false
 			
 #função para freezar o tempo (tomar dano e etc)
 func frame_frezee(timeScale, duration): 
@@ -361,19 +379,18 @@ func _on_invecible_time_timeout() -> void:
 	modulate = Color(1, 1, 1, 1)
 	
 func _on_coyote_timer_timeout() -> void:
-	pass # Replace with function body.
+	pass
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	if area.get_parent().is_in_group("inimigos"):
-		go_to_dead_state()
-		return
+	pass
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.get_parent().is_in_group("inimigos"):
 		area_2d_2.monitoring = false
-		var last_direction = -1 if anim.is_flipped_h() else 1
+		area_2d_2.modulate = Color.html("#FFFFFF")
+		var last_direction = -1 if cuckold_knight.is_flipped_h() else 1
 		inimigo = area.get_parent()
 		inimigo.levar_dano(1)
-		if !anim.is_flipped_h():
+		if !cuckold_knight.is_flipped_h():
 			inimigo.knockback("right")
 			velocity.x -= knockback_attack 
 		else:
@@ -383,6 +400,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 func _on_area_2d_2_area_entered(area: Area2D) -> void:
 	if area.get_parent().is_in_group("inimigos"):
 		area_2d.monitoring = false
+		area_2d.modulate = Color.html("#FFFFFF")
 		inimigo = area.get_parent()
 		inimigo.levar_dano(1)
 		if not is_on_floor() && Input.is_action_pressed("down"):
@@ -390,3 +408,12 @@ func _on_area_2d_2_area_entered(area: Area2D) -> void:
 			velocity.y -= lerp(jump_velocity, acceleration*pogo_modifier, 0.1)
 		elif Input.is_action_pressed("up"):
 			inimigo.knockback("up")
+
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim.animation == "attack":
+		area_2d.monitoring = false
+		area_2d_2.monitoring = false
+		area_2d.modulate = Color.html("#FF0000")
+		area_2d_2.modulate = Color.html("#FF0000")
+		pass

@@ -1,0 +1,68 @@
+[gd_scene load_steps=9 format=3 uid="uid://x84hbphp1ac2"]
+
+[ext_resource type="Texture2D" uid="uid://dngondo3avfe3" path="res://sprites/inimigos/cacto_atacando.png" id="1_cewuo"]
+[ext_resource type="Script" uid="uid://b74w2th0ixadq" path="res://entitys/espinho.gd" id="1_gb2dq"]
+[ext_resource type="Texture2D" uid="uid://c7od86p3i35n6" path="res://sprites/inimigos/espinho.png" id="2_ppg17"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gb2dq"]
+size = Vector2(16, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_owhko"]
+atlas = ExtResource("2_ppg17")
+region = Rect2(50, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8roaq"]
+atlas = ExtResource("2_ppg17")
+region = Rect2(100, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ppg17"]
+atlas = ExtResource("1_cewuo")
+region = Rect2(150, 0, 50, 50)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_owhko"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_owhko")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8roaq")
+}],
+"loop": false,
+"name": &"broken",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppg17")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Espinho" type="Area2D"]
+collision_layer = 4
+collision_mask = 19
+script = ExtResource("1_gb2dq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+scale = Vector2(0.5, 1)
+shape = SubResource("RectangleShape2D_gb2dq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_owhko")
+animation = &"broken"
+autoplay = "default"
+frame = 1
+frame_progress = 1.0
+flip_h = true
+
+[node name="timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="timeout" from="timer" to="." method="_on_timer_timeout"]

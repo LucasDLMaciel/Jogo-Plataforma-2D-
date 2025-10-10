@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://4xrc1srokbkf" path="res://scripts/camera.gd" id="1_76n0g"]
 
 [node name="Camera" type="Camera2D" groups=["Camera"]]
-zoom = Vector2(1.2, 1.2)
+zoom = Vector2(1.4, 1.4)
 limit_left = 0
 limit_bottom = 256
 position_smoothing_enabled = true

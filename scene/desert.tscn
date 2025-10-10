@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://bsyutp7rg5wkb"]
+[gd_scene load_steps=13 format=4 uid="uid://bsyutp7rg5wkb"]
 
 [ext_resource type="PackedScene" uid="uid://c6kn1yl7uhx5q" path="res://entitys/player.tscn" id="1_4nyli"]
 [ext_resource type="TileSet" uid="uid://c42iww6kla1bj" path="res://tiles/game.tres" id="2_dcxbe"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://b0y2qjngj535g" path="res://sprites/Platformer - desert/Background/BG-ruins.png" id="8_ttaxa"]
 [ext_resource type="PackedScene" uid="uid://hk5diqc5w24s" path="res://entitys/camera.tscn" id="10_fe6ow"]
 [ext_resource type="PackedScene" uid="uid://cxklmmoaxt2n3" path="res://entitys/levelend.tscn" id="11_pfrfv"]
+[ext_resource type="PackedScene" uid="uid://d3kjlksdmloy1" path="res://entitys/cacto.tscn" id="12_5k122"]
 
 [node name="desert" type="Node2D"]
 
@@ -41,7 +42,6 @@ tile_set = ExtResource("4_pfrfv")
 [node name="Player" parent="." instance=ExtResource("1_4nyli")]
 z_index = 1
 position = Vector2(16, 174)
-Health = 0
 
 [node name="Camera" parent="." instance=ExtResource("10_fe6ow")]
 position = Vector2(59, 128)
@@ -70,6 +70,7 @@ motion_scale = Vector2(0.1, 0.1)
 motion_mirroring = Vector2(256, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/3"]
+modulate = Color(0.377919, 0.377919, 0.377919, 1)
 show_behind_parent = true
 texture_repeat = 2
 position = Vector2(0, -1)
@@ -107,5 +108,8 @@ next_level = "caves"
 
 [node name="CollisionShape2D" parent="Levelend" index="0"]
 position = Vector2(0, -43.5)
+
+[node name="Cacto" parent="." instance=ExtResource("12_5k122")]
+position = Vector2(823, 160)
 
 [editable path="Levelend"]

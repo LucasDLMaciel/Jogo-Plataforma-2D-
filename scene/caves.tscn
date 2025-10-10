@@ -23,7 +23,6 @@ position = Vector2(694, 215)
 
 [node name="Camera" parent="." instance=ExtResource("2_jpli5")]
 position = Vector2(8, 128)
-zoom = Vector2(1.4, 1.4)
 limit_top = 0
 
 [node name="Tiles" type="Node2D" parent="."]

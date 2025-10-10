@@ -1,0 +1,28 @@
+[remap]
+
+importer="Aseprite Sprite2D Import"
+type="PackedScene"
+uid="uid://7jhbrf8fi0uf"
+path="res://.godot/imported/cacto_fudido sprite_sheet.aseprite-2974ed569fd7cde6d1ec7b0eaf4a0b4e.scn"
+
+[deps]
+
+source_file="res://sprites/inimigos/Aseprite/cacto_fudido sprite_sheet.aseprite"
+dest_files=["res://.godot/imported/cacto_fudido sprite_sheet.aseprite-2974ed569fd7cde6d1ec7b0eaf4a0b4e.scn"]
+
+[params]
+
+spritesheet/layout=0
+spritesheet/fixed_rows_count=1
+spritesheet/fixed_columns_count=1
+spritesheet/border_type=0
+spritesheet/trim=false
+spritesheet/ignore_empty=false
+spritesheet/merge_duplicates=false
+animation/default/name="default"
+animation/default/direction=0
+animation/default/repeat_count=0
+animation/autoplay=""
+sprite2d/centered=true
+animation/strategy_(packed_spritesheet)=0
+animation/strategy_(grid-based_spritesheet)=0

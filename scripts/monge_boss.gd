@@ -251,7 +251,7 @@ func _on_roll_hitbox_area_entered(area: Area2D) -> void:
 		return
 
 func _on_roll_hitbox_area_exited(area: Area2D) -> void:
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(0.5).timeout
 	doRoll = false
 	is_rolling = false
 	max_hitbox()

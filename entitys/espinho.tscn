@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://x84hbphp1ac2"]
 
 [ext_resource type="Texture2D" uid="uid://dngondo3avfe3" path="res://sprites/inimigos/cacto_atacando.png" id="1_cewuo"]
-[ext_resource type="Script" uid="uid://b74w2th0ixadq" path="res://entitys/espinho.gd" id="1_gb2dq"]
+[ext_resource type="Script" uid="uid://b74w2th0ixadq" path="res://scripts/espinho.gd" id="1_gb2dq"]
 [ext_resource type="Texture2D" uid="uid://c7od86p3i35n6" path="res://sprites/inimigos/espinho.png" id="2_ppg17"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gb2dq"]

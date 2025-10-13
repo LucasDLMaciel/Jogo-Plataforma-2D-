@@ -44,3 +44,8 @@ func screen_shake(intensity: int, time:float):
 	shake_intensity = intensity
 	active_shake_time = time
 	shake_time = 0.0
+
+func frame_frezee(timeScale, duration): 
+	Engine.time_scale = timeScale
+	await(get_tree().create_timer(duration * timeScale).timeout)
+	Engine.time_scale = 1.0

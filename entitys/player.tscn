@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://c6kn1yl7uhx5q"]
+[gd_scene load_steps=10 format=3 uid="uid://c6kn1yl7uhx5q"]
 
 [ext_resource type="Shader" uid="uid://d4j6srnjxtcbp" path="res://shaders/player.gdshader" id="1_ap6pa"]
 [ext_resource type="Script" uid="uid://ih88233oc7tv" path="res://scripts/player.gd" id="1_rpcr7"]
 [ext_resource type="PackedScene" uid="uid://baiu6lplp12in" path="res://entitys/Animações/animação_cuckoldknight.tscn" id="3_ebhgt"]
+[ext_resource type="PackedScene" uid="uid://dqpvaw4g8q54m" path="res://entitys/Animações/blade_sprite.tscn" id="4_punbo"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5r6av"]
 shader = ExtResource("1_ap6pa")
@@ -17,7 +18,7 @@ height = 22.0
 size = Vector2(8, 22)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ap6pa"]
-size = Vector2(14, 6.25)
+size = Vector2(14.4583, 6.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5r6av"]
 size = Vector2(11, 22)
@@ -27,9 +28,20 @@ material = SubResource("ShaderMaterial_5r6av")
 collision_layer = 2
 collision_mask = 9
 script = ExtResource("1_rpcr7")
+MAX_SPEED = 85.0
 
 [node name="cuckold_knight" parent="." instance=ExtResource("3_ebhgt")]
+position = Vector2(2, -2)
 scale = Vector2(0.45, 0.45)
+offset = Vector2(-4, 4)
+flip_h = false
+region_rect = Rect2(154, 0, 45, 50)
+
+[node name="blade_sprite" parent="." instance=ExtResource("4_punbo")]
+position = Vector2(0, -2)
+scale = Vector2(0.9, 0.9)
+offset = Vector2(-2, -15)
+region_rect = Rect2(68, 35, 19, 22)
 
 [node name="timers" type="Node2D" parent="."]
 
@@ -38,6 +50,7 @@ wait_time = 0.1
 one_shot = true
 
 [node name="invecible_time" type="Timer" parent="timers"]
+wait_time = 1.2
 one_shot = true
 
 [node name="dash_duration" type="Timer" parent="timers"]
@@ -52,6 +65,18 @@ wait_time = 0.25
 one_shot = true
 autostart = true
 
+[node name="combo_timer" type="Timer" parent="timers"]
+wait_time = 0.3
+one_shot = true
+
+[node name="attack_timer" type="Timer" parent="timers"]
+wait_time = 0.125
+one_shot = true
+
+[node name="attack_cooldown_timer" type="Timer" parent="timers"]
+wait_time = 0.3
+one_shot = true
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource("CapsuleShape2D_wk6ua")
@@ -62,17 +87,19 @@ collision_layer = 16
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+scale = Vector2(2, 1.5)
 shape = SubResource("RectangleShape2D_vfpog")
 
 [node name="Area2D2" type="Area2D" parent="."]
 collision_layer = 16
-collision_mask = 4
+collision_mask = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
-scale = Vector2(1.5, 1)
+scale = Vector2(2, 2.5)
 shape = SubResource("RectangleShape2D_ap6pa")
 
 [node name="hitbox" type="Area2D" parent="."]
+visible = false
 modulate = Color(0, 0, 1, 1)
 collision_layer = 2
 collision_mask = 4
@@ -86,8 +113,12 @@ shape = SubResource("RectangleShape2D_5r6av")
 [connection signal="timeout" from="timers/dash_duration" to="." method="_on_dash_timeout_timeout"]
 [connection signal="timeout" from="timers/dash_Effect" to="." method="_on_dash_effect_timeout"]
 [connection signal="timeout" from="timers/dash_cooldown" to="." method="_on_dash_cooldown_timeout"]
+[connection signal="timeout" from="timers/combo_timer" to="." method="_on_combo_timer_timeout"]
+[connection signal="timeout" from="timers/attack_timer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="timers/attack_cooldown_timer" to="." method="_on_attack_cooldown_timer_timeout"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_entered" from="Area2D2" to="." method="_on_area_2d_2_area_entered"]
 [connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
 
 [editable path="cuckold_knight"]
+[editable path="blade_sprite"]

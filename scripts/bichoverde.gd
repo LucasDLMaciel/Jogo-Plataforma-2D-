@@ -4,7 +4,7 @@ extends CharacterBody2D
 @onready var hitbox: Area2D = $hitbox
 @export var health: int = 3
 @export var velocidade: float = 15.0
-
+@export var dead = false
 enum BichoVerdeState {
 	idle,
 	walk,
@@ -34,6 +34,8 @@ func _ready() -> void:
 	go_to_walk_state()
 
 func _physics_process(delta: float) -> void:
+	if dead:
+		velocity = get_gravity() * delta * 2
 	move_and_slide()
 	knockback_vector = knockback_vector.move_toward(Vector2.ZERO, 500 * delta)
 	match status:
@@ -62,7 +64,8 @@ func go_to_dead_state():
 	status = BichoVerdeState.dead
 	animacao.play("dead")
 	velocity = Vector2.ZERO
-	await(get_tree().create_timer(1).timeout)
+	dead = true
+	await(get_tree().create_timer(0.2).timeout)
 	hitbox.process_mode = Node.PROCESS_MODE_DISABLED
 
 func walk_state(delta):
@@ -142,11 +145,11 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		go_to_follow_state()
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
+	if hitbox.process_mode == PROCESS_MODE_DISABLED:
+			return
 	if body == player:
 		is_following_player = false
 		player = null
-		if hitbox.process_mode == PROCESS_MODE_DISABLED:
-			return
 		go_to_walk_state()	
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
@@ -162,7 +165,5 @@ func knockback(comando: StringName):
 
 func levar_dano(dano: int):
 	health -= dano
-	print("Cacto levou dano")
 	if health <= 0:
-		print("cacto morreu")
 		go_to_dead_state()

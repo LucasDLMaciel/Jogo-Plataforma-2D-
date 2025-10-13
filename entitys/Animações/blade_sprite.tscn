@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqpvaw4g8q54m"]
+
+[ext_resource type="PackedScene" uid="uid://ycnj7g688i16" path="res://sprites/cuckold knight/blade_sprite.aseprite" id="1_7yoy4"]
+
+[node name="blade_sprite" instance=ExtResource("1_7yoy4")]
+offset = Vector2(4, -14)
+region_rect = Rect2(52, 15, 8, 8)

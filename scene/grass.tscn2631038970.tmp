@@ -16,7 +16,10 @@ size = Vector2(20, 104)
 [node name="Grass" type="Node2D"]
 
 [node name="Monge Boss" parent="." instance=ExtResource("10_evhkj")]
-position = Vector2(288, 211)
+position = Vector2(285, 227)
+health = null
+velocidade = null
+pode_atacar = null
 
 [node name="Player" parent="." instance=ExtResource("1_ed4ba")]
 position = Vector2(9, 230)

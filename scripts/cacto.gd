@@ -121,21 +121,23 @@ func explode() -> void:
 		spike.global_position = global_position
 		spike.set_direction(dir)
 	
-func _on_area_2d_area_entered(area: Area2D) -> void:
+func _on_area_2d_area_entered(_area: Area2D) -> void:
 	can_attack = true
 
-func _on_area_2d_area_exited(area: Area2D) -> void:
+func _on_area_2d_area_exited(_area: Area2D) -> void:
 	can_attack = false
 
-func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
 	if anim.animation_finished:
 		go_to_idle_state()
 		return
-		
+
 func levar_dano(dano: int):
 	Health -= dano
+	print("cacto levou dano")
 	if Health <= 0:
 		go_to_dead_state()
+		print("cacto morreu")
 
 func knockback(comando: StringName):
 	if comando in KNOCKBACK_DIRECTIONS:

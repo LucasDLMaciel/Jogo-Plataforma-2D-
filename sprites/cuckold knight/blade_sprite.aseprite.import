@@ -1,0 +1,28 @@
+[remap]
+
+importer="Aseprite Sprite2D Import"
+type="PackedScene"
+uid="uid://ycnj7g688i16"
+path="res://.godot/imported/blade_sprite.aseprite-a4ff8551c3ab7240560db1faaf7e2164.scn"
+
+[deps]
+
+source_file="res://sprites/cuckold knight/blade_sprite.aseprite"
+dest_files=["res://.godot/imported/blade_sprite.aseprite-a4ff8551c3ab7240560db1faaf7e2164.scn"]
+
+[params]
+
+spritesheet/layout=0
+spritesheet/fixed_rows_count=1
+spritesheet/fixed_columns_count=1
+spritesheet/border_type=0
+spritesheet/trim=false
+spritesheet/ignore_empty=false
+spritesheet/merge_duplicates=false
+animation/default/name="default"
+animation/default/direction=0
+animation/default/repeat_count=0
+animation/autoplay=""
+sprite2d/centered=true
+animation/strategy_(packed_spritesheet)=0
+animation/strategy_(grid-based_spritesheet)=0

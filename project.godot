@@ -35,6 +35,7 @@ enabled=PackedStringArray("res://addons/nklbdev.aseprite_importers/plugin.cfg")
 Player=""
 inimigos=""
 Camera=""
+pogo=""
 
 [input]
 

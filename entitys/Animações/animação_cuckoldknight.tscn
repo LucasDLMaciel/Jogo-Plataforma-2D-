@@ -3,5 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://5pkhkf7umwp8" path="res://sprites/cuckold knight/cuckold.knight.aseprite" id="1_5tt60"]
 
 [node name="cuckold_knight" instance=ExtResource("1_5tt60")]
-offset = Vector2(-1, 0)
-region_rect = Rect2(0, 0, 41, 48)
+offset = Vector2(1, 1)
+flip_h = true
+region_rect = Rect2(104, 0, 42, 48)

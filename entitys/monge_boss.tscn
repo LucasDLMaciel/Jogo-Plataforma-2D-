@@ -55,7 +55,7 @@ position = Vector2(0, 3)
 scale = Vector2(10, 1)
 shape = SubResource("RectangleShape2D_mx1ot")
 disabled = true
-debug_color = Color(0, 0.391043, 0.750284, 0.42)
+debug_color = Color(0.835718, 1.73271e-06, 4.81307e-07, 0.419608)
 
 [node name="Cima hitbox" type="Area2D" parent="."]
 
@@ -63,6 +63,7 @@ debug_color = Color(0, 0.391043, 0.750284, 0.42)
 scale = Vector2(10, 7)
 shape = SubResource("RectangleShape2D_16j51")
 disabled = true
+debug_color = Color(0.693013, 0.378275, 9.62615e-08, 0.419608)
 
 [node name="Roll Hitbox" type="Area2D" parent="."]
 collision_layer = 0

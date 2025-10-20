@@ -15,9 +15,9 @@ extends CharacterBody2D
 @onready var attack_timer: Timer = $timers/attack_timer
 @onready var camera : Camera2D = null
 @onready var hitbox: Area2D = $hitbox
-@onready var flipped = false
-@onready var can_combo = false
-@onready var posicao_sprite_blade
+@onready var leftwall_detector: RayCast2D = $leftwall_detector
+@onready var rightwall_detector: RayCast2D = $rightwall_detector
+
 
 
 enum PlayerState{
@@ -27,25 +27,31 @@ enum PlayerState{
 	walking,
 	dash,
 	attack1,
+	wall,
 	dead
 }
 
 
 @export_category("Jump variable")
-@export var jump_velocity = 350.0
+@export var jump_velocity = 300.0
 @export var jump_amount = 1
 @export var gravity_up = 800.0
 @export var gravity_down = 1000.0 
 var jump_count = 0
 
 @export_category("Speed variable")
-@export var MAX_SPEED = 100.0
+@export var MAX_SPEED = 60.0
 @export var acceleration_player = 400
 @export var deceleration_player = 400
+@export var wall_acceleration = 200
+@export var wall_jump_velocity = 400
 
 @export_category("Status player")
 @export var Health = 3
 
+var flipped = false
+var can_combo = false
+var posicao_sprite_blade
 var doDash = false
 var dashDirection : int
 var dashCounter = 0
@@ -60,6 +66,7 @@ var knockback_strenght = Vector2(-50.0, -180.0)
 var is_attacking
 var scale_slash
 var attacks = 2
+var direction
 
 func _ready() -> void:
 	go_to_idle_state()
@@ -79,10 +86,6 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	#print(status)
 	if not is_on_floor():
-		if velocity.y < 0:
-			velocity.y += gravity_up * delta
-		else:
-			velocity.y += gravity_down * delta
 		if !coyote_time_activated:
 			coyote_timer.start()
 			coyote_time_activated = true
@@ -107,13 +110,15 @@ func _physics_process(delta: float) -> void:
 			dash_state(delta)
 		PlayerState.attack1:
 			attack1_state(delta)
+		PlayerState.wall:
+			wall_state(delta)
 		PlayerState.dead:
 			dead_state(delta)
 
 func go_to_dead_state():
 	PlayerState.dead
 	#anim_player.play("dead", 1.0, false)
-	velocity = Vector2.ZERO
+	velocity.x = 0
 	await get_tree().create_timer(2).timeout
 	get_tree().reload_current_scene()
 
@@ -140,11 +145,18 @@ func go_to_dash_state():
 func go_to_attack1_state():
 	status = PlayerState.attack1
 	#anim_player.play("Attacking")
+	
+func go_to_wall_state():
+	status = PlayerState.wall
+	anim_player.play("Attacking3")
+	velocity = Vector2.ZERO
 
-func dead_state(_delta):
+func dead_state(delta):
+	apply_gravity(delta)
 	pass
 	
 func idle_state(delta):
+	apply_gravity(delta)
 	andar(delta)
 	jump_logic()
 	dash()
@@ -163,6 +175,7 @@ func idle_state(delta):
 		return
 
 func walking_state(delta):
+	apply_gravity(delta)
 	andar(delta)
 	jump_logic()
 	dash()
@@ -184,6 +197,7 @@ func walking_state(delta):
 		return
 
 func jump_state(delta):
+	apply_gravity(delta)
 	andar(delta)
 	jump_logic()
 	dash()
@@ -199,6 +213,7 @@ func jump_state(delta):
 		return
 
 func falling_state(delta):
+	apply_gravity(delta)
 	andar(delta)
 	dash()
 	jump_logic()
@@ -216,15 +231,21 @@ func falling_state(delta):
 		else:
 			go_to_walking_state()
 			return
+	if Input.is_action_just_pressed("dash"):
+		go_to_dash_state()
+	if (leftwall_detector.is_colliding() or rightwall_detector.is_colliding()) && is_on_wall():
+		go_to_wall_state()
+		return
 
 func dash_state(delta):
+	apply_gravity(delta)
 	dash()
 	jump_logic()
 	andar(delta)
 	if !is_on_floor():
-			jump_count += 1
-			go_to_falling_state()
-			return
+		jump_count += 1
+		go_to_falling_state()
+		return
 	if velocity.y < 0:
 		go_to_jump_state()
 		return
@@ -237,7 +258,9 @@ func dash_state(delta):
 
 func attack1_state(delta):
 	is_attacking = true
+	apply_gravity(delta)
 	andar(delta)
+	dash()
 	attack()
 	jump_logic()
 	#print(is_attacking)
@@ -265,6 +288,26 @@ func attack1_state(delta):
 		if Input.is_action_just_pressed("dash"):
 			go_to_dash_state()
 			return
+
+func wall_state(delta):
+	velocity.y += wall_acceleration*delta
+	if is_on_floor():
+		go_to_idle_state()
+		return
+	if leftwall_detector.is_colliding():
+		cuckold_knight.flip_h = false
+		direction = 1
+	elif rightwall_detector.is_colliding():
+		cuckold_knight.flip_h = true
+		direction = -1
+	else:
+		go_to_falling_state()
+		return
+	if Input.is_action_just_pressed("jump"):
+		do_jump()
+		velocity.x += wall_jump_velocity*direction
+		go_to_jump_state()
+		return
 
 func efeito_dash():
 	var playerCopyNode = cuckold_knight.duplicate()
@@ -351,7 +394,7 @@ func do_jump():
 
 func dash():
 	if Input.is_action_just_pressed("dash") && dashCounter < dashLimit && !cooldown:
-		var direction := Input.get_axis("left", "right")
+		direction = Input.get_axis("left", "right")
 		print("habilidade usada")
 		dashCounter = 1
 		@warning_ignore("narrowing_conversion")
@@ -406,6 +449,13 @@ func andar(_delta):
 		if !anim_blade.is_playing():
 			blade_sprite.scale.x = scale_slash
 		flipped = false
+
+func apply_gravity(delta):
+	if not is_on_floor():
+		if velocity.y < 0:
+			velocity.y += gravity_up * delta
+		else:
+			velocity.y += gravity_down * delta
 			
 #função para freezar o tempo (tomar dano e etc)
 func frame_frezee(timeScale, duration): 

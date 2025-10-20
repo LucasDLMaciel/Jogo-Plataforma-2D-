@@ -102,14 +102,21 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 512, 256)
 
-[node name="Levelend" parent="." instance=ExtResource("11_pfrfv")]
+[node name="Levelstart" parent="." instance=ExtResource("11_pfrfv")]
 position = Vector2(-8, 181)
 next_level = "caves"
 
-[node name="CollisionShape2D" parent="Levelend" index="0"]
+[node name="CollisionShape2D" parent="Levelstart" index="0"]
 position = Vector2(0, -43.5)
 
 [node name="Cacto" parent="." instance=ExtResource("12_5k122")]
 position = Vector2(823, 160)
 
+[node name="Levelend" parent="." instance=ExtResource("11_pfrfv")]
+next_level = "grass"
+
+[node name="CollisionShape2D" parent="Levelend" index="0"]
+position = Vector2(1238, 76)
+
+[editable path="Levelstart"]
 [editable path="Levelend"]

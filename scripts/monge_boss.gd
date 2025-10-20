@@ -6,11 +6,14 @@ extends CharacterBody2D
 @export var hit: int = 0
 @onready var player_detector: RayCast2D = $PlayerDetector
 @export var velocidade: float = 40.0
+@export var dodge_velocidade: float = 200.0
 @onready var sprite: Sprite2D = $Monge_boss
 @onready var reto_hitbox: Area2D = $"Staff Hitbox"
+@onready var cima_hitbox: Area2D = $"Cima hitbox"
 @export var pode_atacar = true
 @onready var roll_hitbox: Area2D = $"Roll Hitbox"
 @export var fase = 1
+@export var jump_velocity = 200
 enum MongeState {
 	idle,
 	walk,
@@ -61,9 +64,9 @@ func _process(delta: float) -> void:
 		_atualizar_direcao_por_raycast()
 
 func _physics_process(delta: float) -> void:
+	if not is_on_floor() && !is_attacking:
+		velocity.y = jump_velocity*velocidade*delta
 	move_and_slide()
-	if not is_on_floor():
-		velocity = get_gravity()*delta
 	knockback_vector = knockback_vector.move_toward(Vector2.ZERO, 500 * delta)
 	match status:
 		MongeState.idle:
@@ -77,7 +80,7 @@ func _physics_process(delta: float) -> void:
 		
 func go_to_walk_state():
 	status = MongeState.walk
-	anim.play("Fight", -1, 2.0)
+	anim.play("Walking", -1, 1.0)
 
 func go_to_attack_state():
 	status = MongeState.attack
@@ -96,7 +99,7 @@ func go_to_idle_state():
 	velocity = Vector2.ZERO
 
 func idle_state(delta):
-	if player_detector.is_colliding() && pode_atacar && !dead && !is_rolling:
+	if player_detector.is_colliding() && pode_atacar && !dead && !is_rolling && is_on_floor():
 		go_to_attack_state()
 		return
 
@@ -106,18 +109,18 @@ func walk_state(delta):
 			rollDirection = -1
 		if direction.x > 0:
 			rollDirection = +1
-		velocity.x = rollDirection * velocidade * 5 + knockback_vector.x
+		velocity.x = rollDirection * dodge_velocidade + knockback_vector.x
 		velocity.y = 0
 	else:
 		velocity = direction * velocidade + knockback_vector
-	if player_detector.is_colliding() && pode_atacar && !dead && !is_rolling:
+	if player_detector.is_colliding() && pode_atacar && !dead && !is_rolling && is_on_floor():
 		go_to_attack_state()
 		return
 	
 
 func attack_state(_delta):
 	velocity = Vector2.ZERO
-	velocity = direction * knockback_vector
+	velocity = direction * knockback_vector 
 	if health <= 0:
 		go_to_dead_state()
 		return
@@ -180,23 +183,34 @@ func atacar(tipo : String):
 	is_attacking = true
 	match tipo:
 		"reto":
-			anim.play("StaffAttack", -1, 1.0*fase)
 			camera.screen_shake(6, 1)
 			camera.frame_frezee(0.2, 0.2)
 			if sprite.flip_h == false:
 				reto_hitbox.global_position.x = global_position.x+154
 			else:
 				reto_hitbox.global_position.x = global_position.x-154
+			anim.play("StaffAttack", -1, 1.0*fase)
 			await get_tree().create_timer(1).timeout
 			reto_hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
 			await anim.animation_finished
 			reto_hitbox.get_node("CollisionShape2D").set_deferred("disabled", true)
 			print("ataque reto")
-		#"cima":
+		"cima":
 			#anim.play("cima")
-			#await anim.animation_finished
-			#print("atdaque para cima")
-			#
+			jump()
+			anim.play("StaffAttack", -1, 1.0*fase)
+			camera.screen_shake(6, 4)
+			camera.frame_frezee(0.2, 0.2)
+			if sprite.flip_h == false:
+				cima_hitbox.global_position.x = global_position.x+100
+			else:
+				cima_hitbox.global_position.x = global_position.x-100
+			await get_tree().create_timer(1).timeout
+			cima_hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
+			await anim.animation_finished
+			cima_hitbox.get_node("CollisionShape2D").set_deferred("disabled", true)
+			print("ataque para cima")
+		
 		#"projetil":
 			#anim.play("projetil")
 			#await get_tree().create_timer(0.4).timeout
@@ -216,6 +230,10 @@ func atacar(tipo : String):
 	is_attacking = false
 	go_to_walk_state()
 	return
+	
+
+func jump():
+	velocity.y += -jump_velocity*velocidade
 
 func atirar_projetil():
 	var proj = projectile_scene.instantiate()
@@ -231,7 +249,7 @@ func _atualizar_direcao_por_raycast():
 		if player_detector.target_position.x > 0:
 			direction.x = 1
 			sprite.flip_h = false
-		else:
+		elif player_detector.target_position.x < 0:
 			direction.x = -1
 			sprite.flip_h = true
 

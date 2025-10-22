@@ -38,8 +38,8 @@ offset = Vector2(1, 1)
 [node name="blade_sprite" parent="." instance=ExtResource("4_punbo")]
 position = Vector2(0, -2)
 scale = Vector2(0.9, 0.9)
-offset = Vector2(17, -7)
-region_rect = Rect2(87, 35, 8, 21)
+offset = Vector2(-2, -15)
+region_rect = Rect2(68, 35, 19, 22)
 
 [node name="timers" type="Node2D" parent="."]
 
@@ -63,12 +63,8 @@ wait_time = 0.3
 one_shot = true
 autostart = true
 
-[node name="dash_invencible_timer" type="Timer" parent="timers"]
-wait_time = 0.35
-one_shot = true
-
 [node name="combo_timer" type="Timer" parent="timers"]
-wait_time = 0.5
+wait_time = 0.3
 one_shot = true
 
 [node name="attack_timer" type="Timer" parent="timers"]
@@ -120,7 +116,6 @@ target_position = Vector2(9, 0)
 [connection signal="timeout" from="timers/dash_duration" to="." method="_on_dash_timeout_timeout"]
 [connection signal="timeout" from="timers/dash_Effect" to="." method="_on_dash_effect_timeout"]
 [connection signal="timeout" from="timers/dash_cooldown" to="." method="_on_dash_cooldown_timeout"]
-[connection signal="timeout" from="timers/dash_invencible_timer" to="." method="_on_dash_invencible_timer_timeout"]
 [connection signal="timeout" from="timers/combo_timer" to="." method="_on_combo_timer_timeout"]
 [connection signal="timeout" from="timers/attack_timer" to="." method="_on_attack_timer_timeout"]
 [connection signal="timeout" from="timers/attack_cooldown_timer" to="." method="_on_attack_cooldown_timer_timeout"]

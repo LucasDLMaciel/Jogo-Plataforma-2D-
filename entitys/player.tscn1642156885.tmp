@@ -21,25 +21,33 @@ size = Vector2(8, 22)
 size = Vector2(14.4583, 6.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5r6av"]
-size = Vector2(8, 21.5)
+size = Vector2(11, 21)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 material = SubResource("ShaderMaterial_5r6av")
 collision_layer = 2
 collision_mask = 9
 script = ExtResource("1_rpcr7")
+jump_velocity = null
+jump_amount = null
+gravity_up = null
+gravity_down = null
 MAX_SPEED = 85.0
+acceleration_player = null
+deceleration_player = null
+wall_acceleration = null
+wall_jump_velocity = null
+Health = null
 
 [node name="cuckold_knight" parent="." instance=ExtResource("3_ebhgt")]
-position = Vector2(3.55271e-15, 0)
+position = Vector2(5.96046e-08, -2)
 scale = Vector2(0.422222, 0.436)
-offset = Vector2(1, 1)
 
 [node name="blade_sprite" parent="." instance=ExtResource("4_punbo")]
 position = Vector2(0, -2)
 scale = Vector2(0.9, 0.9)
-offset = Vector2(17, -7)
-region_rect = Rect2(87, 35, 8, 21)
+offset = Vector2(-2, -15)
+region_rect = Rect2(68, 35, 19, 22)
 
 [node name="timers" type="Node2D" parent="."]
 
@@ -63,12 +71,8 @@ wait_time = 0.3
 one_shot = true
 autostart = true
 
-[node name="dash_invencible_timer" type="Timer" parent="timers"]
-wait_time = 0.35
-one_shot = true
-
 [node name="combo_timer" type="Timer" parent="timers"]
-wait_time = 0.5
+wait_time = 0.3
 one_shot = true
 
 [node name="attack_timer" type="Timer" parent="timers"]
@@ -105,7 +109,7 @@ collision_layer = 2
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
-position = Vector2(0, 0.25)
+position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_5r6av")
 
 [node name="leftwall_detector" type="RayCast2D" parent="."]
@@ -120,7 +124,6 @@ target_position = Vector2(9, 0)
 [connection signal="timeout" from="timers/dash_duration" to="." method="_on_dash_timeout_timeout"]
 [connection signal="timeout" from="timers/dash_Effect" to="." method="_on_dash_effect_timeout"]
 [connection signal="timeout" from="timers/dash_cooldown" to="." method="_on_dash_cooldown_timeout"]
-[connection signal="timeout" from="timers/dash_invencible_timer" to="." method="_on_dash_invencible_timer_timeout"]
 [connection signal="timeout" from="timers/combo_timer" to="." method="_on_combo_timer_timeout"]
 [connection signal="timeout" from="timers/attack_timer" to="." method="_on_attack_timer_timeout"]
 [connection signal="timeout" from="timers/attack_cooldown_timer" to="." method="_on_attack_cooldown_timer_timeout"]

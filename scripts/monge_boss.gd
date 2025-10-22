@@ -233,7 +233,7 @@ func atacar(tipo : String):
 	
 
 func jump():
-	velocity.y += -jump_velocity*velocidade
+	velocity.y = -jump_velocity*velocidade
 
 func atirar_projetil():
 	var proj = projectile_scene.instantiate()

@@ -32,6 +32,8 @@ func _ready() -> void:
 	go_to_idle_state()
 
 func _process(delta: float) -> void:
+	if Health <= 0:
+		hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
 	nodes = get_tree().get_nodes_in_group("Player")
 	if nodes.size() == 0:
 		push_error("Não achei o player")
@@ -66,7 +68,6 @@ func go_to_dead_state():
 	explode()
 	await get_tree().create_timer(0.25).timeout
 	queue_free()
-
 
 func go_to_attack_state():
 	status = CactoEstado.attack

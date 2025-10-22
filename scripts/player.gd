@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var dash_duration: Timer = $timers/dash_duration
 @onready var dash_effect: Timer = $timers/dash_Effect
 @onready var dash_cooldown: Timer = $timers/dash_cooldown
+@onready var dash_invencible_timer: Timer = $timers/dash_invencible_timer
 @onready var area_2d: Area2D = $Area2D
 @onready var area_2d_2: Area2D = $Area2D2
 @onready var inimigo: CharacterBody2D = null
@@ -76,7 +77,6 @@ func _ready() -> void:
 	area_2d_2.modulate = Color.html("#FF0000")
 	blade_sprite.visible = false
 	scale_slash = blade_sprite.scale.x
-	print(scale_slash)
 	posicao_sprite_blade = blade_sprite.global_position
 	var nodes = get_tree().get_nodes_in_group("Camera")
 	if nodes.size() == 0:
@@ -85,18 +85,14 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	#print(status)
-	if not is_on_floor():
-		if !coyote_time_activated:
-			coyote_timer.start()
-			coyote_time_activated = true
+	move_and_slide()
+	if not is_on_floor() && coyote_timer.is_stopped():
+		coyote_timer.start()
+		coyote_time_activated = true
 	elif is_on_floor():
-		if coyote_time_activated:
-			coyote_timer.stop()
-			coyote_time_activated = false
 		if dashCounter == 1 && !cooldown:
 			dashCounter = 0
 			cooldown = false
-	move_and_slide()
 	match status:
 		PlayerState.idle:
 			idle_state(delta)
@@ -140,7 +136,6 @@ func go_to_falling_state():
 	
 func go_to_dash_state():
 	status = PlayerState.dash
-	anim_player.play("Idle", -1, 2.0)
 	
 func go_to_attack1_state():
 	status = PlayerState.attack1
@@ -238,33 +233,42 @@ func falling_state(delta):
 		return
 
 func dash_state(delta):
+	var is_dodging = true
 	apply_gravity(delta)
 	dash()
 	jump_logic()
 	andar(delta)
-	if !is_on_floor():
-		jump_count += 1
-		go_to_falling_state()
-		return
-	if velocity.y < 0:
-		go_to_jump_state()
-		return
-	if velocity.x == 0:
-		go_to_idle_state()
-		return
-	else:
-		go_to_walking_state()
-		return
+	if anim_player.is_playing() && anim_player.current_animation == "Dodge":
+		is_dodging = false
+		await anim_player.animation_finished
+	if !is_dodging:
+		if !is_on_floor():
+			jump_count += 1
+			go_to_falling_state()
+			return
+		if velocity.y < 0:
+			go_to_jump_state()
+			return
+		if velocity.x == 0:
+			go_to_idle_state()
+			return
+		if velocity.x != 0:
+			go_to_walking_state()
+			return
+		if Input.is_action_just_pressed("attack"):
+			go_to_attack1_state()
+			return
 
 func attack1_state(delta):
 	is_attacking = true
+	if attacks == 0:
+		attacks = 2
 	apply_gravity(delta)
 	andar(delta)
-	dash()
 	attack()
 	jump_logic()
 	#print(is_attacking)
-	if anim_player.is_playing() && anim_player.current_animation == "Attacking":
+	if anim_player.is_playing() && anim_player.current_animation == "Attacking" || anim_player.current_animation == "Attacking3" || anim_player.current_animation == "Attacking" || anim_player.current_animation == "Attacking2":
 		is_attacking = false
 		await anim_player.animation_finished
 	if !is_attacking:
@@ -288,6 +292,7 @@ func attack1_state(delta):
 		if Input.is_action_just_pressed("dash"):
 			go_to_dash_state()
 			return
+		
 
 func wall_state(delta):
 	velocity.y += wall_acceleration*delta
@@ -312,7 +317,7 @@ func wall_state(delta):
 func efeito_dash():
 	var playerCopyNode = cuckold_knight.duplicate()
 	get_parent().add_child(playerCopyNode)
-	playerCopyNode.global_position = Vector2(global_position.x +2, global_position.y - 2)
+	playerCopyNode.global_position = Vector2(global_position.x +2, global_position.y)
 	playerCopyNode.modulate = Color.html("#4b92fe")
 	var tween = create_tween()
 	tween.tween_property(playerCopyNode, "modulate:a", 0.0, 0.3)
@@ -331,13 +336,14 @@ func _on_dash_cooldown_timeout() -> void:
 
 func attack():
 	if Input.is_action_just_pressed("attack"):
+		attacks -= 1
 		if (Input.is_action_pressed("up") or Input.is_action_pressed("down")):
 			area_2d_2.get_node("CollisionShape2D").set_deferred("disabled", false)
 			area_2d_2.modulate = Color.html("#FF0000")
 			blade_sprite.visible = true
-			anim_player.play("Attacking", -1, 2.0)
-			anim_blade.play("Attacking", -1, 2.0)
 			if Input.is_action_pressed("up"):
+				anim_player.play("Attacking3", -1, 2.0)
+				anim_blade.play("Attacking", -1, 2.0)
 				if flipped:
 					blade_sprite.global_rotation_degrees = +90
 					blade_sprite.global_position = Vector2(global_position.x - 2, global_position.y - 16)
@@ -346,6 +352,8 @@ func attack():
 					blade_sprite.global_position = Vector2(global_position.x + 2, global_position.y - 16)
 				area_2d_2.global_position = Vector2(global_position.x, global_position.y - 19)
 			else:
+				anim_player.play("Attacking", -1, 2.0)
+				anim_blade.play("Attacking", -1, 2.0)
 				if flipped:
 					blade_sprite.global_rotation_degrees = -90
 					blade_sprite.global_position = Vector2(global_position.x + 2, global_position.y + 16)
@@ -357,8 +365,12 @@ func attack():
 			combo_timer.start()
 			can_combo = true
 			blade_sprite.rotation_degrees = 0
-			anim_player.play("Attacking", -1, 2.0)
-			anim_blade.play("Attacking", -1, 2.0)
+			if attacks == 1:
+				anim_player.play("Attacking", -1, 2.0)
+				anim_blade.play("Attacking", -1, 2.0)
+			elif attacks <= 1 && can_combo:
+				anim_player.play("Attacking2", -1, 2.0)
+				anim_blade.play("Attacking2", -1, 2.0)
 			blade_sprite.visible = true
 			area_2d.get_node("CollisionShape2D").set_deferred("disabled", false)
 			area_2d.modulate = Color.html("#FF0000")
@@ -377,13 +389,13 @@ func jump_logic():
 		print(jump_count)
 		do_jump()
 		print(jump_count)
-		print("primeiro pulo ou coyote")
+		print("primeiro pulo")
 	elif Input.is_action_just_pressed("jump") && !is_on_floor() && can_jump():
 		velocity.y = 0
 		print(jump_count)
 		do_jump()
 		print(jump_count)
-		print("doublejump")
+		print("doublejump ou coyote")
 	elif Input.is_action_just_released("jump") && jump_count <= jump_amount:
 		velocity.y *= 0.5
 	else:
@@ -427,6 +439,10 @@ func can_jump() -> bool:
 func andar(_delta):
 	var direction := Input.get_axis("left", "right")
 	if doDash:
+		anim_player.play("Dodge", -1, 1.0)
+		is_invincible = true
+		dash_invencible_timer.start()
+		modulate = Color(1, 1, 1, 0.5)
 		if dashDirection == 0:
 			if flipped:
 				dashDirection = -1
@@ -469,14 +485,8 @@ func _on_invecible_time_timeout() -> void:
 	
 func _on_coyote_timer_timeout() -> void:
 	coyote_time_activated = false
+
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	if is_in_group("pogo"):
-		if !flipped:
-			inimigo.knockback("right")
-			knockback_player("right")
-		else:
-			inimigo.knockback("left")
-			knockback_player("left")
 	if area.get_parent().is_in_group("inimigos"):
 		area_2d_2.get_node("CollisionShape2D").set_deferred("disabled", true)
 		area_2d_2.modulate = Color.html("#FFFFFF")
@@ -512,7 +522,7 @@ func knockback_player(dir: String):
 func _on_area_2d_2_area_entered(area: Area2D) -> void:
 	if area.is_in_group("pogo"):
 		if not is_on_floor():
-			print("pogo no pau")
+			print("pogo")
 			pogo()
 			frame_frezee(0.2, 0.1)
 			camera.screen_shake(2, 0.2)
@@ -549,6 +559,9 @@ func _on_combo_timer_timeout() -> void:
 	attacks = 2
 	print("cabo o tempo do combo")
 
-
-func _on_attack_timer_timeout() -> void:
 	pass
+
+
+func _on_dash_invencible_timer_timeout() -> void:
+	is_invincible = false
+	modulate = Color(1, 1, 1, 1)

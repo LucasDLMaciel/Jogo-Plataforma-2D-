@@ -19,6 +19,7 @@ enum MongeState {
 	walk,
 	attack,
 	roll,
+	fall,
 	dead
 }	
 
@@ -32,7 +33,7 @@ var player: CharacterBody2D
 var tempo_troca: float
 var direction: Vector2 = Vector2.ZERO
 var knockback_vector: Vector2 = Vector2.ZERO
-var knockback_strength = 180
+var knockback_strength = 150
 var current_attack: String = ""
 var dead = false
 var target
@@ -66,6 +67,7 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if not is_on_floor() && !is_attacking:
 		velocity.y = jump_velocity*velocidade*delta
+		velocity.x = 0.0
 	move_and_slide()
 	knockback_vector = knockback_vector.move_toward(Vector2.ZERO, 500 * delta)
 	match status:
@@ -75,6 +77,8 @@ func _physics_process(delta: float) -> void:
 			walk_state(delta)
 		MongeState.attack:
 			attack_state(delta)
+		MongeState.fall:
+			fall_state(delta)
 		MongeState.dead:
 			dead_state(delta)
 		
@@ -85,10 +89,14 @@ func go_to_walk_state():
 func go_to_attack_state():
 	status = MongeState.attack
 	escolher_ataque()
+	
+func go_to_fall_state():
+	status = MongeState.fall
+	anim.play("Idle")
 
 func go_to_dead_state():
 	status = MongeState.dead
-	#anim.play("dead")
+	anim.play("Idle")
 	velocity = Vector2.ZERO
 	await(get_tree().create_timer(0.2).timeout)
 	Hitbox.process_mode = Node.PROCESS_MODE_DISABLED
@@ -104,23 +112,30 @@ func idle_state(delta):
 		return
 
 func walk_state(delta):
-	if doRoll:
-		if direction.x < 0:
-			rollDirection = -1
-		if direction.x > 0:
-			rollDirection = +1
-		velocity.x = rollDirection * dodge_velocidade + knockback_vector.x
-		velocity.y = 0
-	else:
-		velocity = direction * velocidade + knockback_vector
-	if player_detector.is_colliding() && pode_atacar && !dead && !is_rolling && is_on_floor():
-		go_to_attack_state()
-		return
+	if !dead:
+		if doRoll:
+			anim.play("Roll")
+			min_hitbox()
+			if direction.x < 0:
+				rollDirection = -1
+			if direction.x > 0:
+				rollDirection = +1
+			velocity.x = rollDirection * dodge_velocidade + knockback_vector.x
+			velocity.y = 0
+			await anim.animation_finished
+		else:
+			velocity = direction * velocidade + knockback_vector
+		if not is_on_floor():
+			go_to_fall_state()
+			return
+		if player_detector.is_colliding() && pode_atacar && !is_rolling && is_on_floor():
+			go_to_attack_state()
+			return
 	
 
 func attack_state(_delta):
 	velocity = Vector2.ZERO
-	velocity = direction * knockback_vector 
+	velocity = direction + knockback_vector 
 	if health <= 0:
 		go_to_dead_state()
 		return
@@ -134,6 +149,10 @@ func dead_state(_delta):
 	pass
 	#if anim.animation != "dead":
 		#anim.play("dead")
+
+func fall_state(_delta):
+	if is_on_floor():
+		go_to_walk_state()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if Hitbox.process_mode == PROCESS_MODE_DISABLED:
@@ -173,10 +192,7 @@ func levar_dano(dano: int):
 
 func escolher_ataque():
 	pode_atacar = false 
-	if fase == 1:
-		current_attack = ["reto", "cima", "projetil"].pick_random()
-	else:
-		current_attack = ["reto", "cima", "projetil", "combo_projetil"].pick_random()
+	current_attack = ["reto", "cima", "roll"].pick_random()
 	atacar(current_attack)
 
 func atacar(tipo : String):
@@ -199,7 +215,7 @@ func atacar(tipo : String):
 			#anim.play("cima")
 			jump()
 			anim.play("StaffAttack", -1, 1.0*fase)
-			camera.screen_shake(6, 4)
+			camera.screen_shake(10, 2)
 			camera.frame_frezee(0.2, 0.2)
 			if sprite.flip_h == false:
 				cima_hitbox.global_position.x = global_position.x+100
@@ -210,22 +226,20 @@ func atacar(tipo : String):
 			await anim.animation_finished
 			cima_hitbox.get_node("CollisionShape2D").set_deferred("disabled", true)
 			print("ataque para cima")
-		
-		#"projetil":
-			#anim.play("projetil")
-			#await get_tree().create_timer(0.4).timeout
-			#atirar_projetil()
-			#await anim.animation_finished
-			#print("ataque projetil único")
-#
-		#"combo_projetil":
-			#anim.play("projetil")
-			#for i in range(3):
-				#await get_tree().create_timer(0.3).timeout
-				#atirar_projetil()
-			#await anim.animation_finished
-			#print("combo de projeteis (fase 2)")
-
+		"roll":
+			velocity = Vector2(0,0)
+			anim.play("Fight")
+			await get_tree().create_timer(1).timeout
+			doRoll = true
+			is_rolling = true
+			anim.play("Roll")
+			print("rolagem iniciada")
+			await anim.animation_finished
+			is_rolling = false
+			doRoll = false
+			max_hitbox()
+			print("rolagem terminada")
+			
 	attack_timer.start(1.0/fase)	
 	is_attacking = false
 	go_to_walk_state()
@@ -254,7 +268,6 @@ func _atualizar_direcao_por_raycast():
 			sprite.flip_h = true
 
 func _on_staff_hitbox_area_entered(area: Area2D) -> void:
-	var player
 	if area.get_collision_layer_value(2):
 		player = area.get_parent()
 		player.levar_dano()
@@ -264,12 +277,11 @@ func _on_roll_hitbox_area_entered(area: Area2D) -> void:
 	if player.is_in_group("Player") && !is_attacking:
 		doRoll = true
 		is_rolling = true
-		min_hitbox()
 		go_to_walk_state()
 		return
 
 func _on_roll_hitbox_area_exited(area: Area2D) -> void:
-	await get_tree().create_timer(0.5).timeout
+	await anim.animation_finished
 	doRoll = false
 	is_rolling = false
 	max_hitbox()
@@ -279,3 +291,9 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		if player.is_in_group("Player"):
 			player.levar_dano()
 			print("Inimigo atingiu o jogador")
+
+
+func _on_cima_hitbox_area_entered(area: Area2D) -> void:
+	if area.get_collision_layer_value(2):
+		player = area.get_parent()
+		player.levar_dano()

@@ -13,13 +13,10 @@ extends CharacterBody2D
 @onready var invecible_time: Timer = $timers/invecible_time
 @onready var coyote_timer: Timer = $timers/coyote_timer
 @onready var combo_timer: Timer = $timers/combo_timer
-@onready var attack_timer: Timer = $timers/attack_timer
 @onready var camera : Camera2D = null
 @onready var hitbox: Area2D = $hitbox
 @onready var leftwall_detector: RayCast2D = $leftwall_detector
 @onready var rightwall_detector: RayCast2D = $rightwall_detector
-
-
 
 enum PlayerState{
 	idle,
@@ -31,7 +28,6 @@ enum PlayerState{
 	wall,
 	dead
 }
-
 
 @export_category("Jump variable")
 @export var jump_velocity = 300.0
@@ -84,7 +80,6 @@ func _ready() -> void:
 	camera = nodes[0]
 
 func _physics_process(delta: float) -> void:
-	#print(status)
 	move_and_slide()
 	if not is_on_floor() && coyote_timer.is_stopped():
 		coyote_timer.start()
@@ -132,7 +127,7 @@ func go_to_jump_state():
 	
 func go_to_falling_state():
 	status = PlayerState.falling
-	anim_player.play("Falling", -1, 2.0)
+	anim_player.play("Falling")
 	
 func go_to_dash_state():
 	status = PlayerState.dash
@@ -143,7 +138,7 @@ func go_to_attack1_state():
 	
 func go_to_wall_state():
 	status = PlayerState.wall
-	anim_player.play("Attacking3")
+	anim_player.play("Wall Slide")
 	velocity = Vector2.ZERO
 
 func dead_state(delta):
@@ -238,9 +233,6 @@ func dash_state(delta):
 	dash()
 	jump_logic()
 	andar(delta)
-	if anim_player.is_playing() && anim_player.current_animation == "Dodge":
-		is_dodging = false
-		await anim_player.animation_finished
 	if !is_dodging:
 		if !is_on_floor():
 			jump_count += 1
@@ -268,9 +260,6 @@ func attack1_state(delta):
 	attack()
 	jump_logic()
 	#print(is_attacking)
-	if anim_player.is_playing() && anim_player.current_animation == "Attacking" || anim_player.current_animation == "Attacking3" || anim_player.current_animation == "Attacking" || anim_player.current_animation == "Attacking2":
-		is_attacking = false
-		await anim_player.animation_finished
 	if !is_attacking:
 		area_2d.get_node("CollisionShape2D").set_deferred("disabled", true)
 		area_2d_2.get_node("CollisionShape2D").set_deferred("disabled", true)
@@ -292,7 +281,6 @@ func attack1_state(delta):
 		if Input.is_action_just_pressed("dash"):
 			go_to_dash_state()
 			return
-		
 
 func wall_state(delta):
 	velocity.y += wall_acceleration*delta
@@ -336,7 +324,6 @@ func _on_dash_cooldown_timeout() -> void:
 
 func attack():
 	if Input.is_action_just_pressed("attack"):
-		attacks -= 1
 		if (Input.is_action_pressed("up") or Input.is_action_pressed("down")):
 			area_2d_2.get_node("CollisionShape2D").set_deferred("disabled", false)
 			area_2d_2.modulate = Color.html("#FF0000")
@@ -351,8 +338,8 @@ func attack():
 					blade_sprite.global_rotation_degrees = -90
 					blade_sprite.global_position = Vector2(global_position.x + 2, global_position.y - 16)
 				area_2d_2.global_position = Vector2(global_position.x, global_position.y - 19)
-			else:
-				anim_player.play("Attacking", -1, 2.0)
+			elif Input.is_action_pressed("down"):
+				anim_player.play("Attacking4", -1, 2.0)
 				anim_blade.play("Attacking", -1, 2.0)
 				if flipped:
 					blade_sprite.global_rotation_degrees = -90
@@ -362,6 +349,7 @@ func attack():
 					blade_sprite.global_position = Vector2(global_position.x - 2, global_position.y + 16)
 				area_2d_2.global_position = Vector2(global_position.x, global_position.y + 19)
 		else:
+			attacks -= 1
 			combo_timer.start()
 			can_combo = true
 			blade_sprite.rotation_degrees = 0
@@ -442,7 +430,6 @@ func andar(_delta):
 		anim_player.play("Dodge", -1, 1.0)
 		is_invincible = true
 		dash_invencible_timer.start()
-		modulate = Color(1, 1, 1, 0.5)
 		if dashDirection == 0:
 			if flipped:
 				dashDirection = -1
@@ -472,7 +459,7 @@ func apply_gravity(delta):
 			velocity.y += gravity_up * delta
 		else:
 			velocity.y += gravity_down * delta
-			
+
 #função para freezar o tempo (tomar dano e etc)
 func frame_frezee(timeScale, duration): 
 	Engine.time_scale = timeScale
@@ -495,12 +482,13 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		if !flipped:
 			inimigo.knockback("right")
 			knockback_player("right")
+			#inimigo.anim_tapa(Vector2(1,0))
 		else:
 			inimigo.knockback("left")
 			knockback_player("left")
+			#inimigo.anim_tapa(Vector2(-1,0))
 		frame_frezee(0.2, 0.1)
 		camera.screen_shake(2, 0.2)
-
 
 func knockback_player(dir: String):
 	var duration := 0.1
@@ -518,7 +506,6 @@ func knockback_player(dir: String):
 	tween.tween_property(self, "velocity:x", target_velocity, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "velocity:x", 0.0, 0.01).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
-
 func _on_area_2d_2_area_entered(area: Area2D) -> void:
 	if area.is_in_group("pogo"):
 		if not is_on_floor():
@@ -535,8 +522,10 @@ func _on_area_2d_2_area_entered(area: Area2D) -> void:
 		if not is_on_floor() && Input.is_action_pressed("down"):
 			inimigo.knockback("down")
 			pogo()
+			#inimigo.anim_tapa(Vector2(0,1))
 		elif Input.is_action_pressed("up"):
 			inimigo.knockback("up")
+			#inimigo.anim_tapa(Vector2(0,-1))
 		frame_frezee(0.2, 0.1)
 		camera.screen_shake(2, 0.2)
 
@@ -548,11 +537,31 @@ func pogo():
 	tween.tween_property(self, "velocity:y", velocity_inicial, 0.05).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "velocity:y", apex_velocity, 0.05).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	
-func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
-		if anim_player.current_animation == "Attacking":
-			blade_sprite.visible = false
-			area_2d.get_node("CollisionShape2D").set_deferred("disabled", false)
-			area_2d_2.get_node("CollisionShape2D").set_deferred("disabled", false)
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name.begins_with("Attacking"):
+		is_attacking = false
+		blade_sprite.visible = false
+		area_2d.get_node("CollisionShape2D").set_deferred("disabled", true)
+		area_2d_2.get_node("CollisionShape2D").set_deferred("disabled", true)
+		
+		# Decide o estado correto após o ataque
+		if not is_on_floor():
+			go_to_falling_state()
+		elif velocity.x == 0:
+			go_to_idle_state()
+		else:
+			go_to_walking_state()
+
+	elif anim_name == "Dodge":
+		doDash = false
+		is_invincible = false
+		if not is_on_floor():
+			go_to_falling_state()
+		elif velocity.x == 0:
+			go_to_idle_state()
+		else:
+			go_to_walking_state()
+
 
 func _on_combo_timer_timeout() -> void:
 	can_combo = false
@@ -561,7 +570,5 @@ func _on_combo_timer_timeout() -> void:
 
 	pass
 
-
 func _on_dash_invencible_timer_timeout() -> void:
 	is_invincible = false
-	modulate = Color(1, 1, 1, 1)

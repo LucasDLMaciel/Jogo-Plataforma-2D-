@@ -5,6 +5,7 @@ extends CharacterBody2D
 @export var health: int = 3
 @export var velocidade: float = 15.0
 @export var dead = false
+@onready var explosion: Node2D = $Explosion
 enum BichoVerdeState {
 	idle,
 	walk,
@@ -121,6 +122,11 @@ func dead_state(_delta):
 	velocity = Vector2.ZERO
 	if animacao.animation != "dead":
 		animacao.play("dead")
+	await get_tree().create_timer(2).timeout
+	modulate.a -= 0.025
+	if modulate.a <= 0:
+		queue_free()
+		print("bicho verde desapareceu")
 
 func mover_aleatorio() -> void:
 	var opcoes = [
@@ -167,3 +173,17 @@ func levar_dano(dano: int):
 	health -= dano
 	if health <= 0:
 		go_to_dead_state()
+		
+func anim_tapa(directionExp : Vector2) -> void:
+	explosion.get_children()[0].color = Color.html("#7DF527")
+	if health == 0:
+		directionExp = Vector2(0,0)
+	if directionExp.x == -1:
+		explosion.global_position = Vector2(global_position.x - 10, global_position.y)
+	elif directionExp.x == +1:
+		explosion.global_position = Vector2(global_position.x + 10, global_position.y)
+	elif directionExp.y == +1:
+		explosion.global_position = Vector2(global_position.x, global_position.y+15)
+	elif directionExp.y == -1:
+		explosion.global_position = Vector2(global_position.x, global_position.y-15)	
+	explosion.anim_tapa(directionExp)

@@ -16,7 +16,7 @@ size = Vector2(20, 104)
 [node name="Grass" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_ed4ba")]
-position = Vector2(13, 229)
+position = Vector2(441, 19)
 
 [node name="Camera" parent="." instance=ExtResource("1_f2b4i")]
 position = Vector2(-4, 129)

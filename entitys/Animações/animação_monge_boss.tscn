@@ -3,5 +3,5 @@
 [ext_resource type="PackedScene" uid="uid://cfkxhhplu5ow1" path="res://sprites/inimigos/Aseprite/Monge_boss.aseprite" id="1_j4c4i"]
 
 [node name="Monge_boss" instance=ExtResource("1_j4c4i")]
-offset = Vector2(1, 1)
-region_rect = Rect2(144, 141, 62, 71)
+offset = Vector2(0, 3)
+region_rect = Rect2(266, 142, 50, 70)

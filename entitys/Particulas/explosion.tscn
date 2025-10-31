@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://ky8id45dfec6"]
+
+[ext_resource type="Script" uid="uid://dw8x2qxsq2gof" path="res://scripts/explosion.gd" id="1_4xsok"]
+
+[sub_resource type="Curve" id="Curve_4xsok"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.123596), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="Explosion" type="Node2D"]
+script = ExtResource("1_4xsok")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 45
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+scale_amount_min = 4.0
+scale_amount_max = 6.0
+scale_amount_curve = SubResource("Curve_4xsok")
+
+[connection signal="finished" from="CPUParticles2D" to="." method="_on_cpu_particles_2d_finished"]

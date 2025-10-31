@@ -32,8 +32,8 @@ collision_mask = 2
 
 [node name="Monge_boss" parent="." instance=ExtResource("1_1nba3")]
 scale = Vector2(0.9, 0.9)
-offset = Vector2(-2, 2)
-region_rect = Rect2(0, 142, 62, 71)
+offset = Vector2(1, 1)
+region_rect = Rect2(0, 0, 72, 72)
 
 [node name="AnimationPlayer" parent="Monge_boss" index="0" groups=["inimigos"]]
 autoplay = "Idle"
@@ -58,6 +58,8 @@ disabled = true
 debug_color = Color(0.835718, 1.73271e-06, 4.81307e-07, 0.419608)
 
 [node name="Cima hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Cima hitbox"]
 scale = Vector2(10, 7)
@@ -80,6 +82,7 @@ one_shot = true
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="area_entered" from="Staff Hitbox" to="." method="_on_staff_hitbox_area_entered"]
+[connection signal="area_entered" from="Cima hitbox" to="." method="_on_cima_hitbox_area_entered"]
 [connection signal="area_entered" from="Roll Hitbox" to="." method="_on_roll_hitbox_area_entered"]
 [connection signal="area_exited" from="Roll Hitbox" to="." method="_on_roll_hitbox_area_exited"]
 [connection signal="timeout" from="attack_timer" to="." method="_on_attack_timer_timeout"]

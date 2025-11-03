@@ -46,18 +46,23 @@ animations = [{
 }]
 
 [node name="morcego" type="CharacterBody2D"]
+collision_layer = 4
 script = ExtResource("1_37vnn")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="hitbox" type="Area2D" parent="." groups=["inimigos"]]
+collision_layer = 4
+collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
 shape = SubResource("RectangleShape2D_37vnn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_0o8gh")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="SpriteMorcego" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_ciwwq")
 animation = &"voando"
 frame_progress = 0.750791
+
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]

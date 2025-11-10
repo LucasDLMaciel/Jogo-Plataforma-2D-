@@ -153,6 +153,7 @@ func dead_state(_delta):
 func fall_state(_delta):
 	if is_on_floor():
 		go_to_walk_state()
+		return
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if Hitbox.process_mode == PROCESS_MODE_DISABLED:
@@ -244,16 +245,9 @@ func atacar(tipo : String):
 	is_attacking = false
 	go_to_walk_state()
 	return
-	
 
 func jump():
 	velocity.y = -jump_velocity*velocidade
-
-func atirar_projetil():
-	var proj = projectile_scene.instantiate()
-	add_sibling(proj)
-	proj.global_position = Vector2(self.position.x, self.position.y - 40)
-	proj.direction = sign(player.global_position.x - global_position.x)
 
 func _on_attack_timer_timeout() -> void:
 	pode_atacar = true

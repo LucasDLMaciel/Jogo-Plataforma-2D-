@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://btbke681nshyw"]
+[gd_scene load_steps=28 format=3 uid="uid://btbke681nshyw"]
 
 [ext_resource type="Script" uid="uid://bg0dcum24p7hv" path="res://scripts/mumia.gd" id="1_xfwo1"]
 [ext_resource type="Texture2D" uid="uid://bfblsso2kqxq0" path="res://sprites/inimigos/mumia-andando.png" id="2_kktqf"]
 [ext_resource type="Texture2D" uid="uid://d0j2k6re3vny4" path="res://sprites/inimigos/mumia.png" id="3_l6ebv"]
+[ext_resource type="Texture2D" uid="uid://sg3mwnosuv2n" path="res://sprites/inimigos/mumia_desfalecida.png" id="4_kktqf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j74kh"]
 radius = 8.0
@@ -40,6 +41,50 @@ region = Rect2(100, 0, 50, 50)
 atlas = ExtResource("3_l6ebv")
 region = Rect2(150, 0, 50, 50)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6ebv"]
+atlas = ExtResource("4_kktqf")
+region = Rect2(0, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_48aek"]
+atlas = ExtResource("4_kktqf")
+region = Rect2(50, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dvuht"]
+atlas = ExtResource("4_kktqf")
+region = Rect2(100, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5lx25"]
+atlas = ExtResource("4_kktqf")
+region = Rect2(150, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1arws"]
+atlas = ExtResource("4_kktqf")
+region = Rect2(200, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x2lfn"]
+atlas = ExtResource("4_kktqf")
+region = Rect2(250, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r1dr2"]
+atlas = ExtResource("4_kktqf")
+region = Rect2(300, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7s8qq"]
+atlas = ExtResource("4_kktqf")
+region = Rect2(350, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v57yy"]
+atlas = ExtResource("4_kktqf")
+region = Rect2(400, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vwwcu"]
+atlas = ExtResource("4_kktqf")
+region = Rect2(450, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kktqf"]
+atlas = ExtResource("4_kktqf")
+region = Rect2(500, 0, 50, 50)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_jj28y"]
 animations = [{
 "frames": [{
@@ -75,6 +120,49 @@ animations = [{
 "loop": true,
 "name": &"ataque",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l6ebv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_48aek")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dvuht")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5lx25")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1arws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x2lfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r1dr2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7s8qq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v57yy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vwwcu")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kktqf")
+}],
+"loop": false,
+"name": &"dead2",
+"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xfwo1"]
@@ -86,7 +174,6 @@ size = Vector2(16, 26)
 [node name="mumia" type="CharacterBody2D" groups=["inimigos"]]
 collision_layer = 0
 script = ExtResource("1_xfwo1")
-health = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 11)
@@ -96,8 +183,10 @@ shape = SubResource("CapsuleShape2D_j74kh")
 position = Vector2(0.999998, 10)
 scale = Vector2(0.54, 0.56)
 sprite_frames = SubResource("SpriteFrames_jj28y")
-animation = &"andando"
+animation = &"dead"
 autoplay = "andando"
+frame = 9
+frame_progress = 1.0
 
 [node name="Area patrolling" type="Area2D" parent="."]
 visible = false
@@ -130,6 +219,11 @@ position = Vector2(11, -2)
 target_position = Vector2(0, 29)
 hit_from_inside = true
 
+[node name="respawn_timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="body_entered" from="Area patrolling" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area patrolling" to="." method="_on_area_2d_body_exited"]
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="timeout" from="respawn_timer" to="." method="_on_respawn_timer_timeout"]

@@ -1,12 +1,16 @@
 extends CharacterBody2D
 
-const VELOCIDADE = 30
+var caido = false
+var dead = false
+const VELOCIDADE = 50
 @onready var animacao: AnimatedSprite2D = $AnimatedSprite2D
 @onready var esquerda: RayCast2D = $Esquerda
 @onready var direita: RayCast2D = $Direita
 @onready var hitbox: Area2D = $hitbox
+@onready var respawn_timer: Timer = $respawn_timer
 
-@export var health: int = 100
+@export var health: int = 4
+var health_respawn
 
 const KNOCKBACK_DIRECTIONS = {
 	"left": Vector2(-1, 0),
@@ -22,8 +26,15 @@ var knockback_vector: Vector2 = Vector2.ZERO
 var knockback_strength = 180
 var knockback_recuperacao = 600.0
 
-enum Estado { PATRULHANDO, PERSEGUINDO, ATACANDO, MORTO }
+enum Estado { PATRULHANDO, PERSEGUINDO, RESPAWN, MORTO, CAIDO }
 var estado_atual: Estado = Estado.PATRULHANDO
+
+func _ready() -> void:
+	health_respawn = health
+
+func _process(delta: float) -> void:
+	if health == 0:
+		trocar_estado(Estado.CAIDO)
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -36,16 +47,36 @@ func _physics_process(delta: float) -> void:
 			estado_patrulhando(delta)
 		Estado.PERSEGUINDO:
 			estado_perseguindo(delta)
-		Estado.ATACANDO:
-			estado_atacando(delta)
+		Estado.RESPAWN:
+			estado_respawn(delta)
 		Estado.MORTO:
 			estado_morto()
-
-	velocity += knockback_vector
+		Estado.CAIDO:
+			estado_caido()
+	
+	if !caido:
+		velocity += knockback_vector
 	move_and_slide()
 
+func estado_caido() -> void:
+	if not caido:
+		caido = true
+		velocity = Vector2.ZERO
+		animacao.play("dead")
+		respawn_timer.start()
+		min_hitbox()
+
+
 func estado_morto() -> void:
-	pass
+	velocity = Vector2.ZERO
+	dead = true
+	if animacao.animation != "dead2":
+		animacao.play("dead2")
+	await(get_tree().create_timer(0.2).timeout)
+	hitbox.process_mode = Node.PROCESS_MODE_DISABLED
+	modulate.a -= 0.025
+	if modulate.a <= 0:
+		queue_free()
 
 func estado_patrulhando(delta: float) -> void:
 	if is_on_floor():
@@ -74,23 +105,30 @@ func estado_perseguindo(delta: float) -> void:
 	if animacao.animation != "andando":
 		animacao.play("andando", 2.0, false)
 
-func estado_atacando(_delta: float) -> void:
-	velocity.x = 0
-	if animacao.animation != "ataque":
-		animacao.play("ataque")
+func estado_respawn(_delta: float) -> void:
+	velocity = Vector2.ZERO
+	animacao.play("dead", -1.0, true)
 
 func trocar_estado(novo_estado: Estado) -> void:
 	if estado_atual != novo_estado:
 		estado_atual = novo_estado
 
+func min_hitbox() -> void:
+	hitbox.scale.y = 0.3
+	hitbox.global_position.y = global_position.y + 17
+	
+func max_hitbox() -> void:
+	hitbox.scale.y = 1
+	hitbox.global_position.y = global_position.y
+
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Player"):
+	if body.is_in_group("Player") && (!caido && !dead):
 		player = body
 		is_following_player = true
 		trocar_estado(Estado.PERSEGUINDO)
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
-	if body == player:
+	if body == player && (!caido && !dead):
 		player = null
 		trocar_estado(Estado.PATRULHANDO)
 
@@ -115,10 +153,20 @@ func knockback(comando: StringName):
 
 func levar_dano(dano: int):
 	health -= dano
-	if health <= 0:
-		queue_free()
+	if caido && !animacao.is_playing():
+		trocar_estado(Estado.MORTO)
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		body.levar_dano()
 		print("Inimigo atingiu o jogador")
+
+func _on_respawn_timer_timeout() -> void:
+	if estado_atual == Estado.CAIDO:
+		animacao.play_backwards("dead")  
+		await animacao.animation_finished
+		health = health_respawn
+		caido = false
+		dead = false
+		max_hitbox()
+		trocar_estado(Estado.PATRULHANDO)

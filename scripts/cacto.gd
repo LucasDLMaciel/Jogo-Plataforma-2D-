@@ -7,6 +7,7 @@ var status: CactoEstado
 @onready var sprite: Sprite2D = $animacao_cacto
 @onready var PlayerDetector: RayCast2D = $PlayerDetector
 @onready var duracao_anim: Timer = $duracao_anim
+@onready var attack_cooldown: Timer = $attack_cooldown
 
 @export_category("Enemy Health")
 @export var Health = 3
@@ -65,6 +66,7 @@ func go_to_dead_state():
 	anim.play("dead")
 	dead = true
 	await get_tree().create_timer(1.5).timeout
+	set_collision_mask_value(2, false)
 	explode()
 	await get_tree().create_timer(0.25).timeout
 	queue_free()
@@ -73,10 +75,12 @@ func go_to_attack_state():
 	status = CactoEstado.attack
 	anim.play("attack")
 	duracao_anim.start()
-	can_throw = true
+	if attack_cooldown.is_stopped():
+		can_throw = true
+	
 	
 func idle_state():
-	if PlayerDetector.is_colliding() && can_attack && !dead:
+	if PlayerDetector.is_colliding() && can_attack && can_throw && !dead:
 		go_to_attack_state()
 		return
 
@@ -84,6 +88,7 @@ func attack_state():
 	if can_throw && duracao_anim.is_stopped() && !dead:
 		throw_spike()
 		can_throw = false
+		attack_cooldown.start()
 		
 func dead_state():
 	pass
@@ -144,3 +149,7 @@ func knockback(comando: StringName):
 	if comando in KNOCKBACK_DIRECTIONS:
 		knockback_vector = KNOCKBACK_DIRECTIONS[comando] * knockback_strength
 		print("Knockback:", comando)
+
+
+func _on_attack_cooldown_timeout() -> void:
+	can_throw = true

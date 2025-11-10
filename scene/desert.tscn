@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://bsyutp7rg5wkb"]
+[gd_scene load_steps=14 format=4 uid="uid://bsyutp7rg5wkb"]
 
 [ext_resource type="PackedScene" uid="uid://c6kn1yl7uhx5q" path="res://entitys/player.tscn" id="1_4nyli"]
 [ext_resource type="TileSet" uid="uid://c42iww6kla1bj" path="res://tiles/game.tres" id="2_dcxbe"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://hk5diqc5w24s" path="res://entitys/camera.tscn" id="10_fe6ow"]
 [ext_resource type="PackedScene" uid="uid://cxklmmoaxt2n3" path="res://entitys/levelend.tscn" id="11_pfrfv"]
 [ext_resource type="PackedScene" uid="uid://d3kjlksdmloy1" path="res://entitys/cacto.tscn" id="12_5k122"]
+[ext_resource type="PackedScene" uid="uid://crtipkiayxp46" path="res://entitys/cobra.tscn" id="13_4oas6"]
 
 [node name="desert" type="Node2D"]
 
@@ -117,6 +118,9 @@ next_level = "grass"
 
 [node name="CollisionShape2D" parent="Levelend" index="0"]
 position = Vector2(1238, 76)
+
+[node name="Cobra" parent="." instance=ExtResource("13_4oas6")]
+position = Vector2(173, 176)
 
 [editable path="Levelstart"]
 [editable path="Levelend"]

@@ -31,16 +31,14 @@ script = ExtResource("1_rpcr7")
 MAX_SPEED = 85.0
 
 [node name="cuckold_knight" parent="." instance=ExtResource("3_ebhgt")]
-position = Vector2(-25, -24)
+position = Vector2(-1.90735e-06, -9.53674e-07)
 scale = Vector2(0.422222, 0.436)
-offset = Vector2(38, 31)
-region_rect = Rect2(143, 70, 45, 50)
 
 [node name="blade_sprite" parent="." instance=ExtResource("4_punbo")]
 position = Vector2(0, -2)
 scale = Vector2(0.8, 0.8)
-offset = Vector2(-1, 18)
-region_rect = Rect2(30, 56, 19, 22)
+offset = Vector2(-2, -18)
+region_rect = Rect2(68, 35, 19, 22)
 
 [node name="timers" type="Node2D" parent="."]
 

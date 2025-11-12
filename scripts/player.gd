@@ -40,7 +40,7 @@ var jump_count = 0
 @export var MAX_SPEED = 60.0
 @export var acceleration_player = 400
 @export var deceleration_player = 400
-@export var wall_acceleration = 200
+@export var wall_acceleration = 100
 @export var wall_jump_velocity = 400
 
 @export_category("Status player")
@@ -454,11 +454,11 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		if !flipped:
 			inimigo.knockback("right")
 			knockback_player("right")
-			#inimigo.anim_tapa(Vector2(1,0))
+			inimigo.anim_tapa(Vector2(1,0))
 		else:
 			inimigo.knockback("left")
 			knockback_player("left")
-			#inimigo.anim_tapa(Vector2(-1,0))
+			inimigo.anim_tapa(Vector2(-1,0))
 		frame_frezee(0.2, 0.1)
 		camera.screen_shake(2, 0.2)
 
@@ -494,10 +494,10 @@ func _on_area_2d_2_area_entered(area: Area2D) -> void:
 		if not is_on_floor() && Input.is_action_pressed("down"):
 			inimigo.knockback("down")
 			pogo()
-			#inimigo.anim_tapa(Vector2(0,1))
+			inimigo.anim_tapa(Vector2(0,1))
 		elif Input.is_action_pressed("up"):
 			inimigo.knockback("up")
-			#inimigo.anim_tapa(Vector2(0,-1))
+			inimigo.anim_tapa(Vector2(0,-1))
 		frame_frezee(0.2, 0.1)
 		camera.screen_shake(2, 0.2)
 

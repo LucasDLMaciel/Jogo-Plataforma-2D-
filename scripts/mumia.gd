@@ -8,6 +8,7 @@ const VELOCIDADE = 50
 @onready var direita: RayCast2D = $Direita
 @onready var hitbox: Area2D = $hitbox
 @onready var respawn_timer: Timer = $respawn_timer
+@onready var explosion: Node2D = $Explosion
 
 @export var health: int = 4
 var health_respawn
@@ -170,3 +171,17 @@ func _on_respawn_timer_timeout() -> void:
 		dead = false
 		max_hitbox()
 		trocar_estado(Estado.PATRULHANDO)
+		
+func anim_tapa(directionExp : Vector2) -> void:
+	explosion.get_children()[0].color = Color.html("#c2bc90")
+	if health == 0:
+		directionExp = Vector2(0,0)
+	if directionExp.x == -1:
+		explosion.global_position = Vector2(global_position.x - 10, global_position.y + 10)
+	elif directionExp.x == +1:
+		explosion.global_position = Vector2(global_position.x + 10, global_position.y + 10)
+	elif directionExp.y == +1:
+		explosion.global_position = Vector2(global_position.x, global_position.y+15)
+	elif directionExp.y == -1:
+		explosion.global_position = Vector2(global_position.x, global_position.y-15)	
+	explosion.anim_tapa(directionExp)

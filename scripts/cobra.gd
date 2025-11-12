@@ -88,7 +88,7 @@ func attack_state(_delta):
 		chao_detector.scale.y = 2
 		velocity.x = direction.x * attack_multiplier
 		velocity.y = jump_height
-	move_and_slide()
+		move_and_slide()
 	if velocity.y >= 0 && !dead: 
 		go_to_walk_state()
 		return
@@ -109,11 +109,6 @@ func mover_aleatorio() -> void:
 	direction = opcoes[randi() % opcoes.size()].normalized()
 	animacao.flip_h = direction.x < 0
 	tempo_troca = randf_range(1.0, 5.0)
-	
-func _on_hitbox_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Player"):
-		body.levar_dano()
-		print("Cobra atingiu o jogador")
 
 func knockback(comando: StringName):
 	if comando in KNOCKBACK_DIRECTIONS:
@@ -144,20 +139,14 @@ func anim_tapa(directionExp: Vector2) -> void:
 
 func _on_attack_area_area_entered(area: Area2D) -> void:
 	player = area.get_parent() 
-	if dead:
-		go_to_dead_state()
-		return
-	if player.is_in_group("Player"):
+	if player.is_in_group("Player") && !dead: 
 		go_to_attack_state()
 		return
 
 func _on_attack_area_area_exited(area: Area2D) -> void:
-	await get_tree().create_timer(1).timeout
-	if dead:
-		go_to_dead_state()
+	if !dead:
+		go_to_walk_state()
 		return
-	go_to_walk_state()
-	return
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	player = area.get_parent() 

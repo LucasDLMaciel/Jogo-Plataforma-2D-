@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://ba84xdhyr2brm"]
+[gd_scene load_steps=9 format=3 uid="uid://ba84xdhyr2brm"]
 
 [ext_resource type="PackedScene" uid="uid://dp6a6xa14qwsg" path="res://entitys/Animações/animação_monge_boss.tscn" id="1_1nba3"]
 [ext_resource type="Script" uid="uid://dgsd3okjg2lh0" path="res://scripts/monge_boss.gd" id="1_dift6"]
+[ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="3_mx1ot"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rwuqp"]
 radius = 19.0
@@ -35,7 +36,7 @@ scale = Vector2(0.9, 0.9)
 offset = Vector2(1, 1)
 region_rect = Rect2(0, 0, 72, 72)
 
-[node name="AnimationPlayer" parent="Monge_boss" index="0" groups=["inimigos"]]
+[node name="AnimationPlayer" parent="Monge_boss" index="0"]
 autoplay = "Idle"
 
 [node name="Hitbox" type="Area2D" parent="."]
@@ -79,6 +80,8 @@ debug_color = Color(0.449439, 0.596355, 0, 0.42)
 
 [node name="attack_timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="Explosion" parent="." instance=ExtResource("3_mx1ot")]
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="area_entered" from="Staff Hitbox" to="." method="_on_staff_hitbox_area_entered"]

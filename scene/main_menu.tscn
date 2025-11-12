@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=3 uid="uid://cvebitm8pu4it"]
+
+[ext_resource type="Script" uid="uid://b62jsssntcu41" path="res://scripts/main_menu.gd" id="1_3er1b"]
+[ext_resource type="Texture2D" uid="uid://cvtiqig3d3o3y" path="res://scene/Main_menu_background.png" id="2_0iwki"]
+[ext_resource type="PackedScene" uid="uid://bwphln74ksfo7" path="res://scene/fade_transition.tscn" id="2_hxu56"]
+[ext_resource type="AudioStream" uid="uid://7tcd1l0bcq0p" path="res://audio/musicas/Menu_background.wav" id="3_2fwvj"]
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_3er1b")
+
+[node name="ColorRect2" type="Sprite2D" parent="."]
+position = Vector2(251, 80)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_0iwki")
+
+[node name="ButtonManager" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Start" type="Button" parent="ButtonManager"]
+layout_mode = 0
+offset_left = 207.0
+offset_top = 102.0
+offset_right = 303.0
+offset_bottom = 133.0
+mouse_default_cursor_shape = 2
+text = "Start Game"
+
+[node name="Options" type="Button" parent="ButtonManager"]
+layout_mode = 0
+offset_left = 219.0
+offset_top = 139.0
+offset_right = 289.0
+offset_bottom = 170.0
+mouse_default_cursor_shape = 2
+text = "Options"
+
+[node name="Exit" type="Button" parent="ButtonManager"]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 175.0
+offset_right = 273.0
+offset_bottom = 206.0
+mouse_default_cursor_shape = 2
+text = "Exit"
+
+[node name="ColorRect" parent="." instance=ExtResource("2_hxu56")]
+visible = false
+
+[node name="fade_timer" type="Timer" parent="ColorRect"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_2fwvj")
+volume_db = -10.0
+
+[connection signal="pressed" from="ButtonManager/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="ButtonManager/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="ButtonManager/Exit" to="." method="_on_exit_pressed"]
+[connection signal="timeout" from="ColorRect/fade_timer" to="." method="_on_fade_timer_timeout"]
+
+[editable path="ColorRect"]

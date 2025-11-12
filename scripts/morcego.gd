@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 @onready var sprite = $SpriteMorcego
 @onready var hitbox: Area2D = $hitbox
+@onready var explosion: Node2D = $Explosion
+
 
 const SPEED = 300.0
 const FLAP_STRENGTH = -90
@@ -192,3 +194,17 @@ func prepare_state(_delta):
 func _on_prepare_timer_timeout() -> void:
 	if status == MorcegoState.PREPARE:
 		go_to_dash_state()
+
+func anim_tapa(directionExp : Vector2) -> void:
+	explosion.get_children()[0].color = Color.html("#4526a1")
+	if health == 0:
+		directionExp = Vector2(0,0)
+	if directionExp.x == -1:
+		explosion.global_position = Vector2(global_position.x - 10, global_position.y)
+	elif directionExp.x == +1:
+		explosion.global_position = Vector2(global_position.x + 10, global_position.y)
+	elif directionExp.y == +1:
+		explosion.global_position = Vector2(global_position.x, global_position.y+15)
+	elif directionExp.y == -1:
+		explosion.global_position = Vector2(global_position.x, global_position.y-15)	
+	explosion.anim_tapa(directionExp)

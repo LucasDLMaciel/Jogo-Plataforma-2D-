@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://bsyutp7rg5wkb"]
+[gd_scene load_steps=15 format=4 uid="uid://bsyutp7rg5wkb"]
 
 [ext_resource type="PackedScene" uid="uid://c6kn1yl7uhx5q" path="res://entitys/player.tscn" id="1_4nyli"]
 [ext_resource type="TileSet" uid="uid://c42iww6kla1bj" path="res://tiles/game.tres" id="2_dcxbe"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cxklmmoaxt2n3" path="res://entitys/levelend.tscn" id="11_pfrfv"]
 [ext_resource type="PackedScene" uid="uid://d3kjlksdmloy1" path="res://entitys/cacto.tscn" id="12_5k122"]
 [ext_resource type="PackedScene" uid="uid://crtipkiayxp46" path="res://entitys/cobra.tscn" id="13_4oas6"]
+[ext_resource type="PackedScene" uid="uid://cjd7g7suerrlb" path="res://entitys/plataforma_movel.tscn" id="14_lenlm"]
 
 [node name="desert" type="Node2D"]
 
@@ -122,5 +123,13 @@ position = Vector2(1238, 76)
 [node name="Cobra" parent="." instance=ExtResource("13_4oas6")]
 position = Vector2(173, 176)
 
+[node name="AnimatableBody2D" parent="." instance=ExtResource("14_lenlm")]
+position = Vector2(334, 225)
+time = 2
+
+[node name="target" parent="AnimatableBody2D" index="2"]
+position = Vector2(215, 0)
+
 [editable path="Levelstart"]
 [editable path="Levelend"]
+[editable path="AnimatableBody2D"]

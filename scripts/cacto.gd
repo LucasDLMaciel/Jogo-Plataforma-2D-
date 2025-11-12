@@ -8,6 +8,7 @@ var status: CactoEstado
 @onready var PlayerDetector: RayCast2D = $PlayerDetector
 @onready var duracao_anim: Timer = $duracao_anim
 @onready var attack_cooldown: Timer = $attack_cooldown
+@onready var explosion: Node2D = $Explosion
 
 @export_category("Enemy Health")
 @export var Health = 3
@@ -153,3 +154,17 @@ func knockback(comando: StringName):
 
 func _on_attack_cooldown_timeout() -> void:
 	can_throw = true
+
+func anim_tapa(directionExp : Vector2) -> void:
+	explosion.get_children()[0].color = Color.html("#7DF527")
+	if Health == 0:
+		directionExp = Vector2(0,0)
+	if directionExp.x == -1:
+		explosion.global_position = Vector2(global_position.x - 10, global_position.y)
+	elif directionExp.x == +1:
+		explosion.global_position = Vector2(global_position.x + 10, global_position.y)
+	elif directionExp.y == +1:
+		explosion.global_position = Vector2(global_position.x, global_position.y+15)
+	elif directionExp.y == -1:
+		explosion.global_position = Vector2(global_position.x, global_position.y-15)	
+	explosion.anim_tapa(directionExp)

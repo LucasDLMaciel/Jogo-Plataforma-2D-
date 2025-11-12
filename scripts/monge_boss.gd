@@ -12,6 +12,7 @@ extends CharacterBody2D
 @onready var cima_hitbox: Area2D = $"Cima hitbox"
 @export var pode_atacar = true
 @onready var roll_hitbox: Area2D = $"Roll Hitbox"
+@onready var explosion: Node2D = $Explosion
 @export var fase = 1
 @export var jump_velocity = 200
 enum MongeState {
@@ -286,8 +287,21 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 			player.levar_dano()
 			print("Inimigo atingiu o jogador")
 
-
 func _on_cima_hitbox_area_entered(area: Area2D) -> void:
 	if area.get_collision_layer_value(2):
 		player = area.get_parent()
 		player.levar_dano()
+		
+func anim_tapa(directionExp : Vector2) -> void:
+	explosion.get_children()[0].color = Color.html("#D10000")
+	if health == 0:
+		directionExp = Vector2(0,0)
+	if directionExp.x == -1:
+		explosion.global_position = Vector2(global_position.x - 10, global_position.y)
+	elif directionExp.x == +1:
+		explosion.global_position = Vector2(global_position.x + 10, global_position.y)
+	elif directionExp.y == +1:
+		explosion.global_position = Vector2(global_position.x, global_position.y+15)
+	elif directionExp.y == -1:
+		explosion.global_position = Vector2(global_position.x, global_position.y-15)	
+	explosion.anim_tapa(directionExp)

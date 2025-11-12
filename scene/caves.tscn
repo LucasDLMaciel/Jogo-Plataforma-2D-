@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=4 uid="uid://c3mq50737gltj"]
+[gd_scene load_steps=16 format=4 uid="uid://c3mq50737gltj"]
 
 [ext_resource type="PackedScene" uid="uid://c6kn1yl7uhx5q" path="res://entitys/player.tscn" id="1_afm7y"]
+[ext_resource type="Script" uid="uid://d3v6shg277biu" path="res://scripts/caves.gd" id="1_vtj8l"]
 [ext_resource type="PackedScene" uid="uid://hk5diqc5w24s" path="res://entitys/camera.tscn" id="2_jpli5"]
 [ext_resource type="TileSet" uid="uid://c42iww6kla1bj" path="res://tiles/game.tres" id="3_03uoo"]
 [ext_resource type="TileSet" uid="uid://sv27n4fx4kqy" path="res://tiles/decoration.tres" id="4_vtj8l"]
@@ -18,9 +19,10 @@
 size = Vector2(20, 183)
 
 [node name="Caves" type="Node2D"]
+script = ExtResource("1_vtj8l")
 
 [node name="Player" parent="." instance=ExtResource("1_afm7y")]
-position = Vector2(26, 161)
+position = Vector2(24, 165)
 
 [node name="Camera" parent="." instance=ExtResource("2_jpli5")]
 position = Vector2(8, 128)

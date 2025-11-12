@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://cofoqv43lpfmf"]
+[gd_scene load_steps=13 format=3 uid="uid://cofoqv43lpfmf"]
 
 [ext_resource type="Script" uid="uid://c8bf0ry7senhq" path="res://scripts/morcego.gd" id="1_37vnn"]
 [ext_resource type="Texture2D" uid="uid://b4a7r750swqty" path="res://sprites/inimigos/morcego-foda.png" id="1_rbujx"]
+[ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="3_0o8gh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_37vnn"]
 size = Vector2(24, 23)
@@ -87,6 +88,8 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectRight"]
 shape = SubResource("RectangleShape2D_xep2e")
 
+[node name="Explosion" parent="DetectRight" instance=ExtResource("3_0o8gh")]
+
 [node name="DashTimer" type="Timer" parent="."]
 wait_time = 0.6
 one_shot = true
@@ -98,6 +101,8 @@ one_shot = true
 [node name="PrepareTimer" type="Timer" parent="."]
 wait_time = 0.45
 one_shot = true
+
+[node name="Explosion" parent="." instance=ExtResource("3_0o8gh")]
 
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="body_entered" from="DetectLeft" to="." method="_on_detect_left_body_entered"]

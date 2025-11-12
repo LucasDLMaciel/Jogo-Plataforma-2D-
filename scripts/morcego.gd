@@ -136,7 +136,7 @@ func go_to_dash_state():
 	velocity.y = 0
 	dash_timer.start()
 	
-func dash_state(delta):
+func dash_state(_delta):
 	move_and_slide()
 	
 func _on_dash_timer_timeout() -> void:
@@ -148,7 +148,7 @@ func go_to_cooldown_state():
 	velocity = Vector2.ZERO
 	cooldown_timer.start()
 	
-func cooldown_state(delta):
+func cooldown_state(_delta):
 	move_and_slide()
 	
 func _on_cooldown_timer_timeout() -> void:
@@ -171,8 +171,9 @@ func go_to_prepare_state(direcao: int):
 	status = MorcegoState.PREPARE
 	direcao_dash = direcao
 	
-	$DetectLeft.monitoring = false
-	$DetectRight.monitoring = false
+	
+	$DetectLeft.set_deferred("monitoring", false)
+	$DetectRight.set_deferred("monitoring", false)
 	
 	wander_dir = direcao
 	if direcao == 1:
@@ -185,7 +186,7 @@ func go_to_prepare_state(direcao: int):
 	
 	prepare_timer.start()
 
-func prepare_state(delta):
+func prepare_state(_delta):
 	move_and_slide()
 
 func _on_prepare_timer_timeout() -> void:

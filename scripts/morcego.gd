@@ -24,11 +24,23 @@ var flip_dir := false
 var knockback_vector: Vector2 = Vector2.ZERO
 var knockback_strength = 180
 
+var direcao_dash = 0
+const DASH_SPEED = 65.0
+
+const PREPARE_SPEED = 5.0
+
+@onready var cooldown_timer: Timer = $CooldownTimer
+@onready var dash_timer: Timer = $DashTimer
+@onready var prepare_timer: Timer = $PrepareTimer
+
 var status: MorcegoState
 
 enum MorcegoState{
-	fly,
-	dead	
+	FLY,
+	DEAD,
+	PREPARE,
+	DASH,
+	COOLDOWN
 }
 
 const KNOCKBACK_DIRECTIONS = {
@@ -50,10 +62,16 @@ func _physics_process(delta: float) -> void:
 	knockback_vector = knockback_vector.move_toward(Vector2.ZERO, 500 * delta)
 		
 	match status:
-		MorcegoState.fly:
+		MorcegoState.FLY:
 			fly_state(delta)
-		MorcegoState.dead:
+		MorcegoState.DEAD:
 			dead_state(delta)
+		MorcegoState.PREPARE:
+			prepare_state(delta)
+		MorcegoState.DASH:
+			dash_state(delta)
+		MorcegoState.COOLDOWN:
+			cooldown_state(delta)
 	
 	move_and_slide()
 
@@ -73,7 +91,7 @@ func knockback(comando: StringName):
 		print("Knockback:", comando)
 
 func go_to_fly_state():
-	status = MorcegoState.fly
+	status = MorcegoState.FLY
 
 func fly_state(delta):
 	velocity += get_gravity() * GRAVITY_SCALE * delta
@@ -97,7 +115,7 @@ func fly_state(delta):
 	velocity.x = wander_dir * WANDER_SPEED
 
 func go_to_dead_state():
-	status = MorcegoState.dead
+	status = MorcegoState.DEAD
 	sprite.stop()
 	velocity = Vector2.ZERO
 	dead = true
@@ -110,3 +128,66 @@ func dead_state(_delta):
 	if modulate.a <= 0:
 		queue_free()
 		print("morcego desapareceu")
+
+func go_to_dash_state():
+	status = MorcegoState.DASH
+		
+	velocity.x = direcao_dash * DASH_SPEED
+	velocity.y = 0
+	dash_timer.start()
+	
+func dash_state(delta):
+	move_and_slide()
+	
+func _on_dash_timer_timeout() -> void:
+	if status == MorcegoState.DASH:
+		go_to_cooldown_state()
+
+func go_to_cooldown_state():
+	status = MorcegoState.COOLDOWN
+	velocity = Vector2.ZERO
+	cooldown_timer.start()
+	
+func cooldown_state(delta):
+	move_and_slide()
+	
+func _on_cooldown_timer_timeout() -> void:
+	if status == MorcegoState.COOLDOWN:
+		status = MorcegoState.FLY
+		$DetectLeft.monitoring = true
+		$DetectRight.monitoring = true
+
+func _on_detect_left_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Player") and status == MorcegoState.FLY:
+		var dir = -1
+		go_to_prepare_state(dir)
+
+func _on_detect_right_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Player") and status == MorcegoState.FLY:
+		var dir = 1
+		go_to_prepare_state(dir)
+
+func go_to_prepare_state(direcao: int):
+	status = MorcegoState.PREPARE
+	direcao_dash = direcao
+	
+	$DetectLeft.monitoring = false
+	$DetectRight.monitoring = false
+	
+	wander_dir = direcao
+	if direcao == 1:
+		sprite.flip_h = true
+	elif direcao == -1:
+		sprite.flip_h = false
+	
+	velocity.x = PREPARE_SPEED * (-direcao_dash)
+	velocity.y = 0
+	
+	prepare_timer.start()
+
+func prepare_state(delta):
+	move_and_slide()
+
+func _on_prepare_timer_timeout() -> void:
+	if status == MorcegoState.PREPARE:
+		go_to_dash_state()

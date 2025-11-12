@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cofoqv43lpfmf"]
+[gd_scene load_steps=12 format=3 uid="uid://cofoqv43lpfmf"]
 
 [ext_resource type="Script" uid="uid://c8bf0ry7senhq" path="res://scripts/morcego.gd" id="1_37vnn"]
 [ext_resource type="Texture2D" uid="uid://b4a7r750swqty" path="res://sprites/inimigos/morcego-foda.png" id="1_rbujx"]
@@ -45,6 +45,12 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5h8d8"]
+size = Vector2(40, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xep2e"]
+size = Vector2(40, 10)
+
 [node name="morcego" type="CharacterBody2D"]
 collision_layer = 4
 script = ExtResource("1_37vnn")
@@ -65,4 +71,37 @@ sprite_frames = SubResource("SpriteFrames_ciwwq")
 animation = &"voando"
 frame_progress = 0.750791
 
+[node name="DetectLeft" type="Area2D" parent="."]
+position = Vector2(-32, 0)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectLeft"]
+shape = SubResource("RectangleShape2D_5h8d8")
+
+[node name="DetectRight" type="Area2D" parent="."]
+position = Vector2(32, 0)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectRight"]
+shape = SubResource("RectangleShape2D_xep2e")
+
+[node name="DashTimer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+
+[node name="CooldownTimer" type="Timer" parent="."]
+wait_time = 0.7
+one_shot = true
+
+[node name="PrepareTimer" type="Timer" parent="."]
+wait_time = 0.45
+one_shot = true
+
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_entered" from="DetectLeft" to="." method="_on_detect_left_body_entered"]
+[connection signal="body_entered" from="DetectRight" to="." method="_on_detect_right_body_entered"]
+[connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]
+[connection signal="timeout" from="PrepareTimer" to="." method="_on_prepare_timer_timeout"]

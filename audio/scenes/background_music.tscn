@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://qqlavhcey5iv"]
+
+[ext_resource type="AudioStream" uid="uid://chtbc6jds84xf" path="res://audio/musicas/choral_chambers_alternativa.wav" id="1_o62jm"]
+
+[node name="Background_music" type="AudioStreamPlayer"]
+stream = ExtResource("1_o62jm")
+volume_db = -15.0

@@ -5,10 +5,11 @@ extends CharacterBody2D
 @export var health: int = 3
 @export var velocidade: float = 60.0
 @export var dead = false
-@export var jump_height = -200
+@export var jump_height = -50
 @onready var explosion: Node2D = $Explosion
 @onready var attack_area: Area2D = $attack_area
 @onready var chao_detector: RayCast2D = $chao_detector
+@onready var dash_duration: Timer = $dash_duration
 
 enum CobraState {
 	dead,
@@ -29,7 +30,7 @@ var tempo_troca: float
 var direction: Vector2 = Vector2.ZERO
 var knockback_vector: Vector2 = Vector2.ZERO
 var knockback_strength = 100
-var attack_multiplier = 100.0
+var attack_multiplier = 150.0
 
 func _ready() -> void:
 	go_to_walk_state()
@@ -64,14 +65,17 @@ func go_to_walk_state():
 func go_to_attack_state():
 	status = CobraState.attack
 	animacao.play("attacking")
+	dash_duration.start()
 
 func go_to_dead_state():
+	velocity = Vector2.ZERO
 	status = CobraState.dead
 	animacao.play("dead")
 	dead = true
 	hitbox.process_mode = Node.PROCESS_MODE_DISABLED
 
 func walk_state(delta):
+	$attack_area/CollisionShape2D.set_deferred("monitoring", true)
 	velocity = direction * velocidade + knockback_vector
 	tempo_troca -= delta
 	chao_detector.scale.y = 1.0
@@ -84,18 +88,18 @@ func walk_state(delta):
 		return
 
 func attack_state(_delta):
-	if is_on_floor():
-		chao_detector.scale.y = 2
-		velocity.x = direction.x * attack_multiplier
-		velocity.y = jump_height
-		move_and_slide()
-	if velocity.y >= 0 && !dead: 
-		go_to_walk_state()
+	if dead:
+		go_to_dead_state()
 		return
+	velocity = Vector2.ZERO
+	await get_tree().create_timer(0.5).timeout
+	velocity.x = direction.x * attack_multiplier
+
 
 func dead_state(_delta):
+	$attack_area/CollisionShape2D.set_deferred("monitoring", false)
 	velocity = Vector2.ZERO
-	await get_tree().create_timer(2).timeout
+	await get_tree().create_timer(1).timeout
 	modulate.a -= 0.025
 	if modulate.a <= 0:
 		queue_free()
@@ -140,12 +144,8 @@ func anim_tapa(directionExp: Vector2) -> void:
 func _on_attack_area_area_entered(area: Area2D) -> void:
 	player = area.get_parent() 
 	if player.is_in_group("Player") && !dead: 
+		$attack_area/CollisionShape2D.set_deferred("monitoring", false)
 		go_to_attack_state()
-		return
-
-func _on_attack_area_area_exited(area: Area2D) -> void:
-	if !dead:
-		go_to_walk_state()
 		return
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
@@ -153,3 +153,8 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 	if player.is_in_group("Player") && !dead:
 		player.levar_dano()
 		return
+
+
+func _on_dash_duration_timeout() -> void:
+	go_to_walk_state()
+	return

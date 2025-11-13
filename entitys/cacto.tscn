@@ -56,7 +56,6 @@ wait_time = 0.5
 one_shot = true
 
 [node name="attack_cooldown" type="Timer" parent="."]
-wait_time = 0.5
 one_shot = true
 
 [node name="Explosion" parent="." instance=ExtResource("3_d0xkh")]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://c3mq50737gltj"]
+[gd_scene load_steps=17 format=4 uid="uid://c3mq50737gltj"]
 
 [ext_resource type="PackedScene" uid="uid://c6kn1yl7uhx5q" path="res://entitys/player.tscn" id="1_afm7y"]
 [ext_resource type="Script" uid="uid://d3v6shg277biu" path="res://scripts/caves.gd" id="1_vtj8l"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://7s3l0g00o41c" path="res://sprites/UndergroundMine/Parralax Caves/3.png" id="11_d1l2b"]
 [ext_resource type="Texture2D" uid="uid://kc0kirl7uxra" path="res://sprites/UndergroundMine/Parralax Caves/2.png" id="12_xvovu"]
 [ext_resource type="PackedScene" uid="uid://cofoqv43lpfmf" path="res://entitys/morcego.tscn" id="13_jpli5"]
+[ext_resource type="PackedScene" uid="uid://bwphln74ksfo7" path="res://scene/fade_transition.tscn" id="15_vtj8l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5g16k"]
 size = Vector2(20, 183)
@@ -22,7 +23,7 @@ size = Vector2(20, 183)
 script = ExtResource("1_vtj8l")
 
 [node name="Player" parent="." instance=ExtResource("1_afm7y")]
-position = Vector2(24, 165)
+position = Vector2(918, 224)
 
 [node name="Camera" parent="." instance=ExtResource("2_jpli5")]
 position = Vector2(8, 128)
@@ -143,4 +144,9 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 768, 256)
 
+[node name="Fade_transition" parent="." instance=ExtResource("15_vtj8l")]
+visible = false
+offset_right = 1302.0
+
+[editable path="Camera"]
 [editable path="Levelend"]

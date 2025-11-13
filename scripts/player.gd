@@ -539,8 +539,6 @@ func _on_combo_timer_timeout() -> void:
 	attacks = 2
 	print("cabo o tempo do combo")
 
-	pass
-
 func _on_dash_invencible_timer_timeout() -> void:
 	is_invincible = false
 
@@ -551,3 +549,6 @@ func _on_attack_timer_timeout() -> void:
 	area_2d.get_node("CollisionShape2D").set_deferred("disabled", true)
 	area_2d_2.get_node("CollisionShape2D").set_deferred("disabled", true)
 	
+func _on_hitbox_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Lethal_area"):
+		levar_dano()

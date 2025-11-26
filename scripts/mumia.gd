@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 var caido = false
 var dead = false
-const VELOCIDADE = 50
+const VELOCIDADE = 40
 @onready var animacao: AnimatedSprite2D = $AnimatedSprite2D
 @onready var esquerda: RayCast2D = $Esquerda
 @onready var direita: RayCast2D = $Direita

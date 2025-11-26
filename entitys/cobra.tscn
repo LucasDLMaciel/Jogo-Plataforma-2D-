@@ -149,7 +149,6 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack_area"]
 position = Vector2(1.35525e-20, -10.2041)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_frws2")
 
 [node name="Explosion" parent="." instance=ExtResource("5_3yxd3")]

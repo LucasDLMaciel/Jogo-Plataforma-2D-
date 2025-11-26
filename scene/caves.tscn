@@ -24,7 +24,7 @@ size = Vector2(20, 183)
 script = ExtResource("1_vtj8l")
 
 [node name="Player" parent="." instance=ExtResource("1_afm7y")]
-position = Vector2(1341, -210)
+position = Vector2(30, 222)
 
 [node name="Inimigos" type="Node2D" parent="."]
 

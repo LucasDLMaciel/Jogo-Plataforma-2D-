@@ -155,7 +155,7 @@ shape = SubResource("RectangleShape2D_frws2")
 
 [node name="chao_detector" type="RayCast2D" parent="."]
 position = Vector2(1.90735e-06, -14.2857)
-target_position = Vector2(-1.90735e-06, 34.2857)
+target_position = Vector2(-1.90735e-06, 24.2857)
 
 [node name="dash_duration" type="Timer" parent="."]
 one_shot = true

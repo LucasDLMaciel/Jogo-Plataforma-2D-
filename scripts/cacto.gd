@@ -168,3 +168,8 @@ func anim_tapa(directionExp : Vector2) -> void:
 	elif directionExp.y == -1:
 		explosion.global_position = Vector2(global_position.x, global_position.y-15)	
 	explosion.anim_tapa(directionExp)
+
+func _on_hitbox_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Player"):
+		body.levar_dano()
+		print("Inimigo atingiu o jogador")

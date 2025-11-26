@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="3_0o8gh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_37vnn"]
-size = Vector2(24, 23)
+size = Vector2(20, 14)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0o8gh"]
-size = Vector2(20, 10)
+size = Vector2(20, 14)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5h8d8"]
 atlas = ExtResource("1_rbujx")
@@ -47,12 +47,12 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5h8d8"]
-size = Vector2(40, 10)
+size = Vector2(42, 10)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xep2e"]
-size = Vector2(40, 10)
+size = Vector2(42, 10)
 
-[node name="morcego" type="CharacterBody2D"]
+[node name="morcego" type="CharacterBody2D" groups=["inimigos"]]
 collision_layer = 4
 script = ExtResource("1_37vnn")
 
@@ -78,6 +78,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectLeft"]
+position = Vector2(1, 0)
 shape = SubResource("RectangleShape2D_5h8d8")
 
 [node name="DetectRight" type="Area2D" parent="."]
@@ -86,9 +87,8 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectRight"]
+position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_xep2e")
-
-[node name="Explosion" parent="DetectRight" instance=ExtResource("3_0o8gh")]
 
 [node name="DashTimer" type="Timer" parent="."]
 wait_time = 0.6

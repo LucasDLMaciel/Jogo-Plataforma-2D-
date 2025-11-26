@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 @onready var anim: AnimationPlayer = $Monge_boss/AnimationPlayer
 @onready var Hitbox: Area2D = $Hitbox
+@onready var attack_cima_sprite: Sprite2D = $"Cima hitbox/attack_sprite"
+@onready var attack_reto_sprite: Sprite2D = $"Staff Hitbox/attack_reto_sprite"
 @export var health: int = 40
 @export var hit: int = 0
 @onready var player_detector: RayCast2D = $PlayerDetector
@@ -209,23 +211,27 @@ func atacar(tipo : String):
 				reto_hitbox.global_position.x = global_position.x-154
 			anim.play("StaffAttack", -1, 1.0*fase)
 			await get_tree().create_timer(1).timeout
+			reto_hitbox.get_node("attack_reto_sprite").set_deferred("visible", true)
 			reto_hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
 			await anim.animation_finished
+			reto_hitbox.get_node("attack_reto_sprite").set_deferred("visible", false)
 			reto_hitbox.get_node("CollisionShape2D").set_deferred("disabled", true)
 			print("ataque reto")
 		"cima":
 			#anim.play("cima")
 			jump()
-			anim.play("StaffAttack", -1, 1.0*fase)
+			anim.play("swing", -1, 1.0*fase)
 			camera.screen_shake(10, 2)
 			camera.frame_frezee(0.2, 0.2)
 			if sprite.flip_h == false:
-				cima_hitbox.global_position.x = global_position.x+100
+				cima_hitbox.global_position.x = global_position.x+80
 			else:
-				cima_hitbox.global_position.x = global_position.x-100
+				cima_hitbox.global_position.x = global_position.x-80
 			await get_tree().create_timer(1).timeout
+			cima_hitbox.get_node("attack_sprite").set_deferred("visible", true)
 			cima_hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
 			await anim.animation_finished
+			cima_hitbox.get_node("attack_sprite").set_deferred("visible", false)
 			cima_hitbox.get_node("CollisionShape2D").set_deferred("disabled", true)
 			print("ataque para cima")
 		"roll":

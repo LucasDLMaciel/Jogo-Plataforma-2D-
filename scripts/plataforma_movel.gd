@@ -6,7 +6,7 @@ func _ready() -> void:
 	target.visible = false
 	tween.set_trans(Tween.TRANS_QUAD)
 	tween.set_ease(Tween.EASE_IN_OUT)
-	tween.set_speed_scale(0.5)
+	tween.set_speed_scale(0.2)
 	tween.tween_property(self, "global_position", target.global_position, time)
 	tween.tween_property(self, "global_position", global_position, time)
 	tween.set_loops()

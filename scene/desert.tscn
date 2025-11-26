@@ -146,7 +146,7 @@ position = Vector2(0, -43.5)
 
 [node name="Levelend" parent="." instance=ExtResource("11_pfrfv")]
 position = Vector2(2662, 74)
-next_level = "grass"
+next_level = "bossfight"
 
 [node name="AnimatableBody2D" parent="." instance=ExtResource("14_lenlm")]
 position = Vector2(334, 225)

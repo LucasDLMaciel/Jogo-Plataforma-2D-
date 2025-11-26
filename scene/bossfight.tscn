@@ -1,0 +1,112 @@
+[gd_scene load_steps=13 format=4 uid="uid://eo7hem6xs057"]
+
+[ext_resource type="Script" uid="uid://yc64xgvej7ro" path="res://scripts/bossfight.gd" id="1_5pjee"]
+[ext_resource type="TileSet" uid="uid://c42iww6kla1bj" path="res://tiles/game.tres" id="1_ymxj7"]
+[ext_resource type="PackedScene" uid="uid://c6kn1yl7uhx5q" path="res://entitys/player.tscn" id="2_i0yh0"]
+[ext_resource type="PackedScene" uid="uid://hk5diqc5w24s" path="res://entitys/camera.tscn" id="3_vqvlg"]
+[ext_resource type="PackedScene" uid="uid://bob62p3r27pu" path="res://entitys/pharaoh.tscn" id="4_bakgd"]
+[ext_resource type="PackedScene" uid="uid://cxklmmoaxt2n3" path="res://entitys/levelend.tscn" id="5_a82b8"]
+[ext_resource type="PackedScene" uid="uid://bwphln74ksfo7" path="res://scene/fade_transition.tscn" id="6_6mj0v"]
+[ext_resource type="AudioStream" uid="uid://cy0xs0we8g2cl" path="res://audio/musicas/deserto_boss.wav" id="8_dba4w"]
+[ext_resource type="Texture2D" uid="uid://th5opqsr53lq" path="res://sprites/Platformer - desert/Background/BG-sun.png" id="9_46u8i"]
+[ext_resource type="Texture2D" uid="uid://c2w1gtfy76cn1" path="res://sprites/Platformer - desert/Background/BG-sky.png" id="10_7g8pu"]
+[ext_resource type="Texture2D" uid="uid://d4b4oxsuark4w" path="res://sprites/Platformer - desert/Background/BG-mountains.png" id="11_itvji"]
+[ext_resource type="Texture2D" uid="uid://b0y2qjngj535g" path="res://sprites/Platformer - desert/Background/BG-ruins.png" id="12_hwjfh"]
+
+[node name="bossfight" type="Node2D"]
+script = ExtResource("1_5pjee")
+
+[node name="Tiles" type="Node2D" parent="."]
+
+[node name="terrain" type="TileMapLayer" parent="Tiles"]
+show_behind_parent = true
+position = Vector2(0, -48)
+tile_map_data = PackedByteArray("AAAAABIAAwABAAAAAAABABIAAwACAAAAAAACABIAAwACAAAAAAADABIAAwACAAAAAAAEABIAAwACAAAAAAAFABIAAwACAAAAAAAGABIAAwACAAAAAAAHABIAAwACAAAAAAAIABIAAwACAAAAAAAJAA8AAwANAAEAAAAJABIAAwACAAAAAAAKAA8AAwAGAAMAAAAKABIAAwACAAAAAAALAA8AAwAGAAMAAAALABIAAwACAAAAAAAMAA8AAwAGAAMAAAAMABIAAwACAAAAAAANAA8AAwAGAAMAAAANABIAAwACAAAAAAAOAA8AAwAGAAMAAAAOABIAAwACAAAAAAAPAA8AAwAQAAEAAAAPABIAAwACAAAAAAAQABIAAwACAAAAAAARABIAAwACAAAAAAASABIAAwACAAAAAAATABIAAwACAAAAAAAUABIAAwACAAAAAAAVABIAAwACAAAAAAAWABIAAwACAAAAAAAXABIAAwACAAAAAAAYABIAAwACAAAAAAAZAA8AAwANAAEAAAAZABIAAwACAAAAAAAaAA8AAwAGAAMAAAAaABIAAwACAAAAAAAbAA8AAwAGAAMAAAAbABIAAwACAAAAAAAcAA8AAwAGAAMAAAAcABIAAwACAAAAAAAdAA8AAwAGAAMAAAAdABIAAwACAAAAAAAeAA8AAwAGAAMAAAAeABIAAwACAAAAAAAfAA8AAwAQAAEAAAAfABIAAwACAAAAAAAgABIAAwACAAAAAAAhABIAAwACAAAAAAAiABIAAwACAAAAAAAjABIAAwACAAAAAAAkABIAAwACAAAAAAAlABIAAwACAAAAAAAmABIAAwACAAAAAAAnABIAAwACAAAAAAAoABIAAwACAAAAAAAAABMAAwAFAAAAAAAAABQAAwAFAAAAAAAAABUAAwAFAAAAAAABABMAAwAFAAAAAAABABQAAwAFAAAAAAABABUAAwAFAAAAAAACABMAAwAFAAAAAAACABQAAwAFAAAAAAACABUAAwAFAAAAAAADABMAAwAFAAAAAAADABQAAwAFAAAAAAADABUAAwAFAAAAAAAEABMAAwAFAAAAAAAEABQAAwAFAAAAAAAEABUAAwAFAAAAAAAFABMAAwAFAAAAAAAFABQAAwAFAAAAAAAFABUAAwAFAAAAAAAGABMAAwAFAAAAAAAGABQAAwAFAAAAAAAGABUAAwAFAAAAAAAHABMAAwAFAAAAAAAHABQAAwAFAAAAAAAHABUAAwAFAAAAAAAIABMAAwAFAAAAAAAIABQAAwAFAAAAAAAIABUAAwAFAAAAAAAJAAsAAwANAAEAAAAJABMAAwAFAAAAAAAJABQAAwAFAAAAAAAJABUAAwAFAAAAAAAKAAsAAwAGAAMAAAAKABMAAwAFAAAAAAAKABQAAwAFAAAAAAAKABUAAwAFAAAAAAALAAsAAwAGAAMAAAALABMAAwAFAAAAAAALABQAAwAFAAAAAAALABUAAwAFAAAAAAAMAAsAAwAGAAMAAAAMABMAAwAFAAAAAAAMABQAAwAFAAAAAAAMABUAAwAFAAAAAAANAAsAAwAGAAMAAAANABMAAwAFAAAAAAANABQAAwAFAAAAAAANABUAAwAFAAAAAAAOAAsAAwAGAAMAAAAOABMAAwAFAAAAAAAOABQAAwAFAAAAAAAOABUAAwAFAAAAAAAPAAsAAwAQAAEAAAAPABMAAwAFAAAAAAAPABQAAwAFAAAAAAAPABUAAwAFAAAAAAAQABMAAwAFAAAAAAAQABQAAwAFAAAAAAAQABUAAwAFAAAAAAARAA0AAwANAAEAAAARABMAAwAFAAAAAAARABQAAwAFAAAAAAARABUAAwAFAAAAAAASAA0AAwAGAAMAAAASABMAAwAFAAAAAAASABQAAwAFAAAAAAASABUAAwAFAAAAAAATAA0AAwAGAAMAAAATABMAAwAFAAAAAAATABQAAwAFAAAAAAATABUAAwAFAAAAAAAUAA0AAwAGAAMAAAAUABMAAwAFAAAAAAAUABQAAwAFAAAAAAAUABUAAwAFAAAAAAAVAA0AAwAGAAMAAAAVABMAAwAFAAAAAAAVABQAAwAFAAAAAAAVABUAAwAFAAAAAAAWAA0AAwAGAAMAAAAWABMAAwAFAAAAAAAWABQAAwAFAAAAAAAWABUAAwAFAAAAAAAXAA0AAwAQAAEAAAAXABMAAwAFAAAAAAAXABQAAwAFAAAAAAAXABUAAwAFAAAAAAAYABMAAwAFAAAAAAAYABQAAwAFAAAAAAAYABUAAwAFAAAAAAAZAAsAAwANAAEAAAAZABMAAwAFAAAAAAAZABQAAwAFAAAAAAAZABUAAwAFAAAAAAAaAAsAAwAGAAMAAAAaABMAAwAFAAAAAAAaABQAAwAFAAAAAAAaABUAAwAFAAAAAAAbAAsAAwAGAAMAAAAbABMAAwAFAAAAAAAbABQAAwAFAAAAAAAbABUAAwAFAAAAAAAcAAsAAwAGAAMAAAAcABMAAwAFAAAAAAAcABQAAwAFAAAAAAAcABUAAwAFAAAAAAAdAAsAAwAGAAMAAAAdABMAAwAFAAAAAAAdABQAAwAFAAAAAAAdABUAAwAFAAAAAAAeAAsAAwAGAAMAAAAeABMAAwAFAAAAAAAeABQAAwAFAAAAAAAeABUAAwAFAAAAAAAfAAsAAwAQAAEAAAAfABMAAwAFAAAAAAAfABQAAwAFAAAAAAAfABUAAwAFAAAAAAAgABMAAwAFAAAAAAAgABQAAwAFAAAAAAAgABUAAwAFAAAAAAAhABMAAwAFAAAAAAAhABQAAwAFAAAAAAAhABUAAwAFAAAAAAAiABMAAwAFAAAAAAAiABQAAwAFAAAAAAAiABUAAwAFAAAAAAAjABMAAwAFAAAAAAAjABQAAwAFAAAAAAAjABUAAwAFAAAAAAAkABMAAwAFAAAAAAAkABQAAwAFAAAAAAAkABUAAwAFAAAAAAAlABMAAwAFAAAAAAAlABQAAwAFAAAAAAAlABUAAwAFAAAAAAAmABMAAwAFAAAAAAAmABQAAwAFAAAAAAAmABUAAwAFAAAAAAAnABMAAwAFAAAAAAAnABQAAwAFAAAAAAAnABUAAwAFAAAAAAAoABMAAwAFAAAAAAAoABQAAwAFAAAAAAAoABUAAwAFAAAAAAApABIAAwACAAAAAAAqABIAAwACAAAAAAArABIAAwACAAAAAAAsABIAAwACAAAAAAAtABIAAwACAAAAAAAuABIAAwACAAAAAAAvABIAAwACAAAAAAAwABIAAwACAAAAAAAxABIAAwACAAAAAAAyABIAAwACAAAAAAAzABIAAwACAAAAAAA0ABIAAwACAAAAAAA1ABIAAwACAAAAAAA2ABIAAwACAAAAAAA=")
+tile_set = ExtResource("1_ymxj7")
+
+[node name="Player" parent="." instance=ExtResource("2_i0yh0")]
+position = Vector2(17, 220)
+
+[node name="Camera" parent="." instance=ExtResource("3_vqvlg")]
+position = Vector2(1, 168)
+zoom = Vector2(1.2, 1.2)
+limit_right = 645
+
+[node name="Marks_teleporters" type="Node2D" parent="."]
+
+[node name="Marker2D" type="Marker2D" parent="Marks_teleporters"]
+position = Vector2(207, 91)
+
+[node name="Marker2D2" type="Marker2D" parent="Marks_teleporters"]
+position = Vector2(461, 102)
+
+[node name="Marker2D3" type="Marker2D" parent="Marks_teleporters"]
+position = Vector2(335, 212)
+
+[node name="Marker2D4" type="Marker2D" parent="Marks_teleporters"]
+position = Vector2(329, 60)
+
+[node name="Pharaoh" parent="." instance=ExtResource("4_bakgd")]
+position = Vector2(330, 129)
+
+[node name="Levelend" parent="." instance=ExtResource("5_a82b8")]
+position = Vector2(645, 185)
+next_level = "grass"
+
+[node name="Fade_transition" parent="." instance=ExtResource("6_6mj0v")]
+visible = false
+offset_right = 1114.0
+offset_bottom = 482.0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_dba4w")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="4" type="ParallaxLayer" parent="ParallaxBackground"]
+top_level = true
+motion_scale = Vector2(0.1, 0.1)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/4"]
+top_level = true
+z_index = 1
+position = Vector2(468, 3)
+texture = ExtResource("9_46u8i")
+centered = false
+
+[node name="3" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.1, 0.1)
+motion_mirroring = Vector2(256, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/3"]
+modulate = Color(0.377919, 0.377919, 0.377919, 1)
+show_behind_parent = true
+texture_repeat = 2
+position = Vector2(0, -1)
+texture = ExtResource("10_7g8pu")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 512, 256)
+
+[node name="2" type="ParallaxLayer" parent="ParallaxBackground"]
+texture_repeat = 2
+motion_scale = Vector2(0.2, 0.2)
+motion_mirroring = Vector2(512, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/2"]
+texture_repeat = 2
+texture = ExtResource("11_itvji")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 512, 256)
+
+[node name="1" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.6, 0.6)
+motion_mirroring = Vector2(256, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/1"]
+texture_repeat = 2
+texture = ExtResource("12_hwjfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 512, 256)

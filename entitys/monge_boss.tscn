@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://ba84xdhyr2brm"]
+[gd_scene load_steps=10 format=3 uid="uid://ba84xdhyr2brm"]
 
 [ext_resource type="PackedScene" uid="uid://dp6a6xa14qwsg" path="res://entitys/Animações/animação_monge_boss.tscn" id="1_1nba3"]
 [ext_resource type="Script" uid="uid://dgsd3okjg2lh0" path="res://scripts/monge_boss.gd" id="1_dift6"]
 [ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="3_mx1ot"]
+[ext_resource type="Texture2D" uid="uid://cv7pq2bjb3meb" path="res://icon.svg" id="3_tnmg1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rwuqp"]
 radius = 19.0
@@ -15,6 +16,7 @@ size = Vector2(44, 64)
 size = Vector2(27, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_16j51"]
+size = Vector2(11.8, 18.1429)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tnmg1"]
 size = Vector2(22, 38.4167)
@@ -33,8 +35,8 @@ collision_mask = 2
 
 [node name="Monge_boss" parent="." instance=ExtResource("1_1nba3")]
 scale = Vector2(0.9, 0.9)
-offset = Vector2(1, 1)
-region_rect = Rect2(0, 0, 72, 72)
+offset = Vector2(2, 2)
+region_rect = Rect2(62, 141, 53, 68)
 
 [node name="AnimationPlayer" parent="Monge_boss" index="0"]
 autoplay = "Idle"
@@ -58,6 +60,12 @@ shape = SubResource("RectangleShape2D_mx1ot")
 disabled = true
 debug_color = Color(0.835718, 1.73271e-06, 4.81307e-07, 0.419608)
 
+[node name="attack_reto_sprite" type="Sprite2D" parent="Staff Hitbox"]
+visible = false
+position = Vector2(0, 3.5)
+scale = Vector2(2.125, 0.117188)
+texture = ExtResource("3_tnmg1")
+
 [node name="Cima hitbox" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 2
@@ -67,6 +75,11 @@ scale = Vector2(10, 7)
 shape = SubResource("RectangleShape2D_16j51")
 disabled = true
 debug_color = Color(0.693013, 0.378275, 9.62615e-08, 0.419608)
+
+[node name="attack_sprite" type="Sprite2D" parent="Cima hitbox"]
+visible = false
+scale = Vector2(0.914063, 0.976861)
+texture = ExtResource("3_tnmg1")
 
 [node name="Roll Hitbox" type="Area2D" parent="."]
 collision_layer = 0

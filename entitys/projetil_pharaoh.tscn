@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnqv6m1lb24o0"]
+
+[ext_resource type="Script" uid="uid://cng2ekxocc5pk" path="res://scripts/projetil_pharaoh.gd" id="1_21a2b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xyc06"]
+size = Vector2(12, 14)
+
+[node name="projetil_pharaoh" type="Area2D"]
+script = ExtResource("1_21a2b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_xyc06")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="timer" to="." method="_on_timer_timeout"]

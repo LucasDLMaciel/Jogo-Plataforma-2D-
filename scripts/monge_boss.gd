@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @onready var anim: AnimationPlayer = $Monge_boss/AnimationPlayer
 @onready var Hitbox: Area2D = $Hitbox
-@onready var attack_cima_sprite: Sprite2D = $"Cima hitbox/attack_sprite"
+@onready var attack_cima_sprite: AnimatedSprite2D = $"Cima hitbox/attack_sprite"
 @onready var attack_reto_sprite: Sprite2D = $"Staff Hitbox/attack_reto_sprite"
 @export var health: int = 40
 @export var hit: int = 0
@@ -207,9 +207,11 @@ func atacar(tipo : String):
 			camera.frame_frezee(0.2, 0.2)
 			if sprite.flip_h == false:
 				reto_hitbox.global_position.x = global_position.x+154
+				attack_reto_sprite.flip_h = true
 			else:
 				reto_hitbox.global_position.x = global_position.x-154
-			anim.play("StaffAttack", -1, 1.0*fase)
+				attack_reto_sprite.flip_h = false
+			anim.play("StaffAttack", -1, 1.0)
 			await get_tree().create_timer(1).timeout
 			reto_hitbox.get_node("attack_reto_sprite").set_deferred("visible", true)
 			reto_hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
@@ -220,7 +222,8 @@ func atacar(tipo : String):
 		"cima":
 			#anim.play("cima")
 			jump()
-			anim.play("swing", -1, 1.0*fase)
+			anim.play("swing", -1, 1.0)
+			
 			camera.screen_shake(10, 2)
 			camera.frame_frezee(0.2, 0.2)
 			if sprite.flip_h == false:
@@ -228,6 +231,7 @@ func atacar(tipo : String):
 			else:
 				cima_hitbox.global_position.x = global_position.x-80
 			await get_tree().create_timer(1).timeout
+			attack_cima_sprite.play("default", 1.0)
 			cima_hitbox.get_node("attack_sprite").set_deferred("visible", true)
 			cima_hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
 			await anim.animation_finished

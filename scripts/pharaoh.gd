@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @export var speed: float = 100.0
 @export var float_strength: float = 40.0
-@export var health = 20
+@export var health = 25
 @onready var pharaoh_remaster: Sprite2D = $"pharaoh-remaster"
 @export var chance_ficar_parado: float = 1 
 var dead = false
@@ -38,7 +38,7 @@ func _physics_process(delta: float):
 		dead = true
 		velocity = Vector2.ZERO
 		anim.play("idle")
-		$Hitbox.get_node("CollisionShape2D").set_deferred("Disabled", true)
+		$Hitbox/CollisionShape2D.disabled = true
 		$Float_timer.stop()
 		modulate.a -= 0.005
 		return
@@ -92,13 +92,12 @@ func _on_float_timer_timeout() -> void:
 	tween.set_trans(Tween.TRANS_EXPO)
 	tween.set_speed_scale(0.8)
 	tween.tween_property(self, "global_position", target.global_position, time)
+	$dash.play()
 
 func levar_dano(dano: int):
-	if is_invecible:
-		return
-	health -= dano
 	$hit.pitch_scale = randf_range(1.5,3.0)
 	$hit.play()
+	health -= dano
 		
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):

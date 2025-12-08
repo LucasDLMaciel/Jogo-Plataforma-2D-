@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c6kn1yl7uhx5q"]
+[gd_scene load_steps=19 format=3 uid="uid://c6kn1yl7uhx5q"]
 
 [ext_resource type="Shader" uid="uid://d4j6srnjxtcbp" path="res://shaders/player.gdshader" id="1_ap6pa"]
 [ext_resource type="Script" uid="uid://ih88233oc7tv" path="res://scripts/player.gd" id="1_rpcr7"]
@@ -8,7 +8,11 @@
 [ext_resource type="AudioStream" uid="uid://cdmiasxivrimt" path="res://audio/sfx/personagem_caindo_no_chao.wav" id="6_dv0bu"]
 [ext_resource type="AudioStream" uid="uid://cjcmw8ps2stqy" path="res://audio/sfx/passos_firmes.wav" id="7_cm21i"]
 [ext_resource type="AudioStream" uid="uid://crigreivxtmgx" path="res://audio/sfx/dash.wav" id="8_k51nl"]
+[ext_resource type="AudioStream" uid="uid://drti125d74ebx" path="res://audio/sfx/dash_restaurado.wav" id="9_id8ad"]
 [ext_resource type="AudioStream" uid="uid://5807gn300efa" path="res://audio/sfx/bonk-sound-effect-36055.mp3" id="9_wxf8w"]
+[ext_resource type="AudioStream" uid="uid://bppov3tvkwch7" path="res://audio/sfx/tomar_dano.wav" id="10_qjhr6"]
+[ext_resource type="Texture2D" uid="uid://cv7pq2bjb3meb" path="res://icon.svg" id="10_smy33"]
+[ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="13_syogb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5r6av"]
 shader = ExtResource("1_ap6pa")
@@ -35,6 +39,7 @@ collision_mask = 9
 platform_on_leave = 2
 script = ExtResource("1_rpcr7")
 MAX_SPEED = 85.0
+Health = 5
 
 [node name="cuckold_knight" parent="." instance=ExtResource("3_ebhgt")]
 position = Vector2(-1.90735e-06, -9.53674e-07)
@@ -132,9 +137,82 @@ stream = ExtResource("8_k51nl")
 volume_db = -10.0
 pitch_scale = 2.0
 
+[node name="dash_cooldown" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_id8ad")
+volume_db = -10.0
+
 [node name="pogo" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("9_wxf8w")
 max_polyphony = 3
+
+[node name="levardano" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_qjhr6")
+volume_db = -10.0
+
+[node name="Health Bar" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Health Bar"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="heart" type="TextureRect" parent="Health Bar/HBoxContainer"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Health Bar/HBoxContainer/heart"]
+position = Vector2(8, 7)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("10_smy33")
+
+[node name="heart2" type="TextureRect" parent="Health Bar/HBoxContainer"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Health Bar/HBoxContainer/heart2"]
+position = Vector2(8, 7)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("10_smy33")
+
+[node name="heart3" type="TextureRect" parent="Health Bar/HBoxContainer"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Health Bar/HBoxContainer/heart3"]
+position = Vector2(8, 7)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("10_smy33")
+
+[node name="heart4" type="TextureRect" parent="Health Bar/HBoxContainer"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Health Bar/HBoxContainer/heart4"]
+position = Vector2(8, 7)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("10_smy33")
+
+[node name="heart5" type="TextureRect" parent="Health Bar/HBoxContainer"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Health Bar/HBoxContainer/heart5"]
+position = Vector2(8, 7)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("10_smy33")
+
+[node name="Explosion" parent="." instance=ExtResource("13_syogb")]
+
+[node name="CPUParticles2D" parent="Explosion" index="0"]
+amount = 10
+lifetime = 0.2
+explosiveness = 0.4
+use_fixed_seed = true
+seed = 584432307
+direction = Vector2(0, -1)
+spread = 80.0
+initial_velocity_max = 150.0
+scale_amount_max = 2.0
+color = Color(0.294118, 0.572549, 0.996078, 1)
 
 [connection signal="animation_finished" from="cuckold_knight/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="timers/coyote_timer" to="." method="_on_coyote_timer_timeout"]
@@ -151,3 +229,4 @@ max_polyphony = 3
 
 [editable path="cuckold_knight"]
 [editable path="blade_sprite"]
+[editable path="Explosion"]

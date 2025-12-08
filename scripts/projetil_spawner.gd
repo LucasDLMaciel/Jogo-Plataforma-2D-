@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var cooldown: float = 2.0
+@export var cooldown: float = 2.5
 @export var projectile_scene: PackedScene = preload("res://entitys/projetil_pharaoh.tscn")
 var rng := RandomNumberGenerator.new()
 var pharaohmorto
@@ -36,5 +36,6 @@ func spawn_projectil():
 	if player:
 		await get_tree().create_timer(1).timeout
 		var dir = player.global_position - chosen.global_position
+		projectile.tocar_sfx()
 		if projectile != null:
 			projectile.set_direction(dir)

@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://d3kjlksdmloy1"]
+[gd_scene load_steps=10 format=3 uid="uid://d3kjlksdmloy1"]
 
 [ext_resource type="Script" uid="uid://sd0bff3jf518" path="res://scripts/cacto.gd" id="1_d0xkh"]
 [ext_resource type="PackedScene" uid="uid://hxdsqvnq6qya" path="res://entitys/Animações/animação_cacto.tscn" id="2_l7aoo"]
 [ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="3_d0xkh"]
 [ext_resource type="AudioStream" uid="uid://b3jadixndh5jn" path="res://audio/sfx/morte_inimigo.wav" id="4_2pdke"]
+[ext_resource type="AudioStream" uid="uid://dubkjjc3ael2x" path="res://audio/sfx/cacto_respirando_e_cuspindo_espinho.wav" id="5_qean6"]
+[ext_resource type="AudioStream" uid="uid://uo5iego7ps6u" path="res://audio/sfx/cacto_explodindo.wav" id="6_7a7oe"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5nw1q"]
 height = 38.0
@@ -64,6 +66,18 @@ one_shot = true
 [node name="hit" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_2pdke")
 volume_db = -10.0
+
+[node name="atirando" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_qean6")
+volume_db = -10.0
+pitch_scale = 2.5
+max_distance = 300.0
+max_polyphony = 3
+
+[node name="morrendo" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_7a7oe")
+pitch_scale = 2.0
+max_polyphony = 3
 
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

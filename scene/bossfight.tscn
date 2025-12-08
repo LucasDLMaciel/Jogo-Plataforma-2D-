@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://eo7hem6xs057"]
+[gd_scene load_steps=15 format=4 uid="uid://eo7hem6xs057"]
 
 [ext_resource type="Script" uid="uid://yc64xgvej7ro" path="res://scripts/bossfight.gd" id="1_5pjee"]
 [ext_resource type="TileSet" uid="uid://c42iww6kla1bj" path="res://tiles/game.tres" id="1_ymxj7"]
@@ -13,6 +13,9 @@
 [ext_resource type="Texture2D" uid="uid://d4b4oxsuark4w" path="res://sprites/Platformer - desert/Background/BG-mountains.png" id="11_itvji"]
 [ext_resource type="Texture2D" uid="uid://b0y2qjngj535g" path="res://sprites/Platformer - desert/Background/BG-ruins.png" id="12_hwjfh"]
 [ext_resource type="Script" uid="uid://bwqa3c1dau8vq" path="res://scripts/projetil_spawner.gd" id="13_7g8pu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7g8pu"]
+size = Vector2(20, 104)
 
 [node name="bossfight" type="Node2D"]
 script = ExtResource("1_5pjee")
@@ -115,3 +118,9 @@ region_rect = Rect2(0, 0, 512, 256)
 
 [node name="ProjetilSpawner" type="Node2D" parent="."]
 script = ExtResource("13_7g8pu")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-8, 191)
+shape = SubResource("RectangleShape2D_7g8pu")

@@ -63,6 +63,7 @@ var is_attacking
 var scale_slash
 var attacks = 2
 var direction
+var hearts_list : Array[TextureRect]
 
 func _ready() -> void:
 	go_to_idle_state()
@@ -77,6 +78,11 @@ func _ready() -> void:
 	if nodes.size() == 0:
 		return
 	camera = nodes[0]
+	var hearts_parents = $"Health Bar/HBoxContainer"
+	for child in hearts_parents.get_children():
+		hearts_list.append(child)
+	print(hearts_list)
+
 
 func _physics_process(delta: float) -> void:
 	if is_on_floor():
@@ -135,7 +141,6 @@ func go_to_falling_state():
 	
 func go_to_dash_state():
 	status = PlayerState.dash
-	$dash.play()
 	print("indo pro dodge")
 	
 func go_to_attack_state():
@@ -300,6 +305,8 @@ func _on_dash_effect_timeout() -> void:
 
 func _on_dash_cooldown_timeout() -> void:
 	cooldown = false
+	$Explosion/CPUParticles2D.emitting = true
+	$dash_cooldown.play()
 
 func attack():
 	if Input.is_action_just_pressed("attack"):
@@ -399,10 +406,19 @@ func levar_dano():
 	velocity.y += knockback_strenght.y
 	camera.screen_shake(2, 0.3)
 	frame_frezee(0.2, 0.2)
+	$levardano.play()
+	update_heart_display()
 	print(Health)
 	if Health == 0:
 		if status != PlayerState.dead:
 			go_to_dead_state()
+
+func update_heart_display():
+	for i in range(hearts_list.size()):
+		hearts_list[i].visible = i < Health
+
+func heal():
+	pass
 
 func can_jump() -> bool:
 	return jump_count < jump_amount
@@ -411,6 +427,7 @@ func andar(_delta):
 	var direction := Input.get_axis("left", "right")
 	if doDash:
 		anim_player.play("Dodge", -1, 1.0)
+		$dash.play()
 		is_invincible = true
 		dash_invencible_timer.start()
 		if dashDirection == 0:

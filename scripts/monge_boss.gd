@@ -227,6 +227,7 @@ func atacar(tipo : String):
 			await get_tree().create_timer(1).timeout
 			reto_hitbox.get_node("attack_reto_sprite").set_deferred("visible", true)
 			reto_hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
+			$golpe_1.play()
 			await anim.animation_finished
 			reto_hitbox.get_node("attack_reto_sprite").set_deferred("visible", false)
 			reto_hitbox.get_node("CollisionShape2D").set_deferred("disabled", true)

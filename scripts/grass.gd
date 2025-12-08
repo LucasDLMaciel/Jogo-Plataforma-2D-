@@ -10,3 +10,6 @@ func _process(delta: float) -> void:
 	var monge = get_tree().get_nodes_in_group("inimigos")[0]
 	if monge.get_monge_morto():
 		$AudioStreamPlayer.stop()
+		$Levelend.monitoring = true
+	else:
+		$Levelend.monitoring = false

@@ -140,7 +140,7 @@ func dead_state(_delta):
 
 func go_to_dash_state():
 	status = MorcegoState.DASH
-		
+	$dash.play()
 	velocity.x = direcao_dash * DASH_SPEED
 	velocity.y = 0
 	dash_timer.start()

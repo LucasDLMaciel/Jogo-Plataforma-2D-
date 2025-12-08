@@ -3,7 +3,7 @@ extends ScrollContainer
 @export var text_node : RichTextLabel
 @export_range(1, 100000,0.1) var credits_time : float = 1
 @export_range(1, 100000,0.1) var margin_increment : float = 0
-
+var acabou = false
 @onready var margin : MarginContainer = $MarginContainer
 
 func _ready() -> void:
@@ -25,10 +25,14 @@ func _ready() -> void:
 	tween.tween_property(self, "scroll_vertical", scroll_amount, credits_time)
 	tween.finished.connect(menu_principal)
 
-	
-func menu_principal():
-	$MarginContainer/Control/Button.show()
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("ui_accept") && acabou:
+		get_tree().change_scene_to_file("res://scene/main_menu.tscn")
+		$AudioStreamPlayer.stop()
+	elif acabou:
+		await get_tree().create_timer(30).timeout
+		get_tree().change_scene_to_file("res://scene/main_menu.tscn")
+		$AudioStreamPlayer.stop()
 
-func _on_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scene/main_menu.tscn")
-	$AudioStreamPlayer.stop()
+func menu_principal():
+	acabou = true

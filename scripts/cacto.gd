@@ -69,12 +69,16 @@ func go_to_dead_state():
 	await get_tree().create_timer(1.5).timeout
 	set_collision_mask_value(2, false)
 	explode()
+	$morrendo.play()
 	await get_tree().create_timer(0.25).timeout
+	modulate.a = 0
+	await get_tree().create_timer(0.5).timeout
 	queue_free()
 
 func go_to_attack_state():
 	status = CactoEstado.attack
 	anim.play("attack")
+	$atirando.play()
 	duracao_anim.start()
 	if attack_cooldown.is_stopped():
 		can_throw = true

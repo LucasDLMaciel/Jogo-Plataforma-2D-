@@ -116,6 +116,10 @@ max_distance = 300.0
 max_polyphony = 2
 area_mask = 3
 
+[node name="dash" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_xep2e")
+pitch_scale = 5.0
+
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="body_entered" from="DetectLeft" to="." method="_on_detect_left_body_entered"]
 [connection signal="body_entered" from="DetectRight" to="." method="_on_detect_right_body_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://ba84xdhyr2brm"]
+[gd_scene load_steps=22 format=3 uid="uid://ba84xdhyr2brm"]
 
 [ext_resource type="PackedScene" uid="uid://dp6a6xa14qwsg" path="res://entitys/Animações/animação_monge_boss.tscn" id="1_1nba3"]
 [ext_resource type="Script" uid="uid://dgsd3okjg2lh0" path="res://scripts/monge_boss.gd" id="1_dift6"]
@@ -7,13 +7,14 @@
 [ext_resource type="Texture2D" uid="uid://bxk00fmjbx8nr" path="res://sprites/inimigos/Tornado-Sheet.png" id="4_16j51"]
 [ext_resource type="AudioStream" uid="uid://bsxgtwbe1jbxi" path="res://audio/sfx/som monge derrotado.wav" id="6_rjthu"]
 [ext_resource type="AudioStream" uid="uid://b3jadixndh5jn" path="res://audio/sfx/morte_inimigo.wav" id="7_myqae"]
+[ext_resource type="AudioStream" uid="uid://jmgy1enldr0k" path="res://audio/sfx/estocada_bastao.wav" id="8_dq1kb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rwuqp"]
 radius = 19.0
 height = 64.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dift6"]
-size = Vector2(44, 64)
+size = Vector2(32, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mx1ot"]
 size = Vector2(22.1, 16)
@@ -93,7 +94,7 @@ size = Vector2(22, 38.4167)
 [node name="Monge Boss" type="CharacterBody2D" groups=["inimigos"]]
 collision_layer = 4
 script = ExtResource("1_dift6")
-health = 30
+health = 50
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -105,6 +106,8 @@ collision_mask = 2
 
 [node name="Monge_boss" parent="." instance=ExtResource("1_1nba3")]
 scale = Vector2(0.9, 0.9)
+offset = Vector2(1, 1)
+region_rect = Rect2(263, 161, 72, 71)
 
 [node name="AnimationPlayer" parent="Monge_boss" index="0"]
 autoplay = "Idle"
@@ -176,6 +179,9 @@ stream = ExtResource("7_myqae")
 volume_db = -10.0
 
 [node name="golpe_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_dq1kb")
+pitch_scale = 0.5
+max_polyphony = 3
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="area_entered" from="Staff Hitbox" to="." method="_on_staff_hitbox_area_entered"]

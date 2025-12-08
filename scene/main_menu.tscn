@@ -1,9 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://cvebitm8pu4it"]
+[gd_scene load_steps=9 format=3 uid="uid://cvebitm8pu4it"]
 
 [ext_resource type="Script" uid="uid://b62jsssntcu41" path="res://scripts/main_menu.gd" id="1_3er1b"]
 [ext_resource type="Texture2D" uid="uid://cvtiqig3d3o3y" path="res://scene/Main_menu_background.png" id="2_0iwki"]
 [ext_resource type="PackedScene" uid="uid://bwphln74ksfo7" path="res://scene/fade_transition.tscn" id="2_hxu56"]
 [ext_resource type="AudioStream" uid="uid://7tcd1l0bcq0p" path="res://audio/musicas/Menu_background.wav" id="3_2fwvj"]
+[ext_resource type="FontFile" uid="uid://rbtia7q4sq84" path="res://fonts/Minecraft.ttf" id="3_14wem"]
+[ext_resource type="Script" uid="uid://bhbm5kjo3mf6x" path="res://scripts/start.gd" id="3_sepwh"]
+
+[sub_resource type="FontVariation" id="FontVariation_2atga"]
+base_font = ExtResource("3_14wem")
+
+[sub_resource type="FontVariation" id="FontVariation_14wem"]
+base_font = ExtResource("3_14wem")
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_3er1b")
@@ -21,21 +29,30 @@ offset_bottom = 40.0
 
 [node name="Start" type="Button" parent="ButtonManager"]
 layout_mode = 0
-offset_left = 207.0
-offset_top = 102.0
-offset_right = 303.0
-offset_bottom = 133.0
+offset_left = 148.0
+offset_top = 113.0
+offset_right = 384.0
+offset_bottom = 161.0
 mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
+theme_override_fonts/font = SubResource("FontVariation_2atga")
+theme_override_font_sizes/font_size = 40
 text = "Start Game"
+flat = true
+script = ExtResource("3_sepwh")
 
 [node name="Exit" type="Button" parent="ButtonManager"]
 layout_mode = 0
-offset_left = 236.0
-offset_top = 175.0
-offset_right = 273.0
-offset_bottom = 206.0
+offset_left = 210.0
+offset_top = 187.0
+offset_right = 296.0
+offset_bottom = 235.0
 mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
+theme_override_fonts/font = SubResource("FontVariation_14wem")
+theme_override_font_sizes/font_size = 40
 text = "Exit"
+flat = true
 
 [node name="ColorRect" parent="." instance=ExtResource("2_hxu56")]
 visible = false

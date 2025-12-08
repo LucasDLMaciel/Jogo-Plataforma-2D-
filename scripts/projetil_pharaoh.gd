@@ -1,27 +1,34 @@
 extends Area2D
 
-var speed = 90
-var direction = 1
+@export var speed: float = 220.0
+var direction: Vector2 = Vector2.ZERO
 var colidiu = false
+
+@onready var anim: AnimatedSprite2D = $"projetil-pharoh"
 @onready var timer: Timer = $timer
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	if colidiu:
-		position = position
-		return
-	position += speed * delta * direction
-	
-func set_direction(direction: Vector2):
-	self.direction = direction.normalized()
+func _ready():
+	timer.start()
+	anim.play("Rodando")
 
-func _on_area_entered(area: Area2D) -> void:
+func _process(delta):
+	if colidiu:
+		return
+	
+	position += direction * speed * delta
+
+func set_direction(dir: Vector2):
+	direction = dir.normalized()
+
+func _on_area_entered(area: Area2D):
+	if colidiu:
+		return
 	colidiu = true
 	var player
 	if area.get_collision_layer_value(2):
 		player = area.get_parent()
 		player.levar_dano()
+	await get_tree().create_timer(0.25).timeout
 	queue_free()
-
-func _on_timer_timeout() -> void:
+func _on_timer_timeout():
 	queue_free()

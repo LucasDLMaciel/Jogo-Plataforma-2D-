@@ -81,6 +81,11 @@ func levar_dano(dano: int):
 	health -= dano
 	if health <= 0:
 		go_to_dead_state()
+		$hit.pitch_scale = 1.0
+		$hit.play()
+		return
+	$hit.pitch_scale = randf_range(1.5,3.0)
+	$hit.play()
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
@@ -104,6 +109,8 @@ func fly_state(delta):
 	if global_position.y > TARGET_ALTITUDE + ALT_TOLERANCE:
 		velocity.y = FLAP_STRENGTH
 		sprite.play("voando", 2.0)
+		$asas.pitch_scale = randf_range(1.5, 2.0)
+		$asas.play()
 		if flip_dir:
 			wander_dir = -wander_dir  # flip direction
 			sprite.flip_h = !sprite.flip_h

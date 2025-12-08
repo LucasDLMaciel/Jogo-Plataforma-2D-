@@ -1,10 +1,12 @@
-[gd_scene load_steps=19 format=3 uid="uid://ba84xdhyr2brm"]
+[gd_scene load_steps=21 format=3 uid="uid://ba84xdhyr2brm"]
 
 [ext_resource type="PackedScene" uid="uid://dp6a6xa14qwsg" path="res://entitys/Animações/animação_monge_boss.tscn" id="1_1nba3"]
 [ext_resource type="Script" uid="uid://dgsd3okjg2lh0" path="res://scripts/monge_boss.gd" id="1_dift6"]
 [ext_resource type="Texture2D" uid="uid://1dfy4jqb4wlk" path="res://sprites/inimigos/pau2.png" id="3_16j51"]
 [ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="3_mx1ot"]
 [ext_resource type="Texture2D" uid="uid://bxk00fmjbx8nr" path="res://sprites/inimigos/Tornado-Sheet.png" id="4_16j51"]
+[ext_resource type="AudioStream" uid="uid://bsxgtwbe1jbxi" path="res://audio/sfx/som monge derrotado.wav" id="6_rjthu"]
+[ext_resource type="AudioStream" uid="uid://b3jadixndh5jn" path="res://audio/sfx/morte_inimigo.wav" id="7_myqae"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rwuqp"]
 radius = 19.0
@@ -91,6 +93,7 @@ size = Vector2(22, 38.4167)
 [node name="Monge Boss" type="CharacterBody2D" groups=["inimigos"]]
 collision_layer = 4
 script = ExtResource("1_dift6")
+health = 30
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -163,6 +166,16 @@ debug_color = Color(0.449439, 0.596355, 0, 0.42)
 one_shot = true
 
 [node name="Explosion" parent="." instance=ExtResource("3_mx1ot")]
+
+[node name="Morreu_sfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_rjthu")
+volume_db = -10.0
+
+[node name="hit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_myqae")
+volume_db = -10.0
+
+[node name="golpe_1" type="AudioStreamPlayer" parent="."]
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="area_entered" from="Staff Hitbox" to="." method="_on_staff_hitbox_area_entered"]

@@ -28,15 +28,6 @@ offset_bottom = 133.0
 mouse_default_cursor_shape = 2
 text = "Start Game"
 
-[node name="Options" type="Button" parent="ButtonManager"]
-layout_mode = 0
-offset_left = 219.0
-offset_top = 139.0
-offset_right = 289.0
-offset_bottom = 170.0
-mouse_default_cursor_shape = 2
-text = "Options"
-
 [node name="Exit" type="Button" parent="ButtonManager"]
 layout_mode = 0
 offset_left = 236.0
@@ -55,7 +46,6 @@ visible = false
 stream = ExtResource("3_2fwvj")
 
 [connection signal="pressed" from="ButtonManager/Start" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="ButtonManager/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="ButtonManager/Exit" to="." method="_on_exit_pressed"]
 [connection signal="timeout" from="ColorRect/fade_timer" to="." method="_on_fade_timer_timeout"]
 

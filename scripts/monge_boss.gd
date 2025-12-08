@@ -101,7 +101,14 @@ func go_to_dead_state():
 	status = MongeState.dead
 	anim.play("Idle")
 	velocity = Vector2.ZERO
+	velocity.y = get_gravity().y
 	await(get_tree().create_timer(0.2).timeout)
+	$Morreu_sfx.play()
+	attack_cima_sprite.visible = false
+	attack_reto_sprite.visible = false
+	reto_hitbox.get_node("CollisionShape2D").set_deferred("disabled", true)
+	cima_hitbox.get_node("CollisionShape2D").set_deferred("disabled", true)	
+	roll_hitbox.get_node("CollisionShape2D").set_deferred("disabled", true)		
 	Hitbox.process_mode = Node.PROCESS_MODE_DISABLED
 
 func go_to_idle_state():
@@ -193,6 +200,11 @@ func levar_dano(dano: int):
 	print(hit)
 	if health <= 0:
 		go_to_dead_state()
+		$hit.pitch_scale = 1.0
+		$hit.play()
+		return
+	$hit.pitch_scale = randf_range(1.5,3.0)
+	$hit.play()
 
 func escolher_ataque():
 	pode_atacar = false 
@@ -279,7 +291,7 @@ func _on_staff_hitbox_area_entered(area: Area2D) -> void:
 
 func _on_roll_hitbox_area_entered(area: Area2D) -> void:
 	player = area.get_parent()
-	if player.is_in_group("Player") && !is_attacking:
+	if player.is_in_group("Player") && !is_attacking && !dead:
 		doRoll = true
 		is_rolling = true
 		go_to_walk_state()
@@ -315,3 +327,9 @@ func anim_tapa(directionExp : Vector2) -> void:
 	elif directionExp.y == -1:
 		explosion.global_position = Vector2(global_position.x, global_position.y-15)	
 	explosion.anim_tapa(directionExp)
+
+func get_monge_morto():
+	if dead:
+		return 1
+	else: 
+		return 0

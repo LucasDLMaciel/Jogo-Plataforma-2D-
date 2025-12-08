@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://d3kjlksdmloy1"]
+[gd_scene load_steps=8 format=3 uid="uid://d3kjlksdmloy1"]
 
 [ext_resource type="Script" uid="uid://sd0bff3jf518" path="res://scripts/cacto.gd" id="1_d0xkh"]
 [ext_resource type="PackedScene" uid="uid://hxdsqvnq6qya" path="res://entitys/Animações/animação_cacto.tscn" id="2_l7aoo"]
 [ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="3_d0xkh"]
+[ext_resource type="AudioStream" uid="uid://b3jadixndh5jn" path="res://audio/sfx/morte_inimigo.wav" id="4_2pdke"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5nw1q"]
 height = 38.0
@@ -59,6 +60,10 @@ one_shot = true
 one_shot = true
 
 [node name="Explosion" parent="." instance=ExtResource("3_d0xkh")]
+
+[node name="hit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_2pdke")
+volume_db = -10.0
 
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

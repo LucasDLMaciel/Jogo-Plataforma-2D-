@@ -173,7 +173,11 @@ func levar_dano(dano: int):
 	health -= dano
 	if health <= 0:
 		go_to_dead_state()
-		
+		$hit.pitch_scale = 1.0
+		$hit.play()
+		return
+	$hit.pitch_scale = randf_range(1.5,3.0)
+	$hit.play()
 func anim_tapa(directionExp : Vector2) -> void:
 	explosion.get_children()[0].color = Color.html("#7DF527")
 	if health == 0:

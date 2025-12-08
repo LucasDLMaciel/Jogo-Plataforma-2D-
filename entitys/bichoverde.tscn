@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://byvkn0mhvm6tr"]
+[gd_scene load_steps=15 format=3 uid="uid://byvkn0mhvm6tr"]
 
 [ext_resource type="Script" uid="uid://hfqhhh7nr6nf" path="res://scripts/bichoverde.gd" id="1_wigbd"]
 [ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="3_edjfd"]
 [ext_resource type="Texture2D" uid="uid://d03p0ev88ugad" path="res://sprites/inimigos/bicho verde.png" id="3_v8eoc"]
+[ext_resource type="AudioStream" uid="uid://b3jadixndh5jn" path="res://audio/sfx/morte_inimigo.wav" id="4_edjfd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wigbd"]
 size = Vector2(8.88886, 33.3334)
@@ -112,6 +113,10 @@ scale = Vector2(0.744311, 0.973381)
 shape = SubResource("CapsuleShape2D_v8eoc")
 
 [node name="Explosion" parent="." instance=ExtResource("3_edjfd")]
+
+[node name="hit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_edjfd")
+volume_db = -10.0
 
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

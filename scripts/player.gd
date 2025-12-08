@@ -113,16 +113,19 @@ func go_to_dead_state():
 func go_to_idle_state():
 	status = PlayerState.idle
 	anim_player.play("Idle", -1, 2.0)
+	$Andando.stop()
 	print("indo pro idle")
 	
 func go_to_walking_state():
 	status = PlayerState.walking
 	anim_player.play("Walking", -1, 2.0)
+	$Andando.play()
 	print("indo pro walgking")
 	
 func go_to_jump_state():
 	status = PlayerState.jump
 	anim_player.play("Idle", -1, 2.0)
+	$Andando.stop()
 	print("indo pro jump")
 	
 func go_to_falling_state():
@@ -132,6 +135,7 @@ func go_to_falling_state():
 	
 func go_to_dash_state():
 	status = PlayerState.dash
+	$dash.play()
 	print("indo pro dodge")
 	
 func go_to_attack_state():
@@ -220,6 +224,7 @@ func falling_state(delta):
 		go_to_jump_state()
 		return
 	if is_on_floor():
+		$falling.play()
 		if velocity.x == 0:
 			go_to_idle_state()
 			return
@@ -299,6 +304,8 @@ func _on_dash_cooldown_timeout() -> void:
 func attack():
 	if Input.is_action_just_pressed("attack"):
 		attack_timer.start()
+		$espada.play()
+		$espada.pitch_scale = randf_range(0.5, 2.0)
 		if (Input.is_action_pressed("up") or Input.is_action_pressed("down")):
 			area_2d_2.get_node("CollisionShape2D").set_deferred("disabled", false)
 			area_2d_2.modulate = Color.html("#FF0000")
@@ -384,7 +391,8 @@ func levar_dano():
 	if is_invincible:
 		return
 	is_invincible = true
-	#Health -= 1
+	hitbox.get_node("CollisionShape2D").set_deferred("Disabled", true)
+	Health -= 1
 	modulate = Color(1, 1, 1, 0.5)
 	invecible_time.start()
 	velocity.y = 0
@@ -443,6 +451,7 @@ func frame_frezee(timeScale, duration):
 
 func _on_invecible_time_timeout() -> void:
 	is_invincible = false
+	hitbox.get_node("CollisionShape2D").set_deferred("Disabled", false)
 	modulate = Color(1, 1, 1, 1)
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
@@ -508,6 +517,8 @@ func pogo():
 	var apex_velocity = velocity_inicial * 0.2
 	tween.tween_property(self, "velocity:y", velocity_inicial, 0.05).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "velocity:y", apex_velocity, 0.05).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	$pogo.pitch_scale = randf_range(1.0, 2.0)
+	$pogo.play()
 	
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name.begins_with("Attacking"):
@@ -541,6 +552,7 @@ func _on_combo_timer_timeout() -> void:
 
 func _on_dash_invencible_timer_timeout() -> void:
 	is_invincible = false
+	hitbox.get_node("CollisionShape2D").set_deferred("Disabled", false)
 
 
 func _on_attack_timer_timeout() -> void:

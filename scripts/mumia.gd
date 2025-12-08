@@ -156,6 +156,11 @@ func levar_dano(dano: int):
 	health -= dano
 	if caido && !animacao.is_playing():
 		trocar_estado(Estado.MORTO)
+		$hit.pitch_scale = 1.0
+		$hit.play()
+		return
+	$hit.pitch_scale = randf_range(1.5,3.0)
+	$hit.play()
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):

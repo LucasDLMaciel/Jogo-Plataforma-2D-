@@ -145,6 +145,12 @@ func levar_dano(dano: int):
 	if Health <= 0:
 		go_to_dead_state()
 		print("cacto morreu")
+		$hit.pitch_scale = 1.0
+		$hit.play()
+		return
+	$hit.pitch_scale = randf_range(1.5,3.0)
+	$hit.play()
+	
 
 func knockback(comando: StringName):
 	if comando in KNOCKBACK_DIRECTIONS:

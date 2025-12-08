@@ -1,19 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://dnqv6m1lb24o0"]
+[gd_scene load_steps=4 format=3 uid="uid://dnqv6m1lb24o0"]
 
 [ext_resource type="Script" uid="uid://cng2ekxocc5pk" path="res://scripts/projetil_pharaoh.gd" id="1_21a2b"]
+[ext_resource type="PackedScene" uid="uid://ckgkjdow40wcr" path="res://entitys/Animações/animação_projetil_pharaoh.tscn" id="2_k3uhn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xyc06"]
 size = Vector2(12, 14)
 
-[node name="projetil_pharaoh" type="Area2D"]
+[node name="projetil_pharaoh" type="Area2D" groups=["pogo"]]
+collision_layer = 4
+collision_mask = 2
 script = ExtResource("1_21a2b")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.8, 0.8)
 shape = SubResource("RectangleShape2D_xyc06")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-
 [node name="timer" type="Timer" parent="."]
+wait_time = 5.0
 one_shot = true
 
+[node name="projetil-pharoh" parent="." instance=ExtResource("2_k3uhn")]
+autoplay = "Rodando"
+frame_progress = 0.150922
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="timeout" from="timer" to="." method="_on_timer_timeout"]
+
+[editable path="projetil-pharoh"]

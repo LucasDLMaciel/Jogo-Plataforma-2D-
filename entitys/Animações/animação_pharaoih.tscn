@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://uggk53j6qavo"]
+
+[ext_resource type="PackedScene" uid="uid://vm0flcqsyoqp" path="res://sprites/inimigos/Aseprite/pharaoh-remaster.aseprite" id="1_pabwp"]
+
+[node name="pharaoh-remaster" instance=ExtResource("1_pabwp")]
+offset = Vector2(-9, -5)
+region_rect = Rect2(24, 0, 24, 64)

@@ -1,8 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://cofoqv43lpfmf"]
+[gd_scene load_steps=15 format=3 uid="uid://cofoqv43lpfmf"]
 
 [ext_resource type="Script" uid="uid://c8bf0ry7senhq" path="res://scripts/morcego.gd" id="1_37vnn"]
 [ext_resource type="Texture2D" uid="uid://b4a7r750swqty" path="res://sprites/inimigos/morcego-foda.png" id="1_rbujx"]
 [ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="3_0o8gh"]
+[ext_resource type="AudioStream" uid="uid://b3jadixndh5jn" path="res://audio/sfx/morte_inimigo.wav" id="4_5h8d8"]
+[ext_resource type="AudioStream" uid="uid://lkl7o40cicmx" path="res://audio/sfx/uma_batida_de_asas.wav" id="5_xep2e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_37vnn"]
 size = Vector2(20, 14)
@@ -103,6 +105,16 @@ wait_time = 0.45
 one_shot = true
 
 [node name="Explosion" parent="." instance=ExtResource("3_0o8gh")]
+
+[node name="hit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_5h8d8")
+volume_db = -10.0
+
+[node name="asas" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_xep2e")
+max_distance = 300.0
+max_polyphony = 2
+area_mask = 3
 
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="body_entered" from="DetectLeft" to="." method="_on_detect_left_body_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://b4g22xricdrtm"]
+[gd_scene load_steps=16 format=4 uid="uid://b4g22xricdrtm"]
 
 [ext_resource type="PackedScene" uid="uid://c6kn1yl7uhx5q" path="res://entitys/player.tscn" id="1_ed4ba"]
 [ext_resource type="Script" uid="uid://ba6rkpwl57fut" path="res://scripts/grass.gd" id="1_evhkj"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://bwphln74ksfo7" path="res://scene/fade_transition.tscn" id="11_2nxpy"]
 [ext_resource type="AudioStream" uid="uid://bolp8ddotm5ub" path="res://audio/musicas/monge_bossfight.wav" id="12_2nxpy"]
 [ext_resource type="PackedScene" uid="uid://cxklmmoaxt2n3" path="res://entitys/levelend.tscn" id="13_87fkw"]
+[ext_resource type="PackedScene" uid="uid://lgclg7xevlx8" path="res://scene/pause_menu.tscn" id="14_0rtqp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_afqef"]
 size = Vector2(20, 104)
@@ -25,6 +26,7 @@ position = Vector2(20, 227)
 
 [node name="Camera" parent="." instance=ExtResource("1_f2b4i")]
 position = Vector2(-4, 129)
+limit_right = 1200
 
 [node name="terrain" type="TileMapLayer" parent="."]
 z_index = 2
@@ -88,5 +90,9 @@ stream = ExtResource("12_2nxpy")
 volume_db = -10.0
 
 [node name="Levelend" parent="." instance=ExtResource("13_87fkw")]
-position = Vector2(1391, 193)
+position = Vector2(1322, 192)
 next_level = "Creditos"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("14_0rtqp")]

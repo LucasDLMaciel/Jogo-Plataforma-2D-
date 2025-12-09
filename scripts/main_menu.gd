@@ -22,6 +22,17 @@ func _on_exit_pressed() -> void:
 	$ColorRect/AnimationPlayer.play("fade_in")
 	$Menu_click.play()
 
+func _on_controls_pressed() -> void:
+	$ButtonManager.hide()
+	$Controles.show()
+	$Controles/MarginContainer/ScrollContainer/VBoxContainer/Sair.grab_focus()
+	$Menu_click.play()
+
+func _on_sair_pressed() -> void:
+	$ButtonManager.show()
+	$Controles.hide()
+	$ButtonManager/Controls.grab_focus()
+	$Menu_click.play()
 
 func _on_fade_timer_timeout() -> void:
 	if button_type == "start":

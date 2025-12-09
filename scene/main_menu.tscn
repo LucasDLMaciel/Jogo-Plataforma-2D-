@@ -1,26 +1,98 @@
-[gd_scene load_steps=10 format=3 uid="uid://cvebitm8pu4it"]
+[gd_scene load_steps=13 format=3 uid="uid://cvebitm8pu4it"]
 
 [ext_resource type="Script" uid="uid://b62jsssntcu41" path="res://scripts/main_menu.gd" id="1_3er1b"]
 [ext_resource type="Texture2D" uid="uid://cfveyfn2a3aoq" path="res://sprites/extras/menuprincipal.png" id="2_14wem"]
 [ext_resource type="PackedScene" uid="uid://bwphln74ksfo7" path="res://scene/fade_transition.tscn" id="2_hxu56"]
+[ext_resource type="FontFile" uid="uid://bf33r6my6k8mo" path="res://fonts/Pixellari.ttf" id="3_2atga"]
 [ext_resource type="AudioStream" uid="uid://7tcd1l0bcq0p" path="res://audio/musicas/Menu_background.wav" id="3_2fwvj"]
-[ext_resource type="FontFile" uid="uid://rbtia7q4sq84" path="res://fonts/Minecraft.ttf" id="3_14wem"]
+[ext_resource type="PackedScene" uid="uid://b3dcs18iju8g5" path="res://scene/binds.tscn" id="3_by01r"]
 [ext_resource type="Script" uid="uid://bhbm5kjo3mf6x" path="res://scripts/start.gd" id="3_sepwh"]
 [ext_resource type="AudioStream" uid="uid://ddon8aw88tuwf" path="res://audio/sfx/menu_click.wav" id="7_2atga"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_by01r"]
+
 [sub_resource type="FontVariation" id="FontVariation_2atga"]
-base_font = ExtResource("3_14wem")
+base_font = ExtResource("3_2atga")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dclss"]
 
 [sub_resource type="FontVariation" id="FontVariation_14wem"]
-base_font = ExtResource("3_14wem")
+base_font = ExtResource("3_2atga")
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_3er1b")
 
 [node name="ColorRect2" type="Sprite2D" parent="."]
-position = Vector2(258, 128)
-scale = Vector2(0.124086, 0.11584)
+position = Vector2(256, 128)
+scale = Vector2(0.0609524, 0.0542373)
 texture = ExtResource("2_14wem")
+
+[node name="Controles" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Controles"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 472.0
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Controles/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Controles/MarginContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 27
+
+[node name="Sair" type="Button" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
+theme_override_fonts/font = ExtResource("3_2atga")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_by01r")
+text = "X"
+flat = true
+
+[node name="Binds" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("3_by01r")]
+layout_mode = 2
+
+[node name="Binds2" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("3_by01r")]
+layout_mode = 2
+action_name = "right"
+
+[node name="Binds3" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("3_by01r")]
+layout_mode = 2
+action_name = "up"
+
+[node name="Binds4" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("3_by01r")]
+layout_mode = 2
+action_name = "down"
+
+[node name="Binds5" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("3_by01r")]
+layout_mode = 2
+action_name = "dash"
+
+[node name="Binds6" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("3_by01r")]
+layout_mode = 2
+action_name = "attack"
+
+[node name="Binds7" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("3_by01r")]
+layout_mode = 2
+action_name = "jump"
+
+[node name="Binds8" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("3_by01r")]
+layout_mode = 2
+action_name = "pause"
 
 [node name="ButtonManager" type="Control" parent="."]
 layout_mode = 3
@@ -30,30 +102,52 @@ offset_bottom = 40.0
 
 [node name="Start" type="Button" parent="ButtonManager"]
 layout_mode = 0
-offset_left = 20.0
-offset_top = 102.0
-offset_right = 256.0
-offset_bottom = 150.0
+offset_left = 8.0
+offset_top = 55.0
+offset_right = 115.0
+offset_bottom = 83.0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
 theme_override_fonts/font = SubResource("FontVariation_2atga")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = SubResource("StyleBoxEmpty_dclss")
 text = "Start Game"
 flat = true
+alignment = 0
 script = ExtResource("3_sepwh")
+
+[node name="Controls" type="Button" parent="ButtonManager"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 83.0
+offset_right = 90.0
+offset_bottom = 111.0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
+theme_override_fonts/font = SubResource("FontVariation_2atga")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = SubResource("StyleBoxEmpty_dclss")
+text = "Controls"
+flat = true
+alignment = 0
 
 [node name="Exit" type="Button" parent="ButtonManager"]
 layout_mode = 0
-offset_left = 89.0
-offset_top = 150.0
-offset_right = 175.0
-offset_bottom = 198.0
+offset_left = 8.0
+offset_top = 111.0
+offset_right = 49.0
+offset_bottom = 139.0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
 theme_override_fonts/font = SubResource("FontVariation_14wem")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = SubResource("StyleBoxEmpty_dclss")
 text = "Exit"
 flat = true
+alignment = 0
 
 [node name="ColorRect" parent="." instance=ExtResource("2_hxu56")]
 visible = false
@@ -65,9 +159,10 @@ stream = ExtResource("3_2fwvj")
 
 [node name="Menu_click" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_2atga")
-volume_db = -10.0
 
+[connection signal="pressed" from="Controles/MarginContainer/ScrollContainer/VBoxContainer/Sair" to="." method="_on_sair_pressed"]
 [connection signal="pressed" from="ButtonManager/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="ButtonManager/Controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="ButtonManager/Exit" to="." method="_on_exit_pressed"]
 [connection signal="timeout" from="ColorRect/fade_timer" to="." method="_on_fade_timer_timeout"]
 

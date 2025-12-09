@@ -33,6 +33,7 @@ var knockback_strength = 100
 var attack_multiplier = 150.0
 
 func _ready() -> void:
+	$cobrando.play()
 	go_to_walk_state()
 
 func _physics_process(delta: float) -> void:

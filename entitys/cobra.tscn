@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://crtipkiayxp46"]
+[gd_scene load_steps=24 format=3 uid="uid://crtipkiayxp46"]
 
 [ext_resource type="Script" uid="uid://d7povaxxds3r" path="res://scripts/cobra.gd" id="1_v61hn"]
 [ext_resource type="Texture2D" uid="uid://bvproyy7t1ja6" path="res://sprites/inimigos/cobra_atacando.png" id="2_3yxd3"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://mjkm76bu6bna" path="res://sprites/inimigos/cobra_andando.png" id="4_vouo7"]
 [ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="5_3yxd3"]
 [ext_resource type="AudioStream" uid="uid://b3jadixndh5jn" path="res://audio/sfx/morte_inimigo.wav" id="6_vfu3t"]
+[ext_resource type="AudioStream" uid="uid://cqdhhquoiefhe" path="res://audio/sfx/cobra_ambiente.wav" id="7_vouo7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kgus2"]
 radius = 22.449
@@ -164,6 +165,10 @@ one_shot = true
 [node name="hit" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_vfu3t")
 volume_db = -10.0
+
+[node name="cobrando" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_vouo7")
+max_distance = 200.0
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]

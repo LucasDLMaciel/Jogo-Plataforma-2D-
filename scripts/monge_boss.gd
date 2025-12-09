@@ -56,6 +56,8 @@ func _ready() -> void:
 	go_to_walk_state()
 
 func _process(delta: float) -> void:
+	if dead:
+		return
 	if hit >= health*0.4:
 		fase = 2
 	var nodes = get_tree().get_nodes_in_group("Player")
@@ -103,6 +105,7 @@ func go_to_dead_state():
 	velocity = Vector2.ZERO
 	velocity.y = get_gravity().y
 	await(get_tree().create_timer(0.2).timeout)
+	attack_timer.stop()
 	$Morreu_sfx.play()
 	attack_cima_sprite.visible = false
 	attack_reto_sprite.visible = false
@@ -112,8 +115,8 @@ func go_to_dead_state():
 	cima_hitbox.monitorable = false
 	roll_hitbox.monitoring = false
 	roll_hitbox.monitorable = false
-	attack_cima_sprite.visible = false
-	attack_reto_sprite.visible = false
+	attack_cima_sprite.modulate.a = 0.0
+	attack_reto_sprite.modulate.a = 0.0
 	Hitbox.process_mode = Node.PROCESS_MODE_DISABLED
 
 func go_to_idle_state():

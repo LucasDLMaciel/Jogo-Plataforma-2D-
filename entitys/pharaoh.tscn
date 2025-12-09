@@ -17,6 +17,7 @@ size = Vector2(14, 50)
 [node name="Pharaoh" type="CharacterBody2D" groups=["inimigos"]]
 collision_layer = 0
 script = ExtResource("1_55q0p")
+health = 35
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

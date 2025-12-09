@@ -113,7 +113,7 @@ func go_to_dead_state():
 	#anim_player.play("dead", 1.0, false)
 	velocity = Vector2.ZERO
 	$slide.stop()
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(0.5).timeout
 	get_tree().reload_current_scene()
 
 func go_to_idle_state():
@@ -127,12 +127,14 @@ func go_to_walking_state():
 	status = PlayerState.walking
 	anim_player.play("Walking", -1, 2.0)
 	$Andando.play()
+	$slide.stop()
 	print("indo pro walgking")
 	
 func go_to_jump_state():
 	status = PlayerState.jump
 	anim_player.play("Idle", -1, 2.0)
 	$Andando.stop()
+	$slide.stop()
 	print("indo pro jump")
 	
 func go_to_falling_state():
@@ -144,6 +146,7 @@ func go_to_falling_state():
 	
 func go_to_dash_state():
 	status = PlayerState.dash
+	$slide.stop()
 	print("indo pro dodge")
 	
 func go_to_attack_state():
@@ -154,6 +157,7 @@ func go_to_attack_state():
 func go_to_wall_state():
 	status = PlayerState.wall
 	anim_player.play("Wall Slide")
+	$slide.play()
 	velocity = Vector2.ZERO
 	print("indo pro wallslide")
 
@@ -422,10 +426,18 @@ func update_heart_display():
 		hearts_list[i].visible = i < Health
 
 func heal():
-	if Health < 5:
+	var rng := RandomNumberGenerator.new()
+	rng.randomize()
+	
+	if Health < 5 and rng.randf() <= 0.1:
 		Health += 1
+		modulate = Color.html("#4b92fe")
 		update_heart_display()
 		$heal.play()
+		await get_tree().create_timer(0.4).timeout
+		modulate = Color(1,1,1)
+
+		
 
 func can_jump() -> bool:
 	return jump_count < jump_amount

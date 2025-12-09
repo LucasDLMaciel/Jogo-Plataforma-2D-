@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://c3mq50737gltj"]
+[gd_scene load_steps=18 format=4 uid="uid://c3mq50737gltj"]
 
 [ext_resource type="PackedScene" uid="uid://c6kn1yl7uhx5q" path="res://entitys/player.tscn" id="1_afm7y"]
 [ext_resource type="Script" uid="uid://d3v6shg277biu" path="res://scripts/caves.gd" id="1_vtj8l"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://kc0kirl7uxra" path="res://sprites/UndergroundMine/Parralax Caves/2.png" id="12_xvovu"]
 [ext_resource type="PackedScene" uid="uid://byvkn0mhvm6tr" path="res://entitys/bichoverde.tscn" id="14_03uoo"]
 [ext_resource type="PackedScene" uid="uid://bwphln74ksfo7" path="res://scene/fade_transition.tscn" id="15_vtj8l"]
+[ext_resource type="PackedScene" uid="uid://lgclg7xevlx8" path="res://scene/pause_menu.tscn" id="16_ly7lb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5g16k"]
 size = Vector2(20, 183)
@@ -181,6 +182,10 @@ visible = false
 offset_top = -288.0
 offset_right = 1416.0
 offset_bottom = 300.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("16_ly7lb")]
 
 [editable path="Camera"]
 [editable path="Levelend"]

@@ -13,8 +13,8 @@
 [ext_resource type="AudioStream" uid="uid://bppov3tvkwch7" path="res://audio/sfx/tomar_dano.wav" id="10_qjhr6"]
 [ext_resource type="Texture2D" uid="uid://cv7pq2bjb3meb" path="res://icon.svg" id="10_smy33"]
 [ext_resource type="AudioStream" uid="uid://cslatxwt8aey0" path="res://audio/sfx/pulo_armadura.wav" id="12_ivpw1"]
+[ext_resource type="AudioStream" uid="uid://cbhka6wbgaou1" path="res://audio/sfx/slide_cortado.wav" id="13_is6ba"]
 [ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="13_syogb"]
-[ext_resource type="AudioStream" uid="uid://7d0821vuotdj" path="res://audio/sfx/slide.wav" id="13_u5odt"]
 [ext_resource type="AudioStream" uid="uid://ddon8aw88tuwf" path="res://audio/sfx/menu_click.wav" id="14_is6ba"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5r6av"]
@@ -159,12 +159,12 @@ mix_target = 1
 max_polyphony = 2
 
 [node name="slide" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("13_u5odt")
-volume_db = -15.0
+stream = ExtResource("13_is6ba")
+volume_db = 10.0
 
 [node name="heal" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("14_is6ba")
-pitch_scale = 0.6
+volume_db = 20.0
 
 [node name="Health Bar" type="CanvasLayer" parent="."]
 
@@ -180,6 +180,7 @@ layout_mode = 2
 position = Vector2(8, 7)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("10_smy33")
+region_rect = Rect2(0, 0, 64, 128)
 
 [node name="heart2" type="TextureRect" parent="Health Bar/HBoxContainer"]
 custom_minimum_size = Vector2(12, 0)

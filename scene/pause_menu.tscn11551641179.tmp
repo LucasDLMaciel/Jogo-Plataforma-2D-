@@ -1,0 +1,237 @@
+[gd_scene load_steps=15 format=3 uid="uid://lgclg7xevlx8"]
+
+[ext_resource type="Shader" uid="uid://bhwm0owmfufhc" path="res://shaders/pause_menu.gdshader" id="1_cq4tv"]
+[ext_resource type="FontFile" uid="uid://bf33r6my6k8mo" path="res://fonts/Pixellari.ttf" id="1_me6vf"]
+[ext_resource type="Script" uid="uid://5tr4rjilixf5" path="res://scripts/pause_menu.gd" id="1_ug2vv"]
+[ext_resource type="Script" uid="uid://bhbm5kjo3mf6x" path="res://scripts/start.gd" id="2_cq4tv"]
+[ext_resource type="AudioStream" uid="uid://ddon8aw88tuwf" path="res://audio/sfx/menu_click.wav" id="5_qbwph"]
+[ext_resource type="PackedScene" uid="uid://b3dcs18iju8g5" path="res://scene/binds.tscn" id="6_4q2vw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ug2vv"]
+shader = ExtResource("1_cq4tv")
+shader_parameter/lod = 0.0
+
+[sub_resource type="FontVariation" id="FontVariation_ug2vv"]
+base_font = ExtResource("1_me6vf")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qbwph"]
+
+[sub_resource type="FontVariation" id="FontVariation_4q2vw"]
+base_font = ExtResource("1_me6vf")
+
+[sub_resource type="Animation" id="Animation_qbwph"]
+resource_name = "blur"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/lod")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.886]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PanelContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_4q2vw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/lod")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PanelContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_et5lo"]
+_data = {
+&"RESET": SubResource("Animation_4q2vw"),
+&"blur": SubResource("Animation_qbwph")
+}
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_et5lo"]
+
+[node name="PauseMenu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ug2vv")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_ug2vv")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 152.0
+offset_top = 43.0
+offset_right = 348.0
+offset_bottom = 215.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Start" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
+theme_override_fonts/font = SubResource("FontVariation_ug2vv")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qbwph")
+text = "Resume"
+flat = true
+script = ExtResource("2_cq4tv")
+
+[node name="Controls" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
+theme_override_fonts/font = SubResource("FontVariation_ug2vv")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qbwph")
+text = "Controls"
+flat = true
+
+[node name="Restart" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
+theme_override_fonts/font = SubResource("FontVariation_ug2vv")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qbwph")
+text = "Controls"
+flat = true
+
+[node name="Exit" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
+theme_override_fonts/font = SubResource("FontVariation_4q2vw")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qbwph")
+text = "Exit to menu"
+flat = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_et5lo")
+}
+
+[node name="Menu_click" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_qbwph")
+
+[node name="Controles" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Controles"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 472.0
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Controles/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Controles/MarginContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Sair" type="Button" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
+theme_override_fonts/font = ExtResource("1_me6vf")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_et5lo")
+text = "X"
+flat = true
+
+[node name="Binds" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("6_4q2vw")]
+layout_mode = 2
+
+[node name="Binds2" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("6_4q2vw")]
+layout_mode = 2
+action_name = "right"
+
+[node name="Binds3" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("6_4q2vw")]
+layout_mode = 2
+action_name = "up"
+
+[node name="Binds4" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("6_4q2vw")]
+layout_mode = 2
+action_name = "down"
+
+[node name="Binds5" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("6_4q2vw")]
+layout_mode = 2
+action_name = "dash"
+
+[node name="Binds6" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("6_4q2vw")]
+layout_mode = 2
+action_name = "attack"
+
+[node name="Binds7" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("6_4q2vw")]
+layout_mode = 2
+action_name = "jump"
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Controls" to="." method="_on_controls_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Controles/MarginContainer/ScrollContainer/VBoxContainer/Sair" to="." method="_on_sair_pressed"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://c6kn1yl7uhx5q"]
+[gd_scene load_steps=22 format=3 uid="uid://c6kn1yl7uhx5q"]
 
 [ext_resource type="Shader" uid="uid://d4j6srnjxtcbp" path="res://shaders/player.gdshader" id="1_ap6pa"]
 [ext_resource type="Script" uid="uid://ih88233oc7tv" path="res://scripts/player.gd" id="1_rpcr7"]
@@ -6,13 +6,16 @@
 [ext_resource type="PackedScene" uid="uid://dqpvaw4g8q54m" path="res://entitys/Animações/blade_sprite.tscn" id="4_punbo"]
 [ext_resource type="AudioStream" uid="uid://cyeo4wy3uy26k" path="res://audio/sfx/ataque_espada_1.wav" id="5_nqu1d"]
 [ext_resource type="AudioStream" uid="uid://cdmiasxivrimt" path="res://audio/sfx/personagem_caindo_no_chao.wav" id="6_dv0bu"]
-[ext_resource type="AudioStream" uid="uid://cjcmw8ps2stqy" path="res://audio/sfx/passos_firmes.wav" id="7_cm21i"]
+[ext_resource type="AudioStream" uid="uid://gbu4laxixysp" path="res://audio/sfx/passos_pesados_de_armadura.wav" id="7_syogb"]
 [ext_resource type="AudioStream" uid="uid://crigreivxtmgx" path="res://audio/sfx/dash.wav" id="8_k51nl"]
 [ext_resource type="AudioStream" uid="uid://drti125d74ebx" path="res://audio/sfx/dash_restaurado.wav" id="9_id8ad"]
-[ext_resource type="AudioStream" uid="uid://5807gn300efa" path="res://audio/sfx/bonk-sound-effect-36055.mp3" id="9_wxf8w"]
+[ext_resource type="AudioStream" uid="uid://bod538s5ewlux" path="res://audio/sfx/bonk.wav" id="10_ivpw1"]
 [ext_resource type="AudioStream" uid="uid://bppov3tvkwch7" path="res://audio/sfx/tomar_dano.wav" id="10_qjhr6"]
 [ext_resource type="Texture2D" uid="uid://cv7pq2bjb3meb" path="res://icon.svg" id="10_smy33"]
+[ext_resource type="AudioStream" uid="uid://cslatxwt8aey0" path="res://audio/sfx/pulo_armadura.wav" id="12_ivpw1"]
 [ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="13_syogb"]
+[ext_resource type="AudioStream" uid="uid://7d0821vuotdj" path="res://audio/sfx/slide.wav" id="13_u5odt"]
+[ext_resource type="AudioStream" uid="uid://ddon8aw88tuwf" path="res://audio/sfx/menu_click.wav" id="14_is6ba"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5r6av"]
 shader = ExtResource("1_ap6pa")
@@ -125,11 +128,11 @@ max_polyphony = 3
 
 [node name="falling" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_dv0bu")
-volume_db = -10.0
+volume_db = -15.0
 
 [node name="Andando" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("7_cm21i")
-volume_db = -10.0
+stream = ExtResource("7_syogb")
+volume_db = -15.0
 mix_target = 1
 
 [node name="dash" type="AudioStreamPlayer" parent="."]
@@ -142,12 +145,26 @@ stream = ExtResource("9_id8ad")
 volume_db = -10.0
 
 [node name="pogo" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("9_wxf8w")
+stream = ExtResource("10_ivpw1")
 max_polyphony = 3
 
 [node name="levardano" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_qjhr6")
 volume_db = -10.0
+
+[node name="pulo" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_ivpw1")
+volume_db = -20.0
+mix_target = 1
+max_polyphony = 2
+
+[node name="slide" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_u5odt")
+volume_db = -15.0
+
+[node name="heal" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_is6ba")
+pitch_scale = 0.6
 
 [node name="Health Bar" type="CanvasLayer" parent="."]
 

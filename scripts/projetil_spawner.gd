@@ -36,6 +36,6 @@ func spawn_projectil():
 	if player:
 		await get_tree().create_timer(1).timeout
 		var dir = player.global_position - chosen.global_position
-		projectile.tocar_sfx()
 		if projectile != null:
+			projectile.tocar_sfx()
 			projectile.set_direction(dir)

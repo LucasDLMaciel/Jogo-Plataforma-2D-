@@ -106,9 +106,14 @@ func go_to_dead_state():
 	$Morreu_sfx.play()
 	attack_cima_sprite.visible = false
 	attack_reto_sprite.visible = false
-	reto_hitbox.get_node("CollisionShape2D").set_deferred("disabled", true)
-	cima_hitbox.get_node("CollisionShape2D").set_deferred("disabled", true)	
-	roll_hitbox.get_node("CollisionShape2D").set_deferred("disabled", true)		
+	reto_hitbox.monitoring = false
+	reto_hitbox.monitorable = false
+	cima_hitbox.monitoring = false
+	cima_hitbox.monitorable = false
+	roll_hitbox.monitoring = false
+	roll_hitbox.monitorable = false
+	attack_cima_sprite.visible = false
+	attack_reto_sprite.visible = false
 	Hitbox.process_mode = Node.PROCESS_MODE_DISABLED
 
 func go_to_idle_state():
@@ -236,7 +241,6 @@ func atacar(tipo : String):
 			#anim.play("cima")
 			jump()
 			anim.play("swing", -1, 1.0)
-			
 			camera.screen_shake(10, 2)
 			camera.frame_frezee(0.2, 0.2)
 			if sprite.flip_h == false:
@@ -245,6 +249,7 @@ func atacar(tipo : String):
 				cima_hitbox.global_position.x = global_position.x-80
 			await get_tree().create_timer(1).timeout
 			attack_cima_sprite.play("default", 1.0)
+			$golpe_2.play()
 			cima_hitbox.get_node("attack_sprite").set_deferred("visible", true)
 			cima_hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
 			await anim.animation_finished

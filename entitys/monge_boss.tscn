@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://ba84xdhyr2brm"]
+[gd_scene load_steps=23 format=3 uid="uid://ba84xdhyr2brm"]
 
 [ext_resource type="PackedScene" uid="uid://dp6a6xa14qwsg" path="res://entitys/Animações/animação_monge_boss.tscn" id="1_1nba3"]
 [ext_resource type="Script" uid="uid://dgsd3okjg2lh0" path="res://scripts/monge_boss.gd" id="1_dift6"]
@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://bsxgtwbe1jbxi" path="res://audio/sfx/som monge derrotado.wav" id="6_rjthu"]
 [ext_resource type="AudioStream" uid="uid://b3jadixndh5jn" path="res://audio/sfx/morte_inimigo.wav" id="7_myqae"]
 [ext_resource type="AudioStream" uid="uid://jmgy1enldr0k" path="res://audio/sfx/estocada_bastao.wav" id="8_dq1kb"]
+[ext_resource type="AudioStream" uid="uid://bmapo755fpt2e" path="res://audio/sfx/tornado_v2.wav" id="9_lvuqh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rwuqp"]
 radius = 19.0
@@ -182,6 +183,11 @@ volume_db = -10.0
 stream = ExtResource("8_dq1kb")
 pitch_scale = 0.5
 max_polyphony = 3
+
+[node name="golpe_2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_lvuqh")
+volume_db = -10.0
+pitch_scale = 2.0
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="area_entered" from="Staff Hitbox" to="." method="_on_staff_hitbox_area_entered"]

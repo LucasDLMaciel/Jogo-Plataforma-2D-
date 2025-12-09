@@ -21,7 +21,7 @@ size = Vector2(20, 104)
 script = ExtResource("1_evhkj")
 
 [node name="Player" parent="." instance=ExtResource("1_ed4ba")]
-position = Vector2(1327, 183)
+position = Vector2(20, 227)
 
 [node name="Camera" parent="." instance=ExtResource("1_f2b4i")]
 position = Vector2(-4, 129)

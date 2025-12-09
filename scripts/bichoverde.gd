@@ -144,8 +144,10 @@ func mover_aleatorio() -> void:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if hitbox.process_mode == PROCESS_MODE_DISABLED:
+		$barulhos.stop()
 		return
 	if body.is_in_group("Player"):
+		$barulhos.play()
 		is_following_player = true
 		player = body
 		go_to_follow_state()
@@ -156,6 +158,7 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body == player:
 		is_following_player = false
 		player = null
+		$barulhos.stop()
 		go_to_walk_state()	
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
@@ -172,6 +175,7 @@ func knockback(comando: StringName):
 func levar_dano(dano: int):
 	health -= dano
 	if health <= 0:
+		$barulhos.stop()
 		go_to_dead_state()
 		$hit.pitch_scale = 1.0
 		$hit.play()

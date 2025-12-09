@@ -83,7 +83,6 @@ func _ready() -> void:
 		hearts_list.append(child)
 	print(hearts_list)
 
-
 func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		if dashCounter == 1 && !cooldown:
@@ -112,14 +111,16 @@ func _physics_process(delta: float) -> void:
 func go_to_dead_state():
 	PlayerState.dead
 	#anim_player.play("dead", 1.0, false)
-	velocity.x = 0
-	await get_tree().create_timer(2).timeout
+	velocity = Vector2.ZERO
+	$slide.stop()
+	await get_tree().create_timer(1).timeout
 	get_tree().reload_current_scene()
 
 func go_to_idle_state():
 	status = PlayerState.idle
 	anim_player.play("Idle", -1, 2.0)
 	$Andando.stop()
+	$slide.stop()
 	print("indo pro idle")
 	
 func go_to_walking_state():
@@ -137,6 +138,8 @@ func go_to_jump_state():
 func go_to_falling_state():
 	status = PlayerState.falling
 	anim_player.play("Falling")
+	$Andando.stop()
+	$slide.stop()
 	print("indo pro falling")
 	
 func go_to_dash_state():
@@ -380,6 +383,7 @@ func jump_logic():
 func do_jump():
 	jump_count += 1
 	velocity.y = -jump_velocity
+	$pulo.play()
 
 func dash():
 	if Input.is_action_just_pressed("dash") && dashCounter < dashLimit && !cooldown:
@@ -409,7 +413,7 @@ func levar_dano():
 	$levardano.play()
 	update_heart_display()
 	print(Health)
-	if Health == 0:
+	if Health <= 0:
 		if status != PlayerState.dead:
 			go_to_dead_state()
 
@@ -418,7 +422,10 @@ func update_heart_display():
 		hearts_list[i].visible = i < Health
 
 func heal():
-	pass
+	if Health < 5:
+		Health += 1
+		update_heart_display()
+		$heal.play()
 
 func can_jump() -> bool:
 	return jump_count < jump_amount
@@ -529,6 +536,7 @@ func _on_area_2d_2_area_entered(area: Area2D) -> void:
 
 func pogo():
 	velocity.y = 0
+	heal()
 	var tween = create_tween()
 	var velocity_inicial = -jump_velocity * pogo_modifier
 	var apex_velocity = velocity_inicial * 0.2
@@ -561,7 +569,6 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		else:
 			go_to_walking_state()
 
-
 func _on_combo_timer_timeout() -> void:
 	can_combo = false
 	attacks = 2
@@ -570,7 +577,6 @@ func _on_combo_timer_timeout() -> void:
 func _on_dash_invencible_timer_timeout() -> void:
 	is_invincible = false
 	hitbox.get_node("CollisionShape2D").set_deferred("Disabled", false)
-
 
 func _on_attack_timer_timeout() -> void:
 	is_attacking = false

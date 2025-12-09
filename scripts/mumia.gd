@@ -32,10 +32,14 @@ var estado_atual: Estado = Estado.PATRULHANDO
 
 func _ready() -> void:
 	health_respawn = health
+	$barulhos.play()
 
 func _process(delta: float) -> void:
 	if health == 0:
+		$barulhos.stop()
 		trocar_estado(Estado.CAIDO)
+	elif !$barulhos.playing && health > 0:
+		$barulhos.play()
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -61,6 +65,7 @@ func _physics_process(delta: float) -> void:
 
 func estado_caido() -> void:
 	if not caido:
+		$barulhos.stop()
 		caido = true
 		velocity = Vector2.ZERO
 		animacao.play("dead")

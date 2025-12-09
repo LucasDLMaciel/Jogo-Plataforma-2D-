@@ -36,6 +36,7 @@ func _ready():
 func _physics_process(delta: float):
 	if health <= 0:
 		dead = true
+		$idle.stop()
 		velocity = Vector2.ZERO
 		anim.play("idle")
 		$Hitbox/CollisionShape2D.disabled = true
@@ -47,7 +48,7 @@ func _physics_process(delta: float):
 
 func teleportar():
 	is_invecible = true
-
+	
 	for t in get_tree().get_processed_tweens():
 		if t.is_valid() && t.bind_node(self):
 			t.kill()
@@ -71,6 +72,7 @@ func teleportar():
 
 func pausar_apos_teleporte():
 	play_anim("idle")
+	$idle.play()
 	await get_tree().create_timer(3).timeout
 	is_invecible = false
 
@@ -87,6 +89,7 @@ func _on_float_timer_timeout() -> void:
 	if is_invecible:
 		return
 	play_anim("Tag")
+	$idle.stop()
 	var tween = create_tween().bind_node(self)
 
 	tween.set_trans(Tween.TRANS_EXPO)
@@ -136,22 +139,6 @@ func play_anim(nome: String):
 		return
 	current_anim = nome
 	anim.play(nome)
-
-func atacar():
-	if projectile_scene == null:
-		return
-
-	var projectile = projectile_scene.instantiate()
-	get_parent().add_child(projectile)
-
-	projectile.global_position = global_position
-
-	var dir = (target.global_position - global_position)
-	projectile.set_direction(dir)
-	
-func _on_attack_timer_timeout():
-	if !is_invecible:
-		atacar()
 		
 func get_pharaoh_morto():
 	if dead:

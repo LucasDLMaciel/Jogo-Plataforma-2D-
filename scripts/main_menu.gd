@@ -13,12 +13,14 @@ func _on_start_pressed() -> void:
 	$ColorRect.show()
 	$ColorRect/fade_timer.start()
 	$ColorRect/AnimationPlayer.play("fade_in")
+	$Menu_click.play()
 
 func _on_exit_pressed() -> void:
 	button_type = "exit"
 	$ColorRect.show()
 	$ColorRect/fade_timer.start()
 	$ColorRect/AnimationPlayer.play("fade_in")
+	$Menu_click.play()
 
 
 func _on_fade_timer_timeout() -> void:

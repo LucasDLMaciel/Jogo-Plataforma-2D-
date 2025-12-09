@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bob62p3r27pu"]
+[gd_scene load_steps=9 format=3 uid="uid://bob62p3r27pu"]
 
 [ext_resource type="Script" uid="uid://cgepw21tgjmuv" path="res://scripts/pharaoh.gd" id="1_55q0p"]
 [ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="3_7ypo1"]
 [ext_resource type="PackedScene" uid="uid://uggk53j6qavo" path="res://entitys/Animações/animação_pharaoih.tscn" id="3_jjklc"]
 [ext_resource type="AudioStream" uid="uid://b3jadixndh5jn" path="res://audio/sfx/morte_inimigo.wav" id="4_jjklc"]
 [ext_resource type="AudioStream" uid="uid://divtqfyvmflt" path="res://audio/sfx/dash_pharaoh.wav" id="5_tctiq"]
+[ext_resource type="AudioStream" uid="uid://0245ylltm5fh" path="res://audio/sfx/mumia_sound_effect.wav" id="6_344x0"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nnjy7"]
 radius = 6.0
@@ -51,10 +52,15 @@ volume_db = -10.0
 
 [node name="dash" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_tctiq")
-volume_db = -10.0
 pitch_scale = 1.5
 max_distance = 300.0
 max_polyphony = 4
+area_mask = 3
+
+[node name="idle" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_344x0")
+pitch_scale = 3.0
+max_distance = 300.0
 area_mask = 3
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

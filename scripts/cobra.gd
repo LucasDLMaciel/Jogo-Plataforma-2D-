@@ -156,7 +156,7 @@ func _on_attack_area_area_entered(area: Area2D) -> void:
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	player = area.get_parent() 
 	if player.is_in_group("Player") && !dead:
-		player.levar_dano()
+		player.levar_dano(1)
 		return
 
 

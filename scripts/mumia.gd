@@ -169,7 +169,7 @@ func levar_dano(dano: int):
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
-		body.levar_dano()
+		body.levar_dano(1)
 		print("Inimigo atingiu o jogador")
 
 func _on_respawn_timer_timeout() -> void:

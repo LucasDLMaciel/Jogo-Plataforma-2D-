@@ -27,7 +27,7 @@ func _on_area_entered(area: Area2D):
 	var player
 	if area.get_collision_layer_value(2):
 		player = area.get_parent()
-		player.levar_dano()
+		player.levar_dano(1)
 	await get_tree().create_timer(0.25).timeout
 	queue_free()
 func _on_timer_timeout():

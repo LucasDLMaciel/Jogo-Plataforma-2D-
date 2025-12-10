@@ -296,7 +296,7 @@ func _atualizar_direcao_por_raycast():
 func _on_staff_hitbox_area_entered(area: Area2D) -> void:
 	if area.get_collision_layer_value(2):
 		player = area.get_parent()
-		player.levar_dano()
+		player.levar_dano(2)
 
 func _on_roll_hitbox_area_entered(area: Area2D) -> void:
 	player = area.get_parent()
@@ -315,13 +315,13 @@ func _on_roll_hitbox_area_exited(area: Area2D) -> void:
 func _on_hitbox_area_entered(area: Area2D) -> void:
 		player = area.get_parent()
 		if player.is_in_group("Player"):
-			player.levar_dano()
+			player.levar_dano(1)
 			print("Inimigo atingiu o jogador")
 
 func _on_cima_hitbox_area_entered(area: Area2D) -> void:
 	if area.get_collision_layer_value(2):
 		player = area.get_parent()
-		player.levar_dano()
+		player.levar_dano(2)
 		
 func anim_tapa(directionExp : Vector2) -> void:
 	explosion.get_children()[0].color = Color.html("#D10000")

@@ -163,7 +163,7 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
-		body.levar_dano()
+		body.levar_dano(1)
 		go_to_attack_state()
 		print("Inimigo atingiu o jogador")
 

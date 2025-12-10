@@ -402,12 +402,12 @@ func dash():
 		dash_effect.start()
 		dash_cooldown.start()
 	
-func levar_dano():
+func levar_dano(dano):
 	if is_invincible:
 		return
 	is_invincible = true
 	hitbox.get_node("CollisionShape2D").set_deferred("Disabled", true)
-	Health -= 1
+	Health -= dano
 	modulate = Color(1, 1, 1, 0.5)
 	invecible_time.start()
 	velocity.y = 0
@@ -601,4 +601,4 @@ func _on_attack_timer_timeout() -> void:
 	
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Lethal_area"):
-		levar_dano()
+		levar_dano(1)

@@ -19,6 +19,33 @@ base_font = ExtResource("1_me6vf")
 [sub_resource type="FontVariation" id="FontVariation_4q2vw"]
 base_font = ExtResource("1_me6vf")
 
+[sub_resource type="Animation" id="Animation_4q2vw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/lod")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PanelContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_qbwph"]
 resource_name = "blur"
 length = 0.3
@@ -45,33 +72,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_4q2vw"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:material:shader_parameter/lod")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PanelContainer:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_et5lo"]
@@ -117,8 +117,8 @@ alignment = 1
 [node name="Start" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_hover_color = Color(0.141176, 0.623529, 0.870588, 1)
+theme_override_colors/font_focus_color = Color(0.141176, 0.623529, 0.870588, 1)
 theme_override_fonts/font = SubResource("FontVariation_ug2vv")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = SubResource("StyleBoxEmpty_qbwph")
@@ -129,8 +129,8 @@ script = ExtResource("2_cq4tv")
 [node name="Restart" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_hover_color = Color(0.141176, 0.623529, 0.870588, 1)
+theme_override_colors/font_focus_color = Color(0.141176, 0.623529, 0.870588, 1)
 theme_override_fonts/font = SubResource("FontVariation_ug2vv")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = SubResource("StyleBoxEmpty_qbwph")
@@ -140,8 +140,8 @@ flat = true
 [node name="Controls" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_hover_color = Color(0.141176, 0.623529, 0.870588, 1)
+theme_override_colors/font_focus_color = Color(0.141176, 0.623529, 0.870588, 1)
 theme_override_fonts/font = SubResource("FontVariation_ug2vv")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = SubResource("StyleBoxEmpty_qbwph")
@@ -151,8 +151,8 @@ flat = true
 [node name="Exit" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_hover_color = Color(0.141176, 0.623529, 0.870588, 1)
+theme_override_colors/font_focus_color = Color(0.141176, 0.623529, 0.870588, 1)
 theme_override_fonts/font = SubResource("FontVariation_4q2vw")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = SubResource("StyleBoxEmpty_qbwph")
@@ -196,8 +196,8 @@ theme_override_constants/separation = 27
 [node name="Sair" type="Button" parent="Controles/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_colors/font_hover_color = Color(0, 0, 0.784314, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0.784314, 1)
+theme_override_colors/font_hover_color = Color(0.141176, 0.623529, 0.870588, 1)
+theme_override_colors/font_focus_color = Color(0.141176, 0.623529, 0.870588, 1)
 theme_override_fonts/font = ExtResource("1_me6vf")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_et5lo")
 text = "X"

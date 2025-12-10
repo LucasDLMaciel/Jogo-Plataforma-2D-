@@ -16,21 +16,21 @@ func set_action_name() -> void:
 	
 	match action_name:
 		"left":
-			label.text = "Esquerda"
+			label.text = "Left"
 		"right":
-			label.text = "Direita"
+			label.text = "Right"
 		"up":
-			label.text = "Cima"
+			label.text = "Up"
 		"down":
-			label.text = "Baixo"
+			label.text = "Down"
 		"jump":
-			label.text = "Pular"
+			label.text = "Jump"
 		"dash":
-			label.text = "Rolar"
+			label.text = "Roll"
 		"attack":
-			label.text = "Ataque"
+			label.text = "Attack"
 		"pause":
-			label.text = "Pausar"
+			label.text = "Pause"
 
 func set_text_for_key(): 
 	var action_events = InputMap.action_get_events(action_name)

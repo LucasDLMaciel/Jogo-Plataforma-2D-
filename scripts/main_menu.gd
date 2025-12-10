@@ -3,6 +3,8 @@ extends Node2D
 var button_type = null
 
 func _ready() -> void:
+	if BackgroundMusic.playing:
+		BackgroundMusic.stop()
 	$AudioStreamPlayer.play()
 
 func _process(delta: float) -> void:
@@ -24,6 +26,7 @@ func _on_exit_pressed() -> void:
 
 func _on_controls_pressed() -> void:
 	$ButtonManager.hide()
+	$Titulo.visible = false
 	$Controles.show()
 	$Controles/MarginContainer/ScrollContainer/VBoxContainer/Sair.grab_focus()
 	$Menu_click.play()
@@ -33,6 +36,7 @@ func _on_sair_pressed() -> void:
 	$Controles.hide()
 	$ButtonManager/Controls.grab_focus()
 	$Menu_click.play()
+	$Titulo.visible = true
 
 func _on_fade_timer_timeout() -> void:
 	if button_type == "start":

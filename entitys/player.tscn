@@ -6,16 +6,16 @@
 [ext_resource type="PackedScene" uid="uid://dqpvaw4g8q54m" path="res://entitys/Animações/blade_sprite.tscn" id="4_punbo"]
 [ext_resource type="AudioStream" uid="uid://cyeo4wy3uy26k" path="res://audio/sfx/ataque_espada_1.wav" id="5_nqu1d"]
 [ext_resource type="AudioStream" uid="uid://cdmiasxivrimt" path="res://audio/sfx/personagem_caindo_no_chao.wav" id="6_dv0bu"]
-[ext_resource type="AudioStream" uid="uid://gbu4laxixysp" path="res://audio/sfx/passos_pesados_de_armadura.wav" id="7_syogb"]
+[ext_resource type="AudioStream" uid="uid://c1gq7vycr6174" path="res://audio/sfx/corrida_pesadade_armadura.wav" id="7_is6ba"]
 [ext_resource type="AudioStream" uid="uid://crigreivxtmgx" path="res://audio/sfx/dash.wav" id="8_k51nl"]
 [ext_resource type="AudioStream" uid="uid://drti125d74ebx" path="res://audio/sfx/dash_restaurado.wav" id="9_id8ad"]
 [ext_resource type="AudioStream" uid="uid://bod538s5ewlux" path="res://audio/sfx/bonk.wav" id="10_ivpw1"]
 [ext_resource type="AudioStream" uid="uid://bppov3tvkwch7" path="res://audio/sfx/tomar_dano.wav" id="10_qjhr6"]
-[ext_resource type="Texture2D" uid="uid://cv7pq2bjb3meb" path="res://icon.svg" id="10_smy33"]
 [ext_resource type="AudioStream" uid="uid://cslatxwt8aey0" path="res://audio/sfx/pulo_armadura.wav" id="12_ivpw1"]
 [ext_resource type="AudioStream" uid="uid://cbhka6wbgaou1" path="res://audio/sfx/slide_cortado.wav" id="13_is6ba"]
 [ext_resource type="PackedScene" uid="uid://ky8id45dfec6" path="res://entitys/Particulas/explosion.tscn" id="13_syogb"]
 [ext_resource type="AudioStream" uid="uid://ddon8aw88tuwf" path="res://audio/sfx/menu_click.wav" id="14_is6ba"]
+[ext_resource type="Texture2D" uid="uid://cu3d0phtv5e2r" path="res://sprites/cuckold knight/chifre de vida.png" id="15_is6ba"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5r6av"]
 shader = ExtResource("1_ap6pa")
@@ -131,8 +131,8 @@ stream = ExtResource("6_dv0bu")
 volume_db = -15.0
 
 [node name="Andando" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("7_syogb")
-volume_db = -15.0
+stream = ExtResource("7_is6ba")
+volume_db = -10.0
 mix_target = 1
 
 [node name="dash" type="AudioStreamPlayer" parent="."]
@@ -160,7 +160,7 @@ max_polyphony = 2
 
 [node name="slide" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("13_is6ba")
-volume_db = 10.0
+volume_db = -15.0
 
 [node name="heal" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("14_is6ba")
@@ -169,17 +169,20 @@ volume_db = 20.0
 [node name="Health Bar" type="CanvasLayer" parent="."]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Health Bar"]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 1.6
+offset_top = 6.72
+offset_right = 77.6
+offset_bottom = 46.72
+scale = Vector2(0.8, 0.8)
 
 [node name="heart" type="TextureRect" parent="Health Bar/HBoxContainer"]
 custom_minimum_size = Vector2(12, 0)
 layout_mode = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Health Bar/HBoxContainer/heart"]
-position = Vector2(8, 7)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("10_smy33")
+position = Vector2(10, 6.65)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("15_is6ba")
 region_rect = Rect2(0, 0, 64, 128)
 
 [node name="heart2" type="TextureRect" parent="Health Bar/HBoxContainer"]
@@ -187,36 +190,36 @@ custom_minimum_size = Vector2(12, 0)
 layout_mode = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Health Bar/HBoxContainer/heart2"]
-position = Vector2(8, 7)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("10_smy33")
+position = Vector2(10, 6.65)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("15_is6ba")
 
 [node name="heart3" type="TextureRect" parent="Health Bar/HBoxContainer"]
 custom_minimum_size = Vector2(12, 0)
 layout_mode = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Health Bar/HBoxContainer/heart3"]
-position = Vector2(8, 7)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("10_smy33")
+position = Vector2(10, 6.65)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("15_is6ba")
 
 [node name="heart4" type="TextureRect" parent="Health Bar/HBoxContainer"]
 custom_minimum_size = Vector2(12, 0)
 layout_mode = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Health Bar/HBoxContainer/heart4"]
-position = Vector2(8, 7)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("10_smy33")
+position = Vector2(10, 6.65)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("15_is6ba")
 
 [node name="heart5" type="TextureRect" parent="Health Bar/HBoxContainer"]
 custom_minimum_size = Vector2(12, 0)
 layout_mode = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Health Bar/HBoxContainer/heart5"]
-position = Vector2(8, 7)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("10_smy33")
+position = Vector2(10, 6.65)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("15_is6ba")
 
 [node name="Explosion" parent="." instance=ExtResource("13_syogb")]
 

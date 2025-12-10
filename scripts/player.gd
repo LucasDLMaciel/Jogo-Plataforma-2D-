@@ -433,9 +433,12 @@ func heal():
 		Health += 1
 		modulate = Color.html("#4b92fe")
 		update_heart_display()
+		hearts_list[Health-1].modulate = Color.html("#4b92fe")
 		$heal.play()
 		await get_tree().create_timer(0.4).timeout
 		modulate = Color(1,1,1)
+		for i in hearts_list.size():
+			hearts_list[i].modulate = Color(1,1,1)
 
 		
 
